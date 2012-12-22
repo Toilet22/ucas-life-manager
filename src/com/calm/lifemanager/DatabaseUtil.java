@@ -40,9 +40,9 @@ public class DatabaseUtil{
 	 * Database creation sql statement
 	 */
 	private static final String CREATE_USER_TABLE =
-		"create table " + USER + " (" 
+		"create table " + USER + " ("
 	    + KEY_USERNAME + " VARCHAR(30) not null, "
-		+ KEY_PASSWORD +" VARCHAR(16) not null, " 
+		+ KEY_PASSWORD + " VARCHAR(16) not null, " 
 	    + KEY_CTIME + " INTEGER not null);";
 
 	/**
@@ -63,7 +63,7 @@ public class DatabaseUtil{
 	 * Database creation sql statement
 	 */
 	private static final String CREATE_USER_PROFILE_TABLE =
-		"create table " + USER_PROFILE + " (" 
+		"create table " + USER_PROFILE + " ("
 	    + KEY_USERNAME + " VARCHAR(30) not null, "
 		+ KEY_NICKNAME + " VARCHAR(30), " 
 		+ KEY_EMAIL + " VARCHAR(30), " 
@@ -71,7 +71,7 @@ public class DatabaseUtil{
 		+ KEY_AGE + " SMALLINT, "
 		+ KEY_JOB + " SMALLINT, "
 		+ KEY_CTIME + " INTEGER not null, "
-		+ KEY_MTIME + " INTEGER not null), "
+		+ KEY_MTIME + " INTEGER not null, "
 		+ KEY_STIME + " INTEGER not null);";
 	
 	/**
@@ -90,7 +90,7 @@ public class DatabaseUtil{
 	 * Database creation sql statement
 	 */
 	private static final String CREATE_USER_SETTINGS_TABLE =
-		"create table " + USER_PROFILE + " (" 
+		"create table " + USER_SETTINGS + " (" 
 	    + KEY_USERNAME + " VARCHAR(30) not null, "
 		+ KEY_MODE + " SMALLINT, " 
 		+ KEY_RINGLEVEL + " SMALLINT, "
@@ -122,7 +122,7 @@ public class DatabaseUtil{
 	 * Database creation sql statement
 	 */
 	private static final String CREATE_TODOLIST_TABLE =
-		"create table " + USER_PROFILE + " (" 
+		"create table " + TODOLIST + " (" 
 	    + KEY_TITLE + " text not null, "
 		+ KEY_START + " INTEGER, " 
 		+ KEY_END + " INTEGER, " 
@@ -148,7 +148,7 @@ public class DatabaseUtil{
 	 * Database creation sql statement
 	 */
 	private static final String CREATE_COLLECTOR_TABLE =
-		"create table " + USER_PROFILE + " (" 
+		"create table " + COLLECTOR + " (" 
 	    + KEY_TITLE + " text not null, "
 		+ KEY_START + " INTEGER, " 
 		+ KEY_END + " INTEGER, " 
@@ -174,7 +174,7 @@ public class DatabaseUtil{
 	 * Database creation sql statement
 	 */
 	private static final String CREATE_WISHLIST_TABLE =
-		"create table " + USER_PROFILE + " (" 
+		"create table " + WISHLIST + " (" 
 	    + KEY_TITLE + " text not null, "
 		+ KEY_START + " INTEGER, " 
 		+ KEY_END + " INTEGER, " 
@@ -203,7 +203,7 @@ public class DatabaseUtil{
 	 * Database creation sql statement
 	 */
 	private static final String CREATE_RECORD_TABLE =
-		"create table " + USER_PROFILE + " (" 
+		"create table " + RECORD + " (" 
 		+ KEY_TYPE + " SMALLINT, "
 		+ KEY_START + " INTEGER, " 
 		+ KEY_END + " INTEGER, " 
@@ -222,13 +222,13 @@ public class DatabaseUtil{
 	 * Table columns
 	 */
 	public static final String KEY_CONTENT = "content";
-	public static final String KEY_INDEX = "index";
+	public static final String KEY_INDEX = "tip_index";
 	
 	/**
 	 * Database creation sql statement
 	 */
 	private static final String CREATE_TIME_TIPS_TABLE =
-		"create table " + USER_PROFILE + " (" 
+		"create table " + TIME_TIPS + " ("
 		+ KEY_TITLE + " text not null, "
 		+ KEY_CONTENT + " text not null, "
 		+ KEY_INDEX + " VARCHAR(10) not null);";
@@ -247,7 +247,7 @@ public class DatabaseUtil{
 	 * Database creation sql statement
 	 */
 	private static final String CREATE_MOOD_TIPS_TABLE =
-		"create table " + USER_PROFILE + " (" 
+		"create table " + MOOD_TIPS + " (" 
 		+ KEY_TITLE + " text not null, "
 		+ KEY_CONTENT + " text not null, "
 		+ KEY_INDEX + " VARCHAR(10) not null);";
@@ -273,15 +273,33 @@ public class DatabaseUtil{
 		@Override
 		public void onCreate(SQLiteDatabase db) {
 			Log.i(TAG, "Creating DataBase: " + DATABASE_NAME);
+			
 			db.execSQL(CREATE_USER_TABLE);
+			Log.i(TAG,"Creating DataBase Table: " + USER);
+			
 			db.execSQL(CREATE_USER_PROFILE_TABLE);
+			Log.i(TAG,"Creating DataBase Table: " + USER_PROFILE);
+			
 			db.execSQL(CREATE_USER_SETTINGS_TABLE);
+			Log.i(TAG,"Creating DataBase Table: " + USER_SETTINGS);
+			
 			db.execSQL(CREATE_TODOLIST_TABLE);
+			Log.i(TAG,"Creating DataBase Table: " + TODOLIST);
+			
 			db.execSQL(CREATE_COLLECTOR_TABLE);
+			Log.i(TAG,"Creating DataBase Table: " + COLLECTOR);
+			
 			db.execSQL(CREATE_WISHLIST_TABLE);
+			Log.i(TAG,"Creating DataBase Table: " + WISHLIST);
+			
 			db.execSQL(CREATE_RECORD_TABLE);
+			Log.i(TAG,"Creating DataBase Table: " + RECORD);
+			
 			db.execSQL(CREATE_TIME_TIPS_TABLE);
+			Log.i(TAG,"Creating DataBase Table: " + TIME_TIPS);
+			
 			db.execSQL(CREATE_MOOD_TIPS_TABLE);
+			Log.i(TAG,"Creating DataBase Table: " + MOOD_TIPS);
 		}
 		
 		/**
@@ -320,6 +338,9 @@ public class DatabaseUtil{
 		mDbHelper.close();
 	}
 
+	// 提供的数据操作接口
+	// User Table
+	// 新增用户，删除用户，更新用户，查询用户
 	/**
 	 * This method is used to create/insert new record User record.
 	 * @param username
@@ -382,5 +403,78 @@ public class DatabaseUtil{
 		args.put(KEY_PASSWORD, password);
 		return mDb.update(USER, args, KEY_USERNAME + "=" + username, null) > 0;
 	}
+	
+	//提供的数据操作接口
+	//UserProfile Table
+	//新增用户记录，删除用户记录，更新用户记录，查询用户记录
+	
+	public long createUserProfile(){
+		return 0;
+	}
+	
+	public boolean deleteUserProfile(){
+		return true;
+	} 
+	
+	public boolean updateUserProfile(){
+		return true;
+	}
+	
+	public Cursor fetchUserProfile(String username) throws SQLException {
+		Cursor dummy = null;
+		return dummy;
+	} 
+	
+	public Cursor fetchAllUserProfiles(){
+		Cursor dummy = null;
+		return dummy;
+	}
+	
+	//提供的数据操作接口
+	//UserSettings Table
+	//新增用户设置，删除用户设置，更新用户设置，查询用户设置
+	
+	//提供的数据操作接口
+	//Todolist Table
+	//新增代办事项，删除代办事项，更新代办事项，查询代办事项
+	
+	//提供的数据操作接口
+	//Collector Table
+	//新增收集箱事项，删除收集箱事项，更新收集箱事项，查询收集箱事项
+	
+	//提供的数据操作接口
+	//Wishlist Table
+	//新增心愿，删除心愿，更新心愿，查询心愿
+	
+	//提供的数据操作接口
+	//Record Table
+	//新增记录，删除记录，更新记录，查询记录
+	
+	//提供的数据操作接口
+	//Time_tips Table
+	//新增tips，删除tips，更新tips，查询tips
+	
+	//提供的数据操作接口
+	//Mood_tips Table
+	//新增tips，删除tips，更新tips，查询tips
+	
+	// 外部调用实例
+	////插入
+	//DatabaseUtil dbUtil = new DatabaseUtil(this);
+	//dbUtil.open();
+	//dbUtil.createUser("user", "password");
+	//dbUtil.close();
+	//
+	////查询
+	//DatabaseUtil dbUtil = new DatabaseUtil(this);
+	//dbUtil.open();
+	//Cursor cursor = dbUtil.fetchAllUsers();
+	//if(cursor != null){
+	// while(cursor.moveToNext()){
+	//	Log.i("User", "User Name: " + cursor.getString(1) +
+	//             " Grade " + cursor.getString(2));
+	// }
+	//}
+	//dbUtil.close();
 }
 

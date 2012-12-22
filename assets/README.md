@@ -1,0 +1,1 @@
+Assets different from res

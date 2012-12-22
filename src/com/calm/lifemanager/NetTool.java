@@ -23,8 +23,11 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;  
 import org.apache.http.client.entity.UrlEncodedFormEntity;  
 import org.apache.http.client.methods.HttpPost;  
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;  
 import org.apache.http.message.BasicNameValuePair;  
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
   
 import android.os.Environment;  
 
@@ -32,12 +35,35 @@ public class NetTool {
     private static final int TIMEOUT = 10000;// 10秒  
   
     /** 
-     * 传送文本,例如Json,xml等 
+     * JSON交互处理 
+     */  
+    
+    public static String sendJson(String url, JSONObject param) throws Exception {
+        HttpPost request = new HttpPost(url);  
+        // 先封装一个 JSON 对象  
+        //JSONObject param = new JSONObject();  
+        //param.put("name", "rarnu");  
+        //param.put("password", "123456");  
+        // 绑定到请求 Entry  
+        StringEntity se = new StringEntity(param.toString());   
+        request.setEntity(se);  
+        // 发送请求  
+        HttpResponse httpResponse = new DefaultHttpClient().execute(request);  
+        // 得到应答的字符串，这也是一个 JSON 格式保存的数据  
+        String retSrc = EntityUtils.toString(httpResponse.getEntity());  
+        // 生成 JSON 对象  
+        JSONObject result = new JSONObject(retSrc);  
+        String token = (String) result.get("token");
+        return token;
+    }
+    
+    /** 
+     * 传送文本,例如JSON,XML等 
      */  
     public static String sendTxt(String urlPath, String txt, String encoding)  
             throws Exception {  
         byte[] sendData = txt.getBytes();  
-        URL url = new URL(urlPath);  
+        URL url = new URL(urlPath);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
         conn.setRequestMethod("POST");  
         conn.setConnectTimeout(TIMEOUT);  
@@ -170,11 +196,11 @@ public class NetTool {
     }  
   
     /** 
-     * 通过Post方式提交参数给服务器,也可以用来传送json或xml文件 
+     * 通过Post方式提交参数给服务器,也可以用来传送JSON或XML文件 
      */  
     public static String sendPostRequest(String urlPath,  
             Map<String, String> params, String encoding) throws Exception {  
-        StringBuilder sb = new StringBuilder();  
+        StringBuilder sb = new StringBuilder();
         // 如果参数不为空  
         if (params != null && !params.isEmpty()) {  
             for (Map.Entry<String, String> entry : params.entrySet()) {  

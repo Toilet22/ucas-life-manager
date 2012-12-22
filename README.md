@@ -1,4 +1,4 @@
 ucas-life-manager
 =================
 
-manage life
+manage life and git it a try.

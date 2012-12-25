@@ -4,5 +4,12 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="activity_history_time">查看时间</string>
+    <string name="activity_history_mood">查看心情</string>
+    <string name="activity_history_dayly">按日查看</string>
+    <string name="activity_history_weekly">按周查看</string>
+    <string name="activity_history_monthly">按月查看</string>
+    <string name="back">返回</string>
+    <string name="suggestion">建议</string>
 
 </resources>

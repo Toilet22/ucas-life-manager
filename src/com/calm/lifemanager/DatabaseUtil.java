@@ -354,7 +354,7 @@ public class DatabaseUtil{
 	 * @param ctime
 	 * @return long
 	 */
-	public long createUser(String username, String password, int ctime) {
+	public long createUser(String username, String password, long ctime) {
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(KEY_USERNAME, username);
 		initialValues.put(KEY_PASSWORD, password);
@@ -423,7 +423,7 @@ public class DatabaseUtil{
 	 * @param stime
 	 * @return long
 	 */
-	public long createUserProfile(String username, String nickname, String email, int sex, int age, int job, int ctime, int mtime, int stime){
+	public long createUserProfile(String username, String nickname, String email, int sex, int age, int job, long ctime, long mtime, long stime){
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(KEY_USERNAME, username);
 		initialValues.put(KEY_NICKNAME, nickname);
@@ -494,7 +494,7 @@ public class DatabaseUtil{
 	 * @param stime
 	 * @return long
 	 */
-	public long createUserSettings(String username, int mode, int ringLevel, int alarmType, int ctime, int mtime, int stime) {
+	public long createUserSettings(String username, int mode, int ringLevel, int alarmType, long ctime, long mtime, long stime) {
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(KEY_USERNAME, username);
 		initialValues.put(KEY_MODE, mode);

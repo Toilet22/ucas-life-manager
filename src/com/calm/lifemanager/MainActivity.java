@@ -20,20 +20,20 @@ public class MainActivity extends Activity {
         Log.i("DB","Open DB");
         dbUtil.open();
         Log.i("Table","Create a user");
-        dbUtil.createUser("lilihang", "password", (int)System.currentTimeMillis());
+        dbUtil.createUser("lilihang", "password", System.currentTimeMillis());
         
         Log.i("Table","Create a user profile");
         dbUtil.createUserProfile("Lihang", "hustcalm", "licalmer@gmail.com", 
         		1, 21, 1, 
-        		(int)System.currentTimeMillis(), 
-        		(int)System.currentTimeMillis(),
-        		(int)System.currentTimeMillis());
+        		System.currentTimeMillis(), 
+        		System.currentTimeMillis(),
+        		System.currentTimeMillis());
         
         Log.i("Table","Create a user settings");
         dbUtil.createUserSettings("Lihang", 1, 1, 1, 
-        		(int)System.currentTimeMillis(),
-        		(int)System.currentTimeMillis(), 
-        		(int)System.currentTimeMillis());
+        		System.currentTimeMillis(),
+        		System.currentTimeMillis(), 
+        		System.currentTimeMillis());
         
         Log.i("Query","fetch all users");
         Cursor cursor = dbUtil.fetchAllUsers();

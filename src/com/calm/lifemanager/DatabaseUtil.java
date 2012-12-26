@@ -37,7 +37,7 @@ public class DatabaseUtil{
 	public static final String KEY_STIME = "stime";
 
 	/**
-	 * Database creation sql statement
+	 * Database creation SQL statement
 	 */
 	private static final String CREATE_USER_TABLE =
 		"create table " + USER + " ("
@@ -60,7 +60,7 @@ public class DatabaseUtil{
 	public static final String KEY_JOB = "job";
 
 	/**
-	 * Database creation sql statement
+	 * Database creation SQL statement
 	 */
 	private static final String CREATE_USER_PROFILE_TABLE =
 		"create table " + USER_PROFILE + " ("
@@ -87,7 +87,7 @@ public class DatabaseUtil{
 	public static final String KEY_ALARMTYPE = "alarmtype";
 
 	/**
-	 * Database creation sql statement
+	 * Database creation SQL statement
 	 */
 	private static final String CREATE_USER_SETTINGS_TABLE =
 		"create table " + USER_SETTINGS + " (" 
@@ -117,9 +117,10 @@ public class DatabaseUtil{
 	public static final String KEY_REPETITION = "repetition";
 	public static final String KEY_REMINDER = "reminder";
 	public static final String KEY_PRIORITY = "priority";
+	public static final String KEY_STATUS = "status";
 
 	/**
-	 * Database creation sql statement
+	 * Database creation SQL statement
 	 */
 	private static final String CREATE_TODOLIST_TABLE =
 		"create table " + TODOLIST + " (" 
@@ -131,6 +132,7 @@ public class DatabaseUtil{
 		+ KEY_REPETITION + " SMALLINT, "
 		+ KEY_REMINDER + " SMALLINT, "
 		+ KEY_PRIORITY + " SMALLINT, "
+		+ KEY_STATUS + " SMALLINT, "
 		+ KEY_CTIME + " INTEGER not null, "
 		+ KEY_MTIME + " INTEGER not null, "
 		+ KEY_STIME + " INTEGER not null);";
@@ -145,7 +147,7 @@ public class DatabaseUtil{
 	 */
 
 	/**
-	 * Database creation sql statement
+	 * Database creation SQL statement
 	 */
 	private static final String CREATE_COLLECTOR_TABLE =
 		"create table " + COLLECTOR + " (" 
@@ -157,6 +159,7 @@ public class DatabaseUtil{
 		+ KEY_REPETITION + " SMALLINT, "
 		+ KEY_REMINDER + " SMALLINT, "
 		+ KEY_PRIORITY + " SMALLINT, "
+		+ KEY_STATUS + " SMALLINT, "
 		+ KEY_CTIME + " INTEGER not null, "
 		+ KEY_MTIME + " INTEGER not null, "
 		+ KEY_STIME + " INTEGER not null);";
@@ -171,7 +174,7 @@ public class DatabaseUtil{
 	 */
 
 	/**
-	 * Database creation sql statement
+	 * Database creation SQL statement
 	 */
 	private static final String CREATE_WISHLIST_TABLE =
 		"create table " + WISHLIST + " (" 
@@ -183,6 +186,7 @@ public class DatabaseUtil{
 		+ KEY_REPETITION + " SMALLINT, "
 		+ KEY_REMINDER + " SMALLINT, "
 		+ KEY_PRIORITY + " SMALLINT, "
+		+ KEY_STATUS + " SMALLINT, "
 		+ KEY_CTIME + " INTEGER not null, "
 		+ KEY_MTIME + " INTEGER not null, "
 		+ KEY_STIME + " INTEGER not null);";
@@ -200,7 +204,7 @@ public class DatabaseUtil{
 	public static final String KEY_MOOD = "mood";
 	
 	/**
-	 * Database creation sql statement
+	 * Database creation SQL statement
 	 */
 	private static final String CREATE_RECORD_TABLE =
 		"create table " + RECORD + " (" 
@@ -209,6 +213,7 @@ public class DatabaseUtil{
 		+ KEY_END + " INTEGER, " 
 		+ KEY_RATING + " SMALLINT, "
 		+ KEY_MOOD + " SMALLINT, "
+		+ KEY_STATUS + " SMALLINT, "
 		+ KEY_CTIME + " INTEGER not null, "
 		+ KEY_MTIME + " INTEGER not null, "
 		+ KEY_STIME + " INTEGER not null);";
@@ -225,13 +230,13 @@ public class DatabaseUtil{
 	public static final String KEY_INDEX = "tip_index";
 	
 	/**
-	 * Database creation sql statement
+	 * Database creation SQL statement
 	 */
 	private static final String CREATE_TIME_TIPS_TABLE =
 		"create table " + TIME_TIPS + " ("
 		+ KEY_TITLE + " text not null, "
 		+ KEY_CONTENT + " text not null, "
-		+ KEY_INDEX + " VARCHAR(10) not null);";
+		+ KEY_INDEX + " VARCHAR(50) not null);";
 	
 	
 	/**
@@ -244,13 +249,13 @@ public class DatabaseUtil{
 	 */
 	
 	/**
-	 * Database creation sql statement
+	 * Database creation SQL statement
 	 */
 	private static final String CREATE_MOOD_TIPS_TABLE =
 		"create table " + MOOD_TIPS + " (" 
 		+ KEY_TITLE + " text not null, "
 		+ KEY_CONTENT + " text not null, "
-		+ KEY_INDEX + " VARCHAR(10) not null);";
+		+ KEY_INDEX + " VARCHAR(50) not null);";
 	
 	/**
 	 * Context

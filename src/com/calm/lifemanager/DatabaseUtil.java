@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.SyncStateContract.Columns;
 import android.util.Log;
 
 public class DatabaseUtil{
@@ -360,84 +361,177 @@ public class DatabaseUtil{
 		initialValues.put(KEY_CTIME, ctime);
 		return mDb.insert(USER, null, initialValues);
 	}
+	
 	/**
 	 * This method will delete User record.
 	 * @param username
 	 * @return boolean
 	 */
 	public boolean deleteStudent(String username) {
-		return mDb.delete(USER, KEY_USERNAME + "=" + username, null) > 0;
+		return mDb.delete(USER, KEY_USERNAME + "='" + username + "'", null) > 0;
 	}
 
 	/**
-	 * This method will return Cursor holding all the User records.
-	 * @return Cursor
+	 * This method will update User record.
+	 * @param username
+	 * @param updateValues
+	 * @return boolean
 	 */
-	public Cursor fetchAllUsers() {
-		return mDb.query(USER, new String[] {KEY_USERNAME, KEY_PASSWORD,
-				KEY_CTIME}, null, null, null, null, null);
+	public boolean updateUser(String username, ContentValues updateValues) {
+		return mDb.update(USER, updateValues, KEY_USERNAME + "='" + username + "'", null) > 0;
 	}
 
 	/**
-	 * This method will return Cursor holding the specific User record.
+	 * This method will return Cursor holding the specific User record with selected columns.
 	 * @param username
 	 * @return Cursor
 	 * @throws SQLException
 	 */
-	public Cursor fetchUser(String username) throws SQLException {
+	public Cursor fetchUser(String username, String[] selectColumns) throws SQLException {
 		Cursor mCursor =
-			mDb.query(true, USER, new String[] {KEY_USERNAME,
-					KEY_PASSWORD, KEY_CTIME}, KEY_USERNAME + "=" + username, null,
+			mDb.query(true, USER, selectColumns, KEY_USERNAME + "='" + username + "'", null,
 					null, null, null, null);
 		if (mCursor != null) {
 			mCursor.moveToFirst();
 		}
 		return mCursor;
 	}
-
+	
 	/**
-	 * This method will update User record.
-	 * @param username
-	 * @param password
-	 * @param ctime
-	 * @return boolean
+	 * This method will return Cursor holding all the User records with selected columns.
+	 * @return Cursor
 	 */
-	public boolean updateUser(String username, String password, int ctime) {
-		ContentValues args = new ContentValues();
-		args.put(KEY_USERNAME, username);
-		args.put(KEY_PASSWORD, password);
-		return mDb.update(USER, args, KEY_USERNAME + "=" + username, null) > 0;
+	public Cursor fetchAllUsers() {
+		return mDb.query(USER, new String[] {KEY_USERNAME, KEY_PASSWORD,
+				KEY_CTIME}, null, null, null, null, null);
 	}
 	
 	//提供的数据操作接口
 	//UserProfile Table
 	//新增用户记录，删除用户记录，更新用户记录，查询用户记录
 	
-	public long createUserProfile(){
-		return 0;
+	/**
+	 * This method is used to create/insert new User Profile
+	 * @param username
+	 * @param nickname
+	 * @param email
+	 * @param sex
+	 * @param age
+	 * @param job
+	 * @param ctime
+	 * @param mtime
+	 * @param stime
+	 * @return long
+	 */
+	public long createUserProfile(String username, String nickname, String email, int sex, int age, int job, int ctime, int mtime, int stime){
+		ContentValues initialValues = new ContentValues();
+		initialValues.put(KEY_USERNAME, username);
+		initialValues.put(KEY_NICKNAME, nickname);
+		initialValues.put(KEY_EMAIL, email);
+		initialValues.put(KEY_SEX, sex);
+		initialValues.put(KEY_JOB, job);
+		initialValues.put(KEY_CTIME, ctime);
+		initialValues.put(KEY_MTIME, mtime);
+		initialValues.put(KEY_STIME, stime);
+		return mDb.insert(USER_PROFILE, null, initialValues);
 	}
 	
-	public boolean deleteUserProfile(){
-		return true;
+	/**
+	 * This method will delete User Profile.
+	 * @param username
+	 * @return boolean
+	 */
+	public boolean deleteUserProfile(String username){
+		return mDb.delete(USER_PROFILE, KEY_USERNAME + "='" + username + "'", null) > 0;
 	} 
 	
-	public boolean updateUserProfile(){
-		return true;
+	/**
+	 * This method will update User Profile.
+	 * @param username
+	 * @param updateValues
+	 * @return boolean
+	 */
+	public boolean updateUserProfile(String username, ContentValues updateValues){
+		return mDb.update(USER_PROFILE, updateValues, KEY_USERNAME + "='" + username + "'", null) > 0;
 	}
 	
-	public Cursor fetchUserProfile(String username) throws SQLException {
-		Cursor dummy = null;
-		return dummy;
-	} 
+	/**
+	 * This method will return Cursor holding the specific User Profile with selected columns.
+	 * @param username
+	 * @param selectColumns
+	 * @return Cursor
+	 * @throws SQLException
+	 */
+	public Cursor fetchUserProfile(String username, String[] selectColumns) throws SQLException {
+		Cursor mCursor =  
+				mDb.query(true, USER_PROFILE, selectColumns, KEY_USERNAME + "='" + username + "'", null, null, null, null, null);
+		if (mCursor != null)
+			mCursor.moveToFirst();
+		return mCursor;
+	}
 	
-	public Cursor fetchAllUserProfiles(){
-		Cursor dummy = null;
-		return dummy;
+	/**
+	 * This method will return Cursor holding User Profiles with selected columns.
+	 * @param selectColumns
+	 * @return Cursor
+	 */
+	public Cursor fetchAllUserProfiles(String[] selectColumns){
+		return mDb.query(USER_PROFILE, selectColumns, null, null, null, null, null);
 	}
 	
 	//提供的数据操作接口
 	//UserSettings Table
 	//新增用户设置，删除用户设置，更新用户设置，查询用户设置
+	
+	/**
+	 * This method is used to create/insert new User Settings.
+	 * @param username
+	 * @param mode
+	 * @param ringLevel
+	 * @param alarmType
+	 * @param ctime
+	 * @param mtime
+	 * @param stime
+	 * @return long
+	 */
+	public long createUserSettings(String username, int mode, int ringLevel, int alarmType, int ctime, int mtime, int stime) {
+		ContentValues initialValues = new ContentValues();
+		initialValues.put(KEY_USERNAME, username);
+		initialValues.put(KEY_MODE, mode);
+		initialValues.put(KEY_RINGLEVEL, ringLevel);
+		initialValues.put(KEY_ALARMTYPE, alarmType);
+		initialValues.put(KEY_CTIME, ctime);
+		initialValues.put(KEY_MTIME, mtime);
+		initialValues.put(KEY_STIME, stime);
+		return mDb.insert(USER_SETTINGS, null, initialValues);
+	}
+	
+	/**
+	 * This method will delete User Settings.
+	 * @param username
+	 * @return boolean
+	 */
+	public boolean deleteUserSettings(String username) {
+		return mDb.delete(USER_SETTINGS, KEY_USERNAME + "='" + username + "'", null) > 0;
+	}
+	
+	/**
+	 * This method will update User Settings with selected columns.
+	 * @param username
+	 * @param updateValues
+	 * @return boolean
+	 */
+	public boolean updateUserSettings(String username, ContentValues updateValues) {
+		return mDb.update(USER_SETTINGS, updateValues, KEY_USERNAME + "='" + username + "'", null) > 0;
+	}
+	
+	public Cursor fetchUserSettings(String username, String[] selectColumns) throws SQLException {
+		Cursor mCursor = 
+				mDb.query(true, USER_SETTINGS, selectColumns, KEY_USERNAME + "='" + username + "'", null, null, null, null, null);
+		if (mCursor != null)
+			mCursor.moveToFirst();
+		return mCursor;
+	}
 	
 	//提供的数据操作接口
 	//Todolist Table

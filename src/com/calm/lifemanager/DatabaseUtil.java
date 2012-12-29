@@ -26,7 +26,7 @@ public class DatabaseUtil{
 	/**
 	 * Table Name
 	 */
-	private static final String USER = "tb_user";
+	public static final String USER = "tb_user";
 
 	/**
 	 * Table columns
@@ -49,7 +49,7 @@ public class DatabaseUtil{
 	/**
 	 * Table Name
 	 */
-	private static final String USER_PROFILE = "tb_user_profile";
+	public static final String USER_PROFILE = "tb_user_profile";
 
 	/**
 	 * Table columns
@@ -78,7 +78,7 @@ public class DatabaseUtil{
 	/**
 	 * Table Name
 	 */
-	private static final String USER_SETTINGS = "tb_user_settings";
+	public static final String USER_SETTINGS = "tb_user_settings";
 
 	/**
 	 * Table columns
@@ -104,17 +104,17 @@ public class DatabaseUtil{
 	/**
 	 * Table Name
 	 */
-	private static final String TODOLIST = "tb_todolist";
+	public static final String TODOLIST = "tb_todolist";
 
 	/**
 	 * Table columns
 	 */
 	public static final String KEY_TITLE = "title";
-	public static final String KEY_START = "start";
-	public static final String KEY_END = "end";
-	public static final String KEY_WHERE = "where";
-	public static final String KEY_DESC = "desc";
-	public static final String KEY_TYPE = "type";
+	public static final String KEY_START = "start_time";
+	public static final String KEY_END = "end_time";
+	public static final String KEY_WHERE = "place";
+	public static final String KEY_DESC = "description";
+	public static final String KEY_TYPE = "event_type";
 	public static final String KEY_REPETITION = "repetition";
 	public static final String KEY_REMINDER = "reminder";
 	public static final String KEY_PRIORITY = "priority";
@@ -141,7 +141,7 @@ public class DatabaseUtil{
 	/**
 	 * Table Name
 	 */
-	private static final String COLLECTOR = "tb_collector";
+	public static final String COLLECTOR = "tb_collector";
 
 	/**
 	 * Table columns
@@ -196,11 +196,12 @@ public class DatabaseUtil{
 	/**
 	 * Table Name
 	 */
-	private static final String RECORD = "tb_record";
+	public static final String RECORD = "tb_record";
 
 	/**
 	 * Table columns
 	 */
+	public static final String KEY_COST = "cost_time";
 	public static final String KEY_RATING = "rating";
 	public static final String KEY_MOOD = "mood";
 	
@@ -212,6 +213,7 @@ public class DatabaseUtil{
 		+ KEY_TYPE + " SMALLINT, "
 		+ KEY_START + " INTEGER, " 
 		+ KEY_END + " INTEGER, " 
+		+ KEY_COST + " INTEGER, " 
 		+ KEY_RATING + " SMALLINT, "
 		+ KEY_MOOD + " SMALLINT, "
 		+ KEY_STATUS + " SMALLINT, "
@@ -222,7 +224,7 @@ public class DatabaseUtil{
 	/**
 	 * Table Name
 	 */
-	private static final String TIME_TIPS = "tb_time_tips";
+	public static final String TIME_TIPS = "tb_time_tips";
 
 	/**
 	 * Table columns
@@ -243,7 +245,7 @@ public class DatabaseUtil{
 	/**
 	 * Table Name
 	 */
-	private static final String MOOD_TIPS = "tb_mood_tips";
+	public static final String MOOD_TIPS = "tb_mood_tips";
 
 	/**
 	 * Table columns
@@ -313,6 +315,17 @@ public class DatabaseUtil{
 		 */
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+			db.execSQL("DROP TABLE IF EXISTS tb_user");
+			db.execSQL("DROP TABLE IF EXISTS tb_user_profile");
+			db.execSQL("DROP TABLE IF EXISTS tb_user_settings");
+			db.execSQL("DROP TABLE IF EXISTS tb_todolist");
+			db.execSQL("DROP TABLE IF EXISTS tb_collector");
+			db.execSQL("DROP TABLE IF EXISTS tb_wishlist");
+			db.execSQL("DROP TABLE IF EXISTS tb_record");
+			db.execSQL("DROP TABLE IF EXISTS tb_time_tips");
+			db.execSQL("DROP TABLE IF EXISTS tb_mood_tips");
+			onCreate(db);
+			
 			Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
 					+ newVersion);
 		}
@@ -327,6 +340,7 @@ public class DatabaseUtil{
 	public DatabaseUtil(Context ctx) {
 		this.mCtx = ctx;
 	}
+	
 	/**
 	 * This method is used for creating/opening connection
 	 * @return instance of DatabaseUtil
@@ -344,9 +358,79 @@ public class DatabaseUtil{
 		mDbHelper.close();
 	}
 
+	// 提供的通用数据操作接口
+	// All Tables
+	// 新增记录，删除记录，更新记录，查询记录
+	
+	/**
+	 * This is a generic interface used to insert new record to the specified table.
+	 * @param tb
+	 * @param insertValues
+	 * @return long
+	 */
+	public long insertData(String tb, ContentValues insertValues) {
+		return mDb.insert(tb, null, insertValues);
+	}
+	
+	/**
+	 * This method is a generic interface used to delete a record from specified table according to specified keyword and key value.
+	 * @param tb
+	 * @param keyWord
+	 * @param keyValue
+	 * @return boolean
+	 */
+	public boolean deleteData(String tb,String keyWord, String keyValue) {
+		return mDb.delete(tb, keyWord + "='" + keyValue + "'", null) > 0;
+	}
+	
+	/**
+	 * This method is a generic interface used to update a record from the specified table.
+	 * @param tb
+	 * @param keyWord
+	 * @param keyValue
+	 * @param updateValues
+	 * @return boolean
+	 */
+	public boolean updateData(String tb, String keyWord, String keyValue, ContentValues updateValues) {
+		return mDb.update(tb, updateValues, keyWord + "=" + keyValue, null) > 0;
+	}
+	
+	/**
+	 * This method is a generic interface used to fetch a specified record from the specified table.
+	 * @param tb
+	 * @param keyWord
+	 * @param keyValue
+	 * @param selectColumns
+	 * @return Cursor
+	 * @throws SQLException
+	 */
+	public Cursor fetchData(String tb, String keyWord, String keyValue, String[] selectColumns) throws SQLException {
+		Cursor mCursor =
+				mDb.query(true, tb, selectColumns, keyWord + "='" + keyValue + "'", null,
+						null, null, null, null);
+			if (mCursor != null) {
+				mCursor.moveToFirst();
+			}
+			return mCursor;
+	}
+	
+	/**
+	 * This method is a generic interface used to fetch all records from the specified table.
+	 * @param tb
+	 * @param selectColumns
+	 * @return
+	 */
+	public Cursor fetchAllData(String tb,String[] selectColumns) {
+		return mDb.query(tb, selectColumns, null, null, null, null, null);
+	}
+	
+	
+	// 以下是专有的数据操作接口，跟具体的数据表有关
+	
 	// 提供的数据操作接口
 	// User Table
 	// 新增用户，删除用户，更新用户，查询用户
+	
 	/**
 	 * This method is used to create/insert new record User record.
 	 * @param username
@@ -367,7 +451,7 @@ public class DatabaseUtil{
 	 * @param username
 	 * @return boolean
 	 */
-	public boolean deleteStudent(String username) {
+	public boolean deleteUser(String username) {
 		return mDb.delete(USER, KEY_USERNAME + "='" + username + "'", null) > 0;
 	}
 
@@ -537,25 +621,198 @@ public class DatabaseUtil{
 	//Todolist Table
 	//新增代办事项，删除代办事项，更新代办事项，查询代办事项
 	
+	/**
+	 * This method is used to create new todolist event.
+	 * @param username
+	 * @param title
+	 * @param start_time
+	 * @param end_time
+	 * @param place
+	 * @param description
+	 * @param event_type
+	 * @param repetition
+	 * @param reminder
+	 * @param priority
+	 * @param status
+	 * @param ctime
+	 * @param mtime
+	 * @param stime
+	 * @return
+	 */
+	public long createTodolistEvent(String username, String title, long start_time, long end_time, String place, String description, 
+			int event_type, int repetition, int reminder, int priority, int status, long ctime, long mtime, long stime) {
+		ContentValues initialValues = new ContentValues();
+		initialValues.put(KEY_USERNAME, username);
+		initialValues.put(KEY_TITLE, title);
+		initialValues.put(KEY_START, start_time);
+		initialValues.put(KEY_END, end_time);
+		initialValues.put(KEY_WHERE, place);
+		initialValues.put(KEY_DESC, description);
+		initialValues.put(KEY_TYPE, event_type);
+		initialValues.put(KEY_REPETITION, repetition);
+		initialValues.put(KEY_REMINDER, reminder);
+		initialValues.put(KEY_PRIORITY, priority);
+		initialValues.put(KEY_STATUS, status);
+		initialValues.put(KEY_CTIME, ctime);
+		initialValues.put(KEY_MTIME, mtime);
+		initialValues.put(KEY_STIME, stime);
+		return mDb.insert(TODOLIST, null, initialValues);
+	}
+	
 	//提供的数据操作接口
 	//Collector Table
 	//新增收集箱事项，删除收集箱事项，更新收集箱事项，查询收集箱事项
+	
+	/**
+	 * This method is used to create new collector event.
+	 * @param username
+	 * @param title
+	 * @param start_time
+	 * @param end_time
+	 * @param place
+	 * @param description
+	 * @param event_type
+	 * @param repetition
+	 * @param reminder
+	 * @param priority
+	 * @param status
+	 * @param ctime
+	 * @param mtime
+	 * @param stime
+	 * @return long
+	 */
+	public long createCollectorEvent(String username, String title, long start_time, long end_time, String place, String description, 
+			int event_type, int repetition, int reminder, int priority, int status, long ctime, long mtime, long stime) {
+		ContentValues initialValues = new ContentValues();
+		initialValues.put(KEY_USERNAME, username);
+		initialValues.put(KEY_TITLE, title);
+		initialValues.put(KEY_START, start_time);
+		initialValues.put(KEY_END, end_time);
+		initialValues.put(KEY_WHERE, place);
+		initialValues.put(KEY_DESC, description);
+		initialValues.put(KEY_TYPE, event_type);
+		initialValues.put(KEY_REPETITION, repetition);
+		initialValues.put(KEY_REMINDER, reminder);
+		initialValues.put(KEY_PRIORITY, priority);
+		initialValues.put(KEY_STATUS, status);
+		initialValues.put(KEY_CTIME, ctime);
+		initialValues.put(KEY_MTIME, mtime);
+		initialValues.put(KEY_STIME, stime);
+		return mDb.insert(COLLECTOR, null, initialValues);
+	}
 	
 	//提供的数据操作接口
 	//Wishlist Table
 	//新增心愿，删除心愿，更新心愿，查询心愿
 	
+	/**
+	 * This method is used to create new wishlist event.
+	 * @param username
+	 * @param title
+	 * @param start_time
+	 * @param end_time
+	 * @param place
+	 * @param description
+	 * @param event_type
+	 * @param repetition
+	 * @param reminder
+	 * @param priority
+	 * @param status
+	 * @param ctime
+	 * @param mtime
+	 * @param stime
+	 * @return long
+	 */
+	public long createWishlistEvent(String username, String title, long start_time, long end_time, String place, String description, 
+			int event_type, int repetition, int reminder, int priority, int status, long ctime, long mtime, long stime) {
+		ContentValues initialValues = new ContentValues();
+		initialValues.put(KEY_USERNAME, username);
+		initialValues.put(KEY_TITLE, title);
+		initialValues.put(KEY_START, start_time);
+		initialValues.put(KEY_END, end_time);
+		initialValues.put(KEY_WHERE, place);
+		initialValues.put(KEY_DESC, description);
+		initialValues.put(KEY_TYPE, event_type);
+		initialValues.put(KEY_REPETITION, repetition);
+		initialValues.put(KEY_REMINDER, reminder);
+		initialValues.put(KEY_PRIORITY, priority);
+		initialValues.put(KEY_STATUS, status);
+		initialValues.put(KEY_CTIME, ctime);
+		initialValues.put(KEY_MTIME, mtime);
+		initialValues.put(KEY_STIME, stime);
+		return mDb.insert(WISHLIST, null, initialValues);
+	}
+	
 	//提供的数据操作接口
 	//Record Table
 	//新增记录，删除记录，更新记录，查询记录
+	
+	/**
+	 * This method is used to create new record event.
+	 * @param username
+	 * @param event_type
+	 * @param start_time
+	 * @param end_time
+	 * @param cost_time
+	 * @param rating
+	 * @param mood
+	 * @param status
+	 * @param ctime
+	 * @param mtime
+	 * @param stime
+	 * @return long
+	 */
+	public long createRecordEvent(String username, int event_type, long start_time, long end_time, long cost_time, int rating, int mood, int status, long ctime, long mtime, long stime) {
+		ContentValues initialValues = new ContentValues();
+		initialValues.put(KEY_USERNAME, username);
+		initialValues.put(KEY_TYPE, event_type);
+		initialValues.put(KEY_START, start_time);
+		initialValues.put(KEY_END, end_time);
+		initialValues.put(KEY_COST, end_time);
+		initialValues.put(KEY_STATUS, status);
+		initialValues.put(KEY_CTIME, ctime);
+		initialValues.put(KEY_MTIME, mtime);
+		initialValues.put(KEY_STIME, stime);
+		return mDb.insert(RECORD, null, initialValues);
+	}
 	
 	//提供的数据操作接口
 	//Time_tips Table
 	//新增tips，删除tips，更新tips，查询tips
 	
+	/**
+	 * This method is used to create new time tips.
+	 * @param tip_index
+	 * @param title
+	 * @param content
+	 * @return long
+	 */
+	public long createTimeTips(String tip_index, String title, String content) {
+		ContentValues initialValues = new ContentValues();
+		initialValues.put(KEY_INDEX, tip_index);
+		initialValues.put(KEY_TITLE, title);
+		initialValues.put(KEY_CONTENT, content);
+		return mDb.insert(TIME_TIPS, null, initialValues);
+	}
+	
 	//提供的数据操作接口
 	//Mood_tips Table
 	//新增tips，删除tips，更新tips，查询tips
+	
+	/**
+	 * This method is used to create new mood tips.
+	 * @param tip_index
+	 * @param title
+	 * @param content
+	 * @return long
+	 */
+	public long createMoodTips(String tip_index, String title, String content) {
+		ContentValues initialValues = new ContentValues();
+		initialValues.put(KEY_INDEX, tip_index);
+		initialValues.put(KEY_TITLE, title);
+		initialValues.put(KEY_CONTENT, content);
+		return mDb.insert(MOOD_TIPS, null, initialValues);
+	}
 	
 	// 外部调用实例
 	////插入

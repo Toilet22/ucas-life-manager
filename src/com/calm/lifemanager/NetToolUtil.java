@@ -31,7 +31,7 @@ import org.json.JSONObject;
   
 import android.os.Environment;  
 
-public class NetTool {  
+public class NetToolUtil {  
     private static final int TIMEOUT = 10000;// 10√Î  
   
     /** 

@@ -1,8 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/act_youRcd_btn_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/act_youRcrd_btn_save" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/act_youRcd_btn_save"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/act_youRcrd_txtvw_effc"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <RatingBar
+            android:id="@+id/act_youRcrd_rtBar_effc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/act_youRcrd_txtvw_mood"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <RatingBar
+            android:id="@+id/act_youRcrd_rtBar_mood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        
+        <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/linearLayout2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:orientation="horizontal"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="4dp" >
+
+        <com.calm.scrollwidget.WheelView
+            android:id="@+id/act_youRcd_wheel_fatherType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+
+        <com.calm.scrollwidget.WheelView
+            android:id="@+id/act_youRcd_wheel_subType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1.5" />
+
+    </LinearLayout>
+    
+    </LinearLayout>
+
     
 
-</LinearLayout>
+</RelativeLayout>

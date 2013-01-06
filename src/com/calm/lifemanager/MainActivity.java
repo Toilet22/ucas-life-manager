@@ -1,21 +1,31 @@
 package com.calm.lifemanager;
 
-import android.os.Bundle;
-import android.os.SystemClock;
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
 
 public class MainActivity extends Activity {
+	Button btn_settings;
+	Button btn_login;
+	Button btn_yesterday;
+	Button btn_today;
+	Button btn_tomorrow;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        // Test DatabaseUtil
+        /*************************************************************************
+         * 数据库代码：李立杭
+         *************************************************************************/
+  /*      // Test DatabaseUtil
         Log.i("DB","new DB");
         DatabaseUtil dbUtil = new DatabaseUtil(this);
         Log.i("DB","Open DB");
@@ -182,6 +192,44 @@ public class MainActivity extends Activity {
         }
         
         dbUtil.close();
+ */       
+        /************************************************************************
+         * UI代码：苏轶伦
+         ***********************************************************************/
+        //声明按钮
+        Log.e("Toilet", "start init btns");
+        btn_login = (Button)findViewById(R.id.button5_login);
+        btn_yesterday = (Button)findViewById(R.id.button1_yester);
+        btn_tomorrow = (Button)findViewById(R.id.button3_tomorrow);
+        
+        //进入设置界面
+        Log.e("Toilet", "before push btn_settings");
+        btn_settings = (Button)findViewById(R.id.button4_settings);
+        btn_settings.setOnClickListener(new Button.OnClickListener(){
+			public void onClick(View v) {
+		        Log.v("Toilet", "push btn_settings");
+				Intent itnt_settings = new Intent(MainActivity.this, SettingsActivity.class);
+				startActivity(itnt_settings);
+				//MainActivity.this.finish();
+			}
+        });
+        
+        //登录/切换用户/退出
+        
+        //进入过去的我
+        
+        //进入现在的我
+        btn_today = (Button)findViewById(R.id.button2_today);
+        btn_today.setOnClickListener(new Button.OnClickListener(){
+			public void onClick(View v) {
+				// back to main
+				Intent iMain = new Intent(MainActivity.this, CurrentActivity.class);
+				startActivity(iMain);
+			}
+		});
+        
+        //进入将来的我
+        
     }
 
     @Override

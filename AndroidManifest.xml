@@ -12,6 +12,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <receiver android:name=".TimeToRecordBroadcastReceiver" android:process=":remote" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main" >
@@ -31,6 +32,12 @@
         <activity android:name=".MonthlyTimeHistoryActivity"></activity>
         <activity android:name=".MonthlyMoodHistoryActivity"></activity>
         <activity android:name = "org.achartengine.GraphicalActivity"></activity>
+        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".YouShouldRecordActivity"></activity>
+        <activity android:name=".DoSomethingActivity"></activity>
+        <activity android:name=".HappyActivity"></activity>
+        <activity android:name=".IWantToRecordActivity"></activity>
+        <activity android:name=".CurrentActivity"></activity>
         
     </application>
 

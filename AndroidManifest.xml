@@ -37,7 +37,9 @@
         <activity android:name=".DoSomethingActivity"></activity>
         <activity android:name=".HappyActivity"></activity>
         <activity android:name=".IWantToRecordActivity"></activity>
+        <activity android:name=".HistoryActivity"></activity>
         <activity android:name=".CurrentActivity"></activity>
+        <activity android:name=".FutureActivity"></activity>
         
     </application>
 

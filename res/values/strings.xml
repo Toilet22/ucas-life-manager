@@ -11,5 +11,23 @@
     <string name="activity_history_monthly">按月查看</string>
     <string name="back">返回</string>
     <string name="suggestion">建议</string>
+    <string name="act_main_btn_settings">设置</string>
+    <string name="act_main_btn_login">登录</string>
+    <string name="act_main_btn_yesterday">昨天的我</string>
+    <string name="act_main_btn_today">今天的我</string>
+    <string name="act_main_btn_tomorrow">明天的我</string>
+    <string name="act_settings_txtvw_interval">设定时间间隔</string>
+    <string name="act_settings_txtvw_started">定时记录已开启</string>
+    <string name="act_settings_btn_closeLog">关闭定时记录</string>
+    <string name="act_settings_txtvw_closed">定时记录已关闭</string>
+    <string name="act_settings_btn_startLog">开启</string>
+    <string name="act_settings_btn_interval">设定时间间隔</string>
+    <string name="act_youRcrd_btn_save">保存</string>
+    <string name="act_youRcrd_txtvw_mood">心情指数</string>
+    <string name="act_youRcrd_txtvw_effc">效率指数</string>
+    <string name="act_current_btn_adjustMood">让我开心一下</string>
+    <string name="act_current_btn_startToDo">干活儿倒计时</string>
+    <string name="act_current_btn_iWantToRcd">我要记录时间</string>
+    <string name="act_current_btn_back">返回</string>
 
 </resources>

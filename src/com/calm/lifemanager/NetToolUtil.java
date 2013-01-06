@@ -24,7 +24,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;  
 import org.apache.http.client.methods.HttpPost;  
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;  
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;  
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
@@ -32,7 +32,13 @@ import org.json.JSONObject;
 import android.os.Environment;  
 
 public class NetToolUtil {  
-    private static final int TIMEOUT = 10000;// 10秒  
+    private static final int TIMEOUT = 10000;// 10秒 
+    private static final String serverUrl = "daydayup-timemanager.rhccloud.com";
+    private static final String timeTipUrl = "/tip/time";
+    private static final String moodTipUrl = "/tip/mood";
+    private static final String accountRegisterUrl = "/account/register";
+    private static final String accountLoginUrl = "/account/login";
+    private static final String accountLogoutUrl = "/account/logout";
   
     /** 
      * JSON交互处理 
@@ -250,11 +256,11 @@ public class NetToolUtil {
     }  
   
     /** 
-     * 在遇上HTTPS安全模式或者操作cookie的时候使用HTTPclient会方便很多 使用HTTPClient（开源项目）向服务器提交参数 
+     * 在遇上HTTPS安全模式或者操作cookie的时候使用HttpClient会方便很多 使用HttpClient（开源项目）向服务器提交参数 
      */  
     public static String sendHttpClientPost(String urlPath,  
             Map<String, String> params, String encoding) throws Exception {  
-        // 需要把参数放到NameValuePair  
+        // 需要把参数放到NameValuePair
         List<NameValuePair> paramPairs = new ArrayList<NameValuePair>();  
         if (params != null && !params.isEmpty()) {  
             for (Map.Entry<String, String> entry : params.entrySet()) {  
@@ -302,7 +308,7 @@ public class NetToolUtil {
         try {  
             // 创建一个URL对象  
             URL url = new URL(urlStr);  
-            // 创建一个Http连接  
+            // 创建一个HTTP连接  
             HttpURLConnection urlConn = (HttpURLConnection) url  
                     .openConnection();  
             // 使用IO流读取数据  
@@ -397,4 +403,3 @@ public class NetToolUtil {
         return file;  
     }  
 }  
-

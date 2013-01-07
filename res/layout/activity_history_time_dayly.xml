@@ -20,7 +20,8 @@
             <TabWidget
                 android:id="@android:id/tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal" >
             </TabWidget>
 
             <FrameLayout
@@ -28,88 +29,84 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
 
-                <RelativeLayout
-                    android:id="@+id/tab1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
-
-                    <Button
-                        android:id="@+id/button1"
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
-                        android:text="Button" />
-
-                    <Button
-                        android:id="@+id/Button02"
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentTop="true"
-                        android:text="Button" />
-
-                    <Button
-                        android:id="@+id/Button03"
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentTop="true"
-                        android:text="Button" />
-
-                    <Button
-                        android:id="@+id/Button04"
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentTop="true"
-                        android:text="Button" />
-
-                    <Button
-                        android:id="@+id/Button05"
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentTop="true"
-                        android:text="Button" />
-
-                    <Button
-                        android:id="@+id/Button01"
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_below="@+id/Button02"
-                        android:layout_marginTop="148dp"
-                        android:text="Button" />
-
-                    <Button
-                        android:id="@+id/button2"
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/Button01"
-                        android:layout_alignBottom="@+id/Button01"
-                        android:layout_alignParentRight="true"
-                        android:text="Button" />
-
-                </RelativeLayout>
-
                 <LinearLayout
-                    android:id="@+id/tab2"
+                    android:id="@+id/activity_history_time_daily_time_cost"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="100dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/app_name"
+                        android:textColor="#000000"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:layout_width="220dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingTop="17dp"
+                        android:text="@string/app_name"
+                        android:textColor="#000000"
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/tab3"
+                    android:id="@+id/activity_history_time_daily_efficient"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="100dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/app_name"
+                        android:textColor="#000000"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:layout_width="220dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingTop="17dp"
+                        android:text="@string/app_name"
+                        android:textColor="#000000"
+                        android:textSize="15sp" />
+                    
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/activity_history_time_daily_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="100dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/app_name"
+                        android:textColor="#000000"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:layout_width="220dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingTop="17dp"
+                        android:text="@string/app_name"
+                        android:textColor="#000000"
+                        android:textSize="15sp" />
+                    
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>

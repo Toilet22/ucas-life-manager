@@ -33,5 +33,14 @@
     <string name="act_iRcd_txtview_title">我要记录时间</string>
     <string name="act_happy_txtvw_titile">开心一下</string>
     <string name="act_iWantToDo_txtvw_title">我要干活儿</string>
+    <string name="act_cloud_sync_test_user_register">用户注册</string>
+    <string name="act_cloud_sync_test_user_login">用户登入</string>
+    <string name="act_cloud_sync_test_user_logout">用户登出</string>
+    <string name="act_cloud_sync_test_userprofile_push">用户资料上传</string>
+    <string name="act_cloud_sync_test_userprofile_pull">用户资料下载</string>
+    <string name="act_cloud_sync_test_todolist_push">用户todolist上传</string>
+    <string name="act_cloud_sync_test_todolist_pull">用户todolist下载</string>
+    <string name="act_cloud_sync_test_get_time_tip">获取时间建议</string>
+    <string name="act_cloud_sync_test_status_defined">查看预设状态值</string>
 
 </resources>

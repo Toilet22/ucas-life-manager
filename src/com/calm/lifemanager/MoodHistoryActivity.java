@@ -60,22 +60,34 @@ public class MoodHistoryActivity extends TabActivity {
         //设置其标签和图标（setIndicator）     
         //设置内容（setContent）     
 		
+		TabView dailyView = null;
+		dailyView = new TabView(this,R.drawable.btn_day,R.drawable.btn_day);
+		dailyView.setBackground(this.getResources().getDrawable(R.drawable.btn_day));
+		
+		TabView weeklyView = null;
+		weeklyView = new TabView(this,R.drawable.btn_week,R.drawable.btn_week);
+		weeklyView.setBackground(this.getResources().getDrawable(R.drawable.btn_week));
+		
+		TabView monthlyView = null;
+		monthlyView = new TabView(this,R.drawable.btn_month,R.drawable.btn_month);
+		monthlyView.setBackground(this.getResources().getDrawable(R.drawable.btn_month));
+		
 		Intent daylyIntent = new Intent(this,DaylyMoodHistoryActivity.class);
 		
         tabHost.addTab(tabHost.newTabSpec("tab1")
-                .setIndicator("每日",getResources().getDrawable(R.drawable.ic_launcher))     
+                .setIndicator(dailyView)     
                 .setContent(daylyIntent));
         
         Intent weeklyIntent = new Intent(this,WeeklyMoodHistoryActivity.class);
         
         tabHost.addTab(tabHost.newTabSpec("tab2")
-                .setIndicator("每周",getResources().getDrawable(R.drawable.ic_launcher))     
+                .setIndicator(weeklyView)     
                 .setContent(weeklyIntent));
         
         Intent monthlyIntent = new Intent(this,MonthlyMoodHistoryActivity.class);
         
         tabHost.addTab(tabHost.newTabSpec("tab3")
-                .setIndicator("每月",getResources().getDrawable(R.drawable.ic_launcher))     
+                .setIndicator(monthlyView)     
                 .setContent(monthlyIntent));
 		
 		tabHost.setCurrentTab(0);

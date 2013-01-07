@@ -29,5 +29,9 @@
     <string name="act_current_btn_startToDo">干活儿倒计时</string>
     <string name="act_current_btn_iWantToRcd">我要记录时间</string>
     <string name="act_current_btn_back">返回</string>
+    <string name="act_curr_txtvw_title">现在的我</string>
+    <string name="act_iRcd_txtview_title">我要记录时间</string>
+    <string name="act_happy_txtvw_titile">开心一下</string>
+    <string name="act_iWantToDo_txtvw_title">我要干活儿</string>
 
 </resources>

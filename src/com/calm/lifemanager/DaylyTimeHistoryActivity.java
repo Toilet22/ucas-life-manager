@@ -15,7 +15,7 @@ public class DaylyTimeHistoryActivity extends TabActivity {
 	        
 	        TabHost tabHost = getTabHost();
 	        
-	        LayoutInflater.from(this).inflate(R.layout.activity_history_time_dayly,tabHost.getTabContentView(),true);
+	        LayoutInflater.from(this).inflate(R.layout.activity_history_time_generic,tabHost.getTabContentView(),true);
 	        
 	        TabView timeCostView = null;
 	        timeCostView = new TabView(this,R.drawable.btn_time,R.drawable.btn_time);

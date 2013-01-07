@@ -42,5 +42,7 @@
     <string name="act_cloud_sync_test_todolist_pull">用户todolist下载</string>
     <string name="act_cloud_sync_test_get_time_tip">获取时间建议</string>
     <string name="act_cloud_sync_test_status_defined">查看预设状态值</string>
+    <string name="act_main_cloud_sync_test">云同步测试</string>
+    <string name="act_cloud_sync_test_check_network">检测网络状态</string>
 
 </resources>

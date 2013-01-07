@@ -16,6 +16,8 @@ public class MainActivity extends Activity {
 	Button btn_yesterday;
 	Button btn_today;
 	Button btn_tomorrow;
+	
+	Button btn_cloud_sync_test;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,8 @@ public class MainActivity extends Activity {
         btn_login = (Button)findViewById(R.id.button5_login);
         btn_yesterday = (Button)findViewById(R.id.button1_yester);
         btn_tomorrow = (Button)findViewById(R.id.button3_tomorrow);
+        
+        btn_cloud_sync_test = (Button)findViewById(R.id.btn_cloud_sync_test);
         
         //进入设置界面
         Log.e("Toilet", "before push btn_settings");
@@ -71,6 +75,15 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				// back to main
 				Intent iMain = new Intent(MainActivity.this, FutureActivity.class);
+				startActivity(iMain);
+			}
+		});
+        
+        // 测试云同步
+        btn_cloud_sync_test.setOnClickListener(new Button.OnClickListener(){
+			public void onClick(View v) {
+				// back to main
+				Intent iMain = new Intent(MainActivity.this, CloudSyncTestActivity.class);
 				startActivity(iMain);
 			}
 		});

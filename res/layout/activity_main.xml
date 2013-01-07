@@ -4,13 +4,12 @@
     android:layout_height="match_parent" >
 
     <LinearLayout
+        android:id="@+id/linearLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:orientation="vertical" >
-
-
 
         <Button
             android:id="@+id/button1_yester"
@@ -18,22 +17,18 @@
             android:layout_height="wrap_content"
             android:text="@string/act_main_btn_yesterday" />
 
-
         <Button
             android:id="@+id/button2_today"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/act_main_btn_today" />
 
-
         <Button
             android:id="@+id/button3_tomorrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/act_main_btn_tomorrow" />
-
     </LinearLayout>
-
 
     <Button
         android:id="@+id/button4_settings"
@@ -43,9 +38,6 @@
         android:layout_alignParentTop="true"
         android:text="@string/act_main_btn_settings" />
 
-
-
-
     <Button
         android:id="@+id/button5_login"
         android:layout_width="wrap_content"
@@ -53,5 +45,14 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:text="@string/act_main_btn_login" />
+
+    <Button
+        android:id="@+id/btn_cloud_sync_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/linearLayout1"
+        android:layout_below="@+id/linearLayout1"
+        android:layout_marginTop="34dp"
+        android:text="@string/act_main_cloud_sync_test" />
 
 </RelativeLayout>

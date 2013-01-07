@@ -3,59 +3,65 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
+
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/act_cloud_sync_test_btn_user_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/act_cloud_sync_test_user_register" />
-
+
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/act_cloud_sync_test_btn_user_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/act_cloud_sync_test_user_login" />
-
+
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/act_cloud_sync_test_btn_user_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/act_cloud_sync_test_user_logout" />
-
+
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/act_cloud_sync_test_btn_userprofile_push"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/act_cloud_sync_test_userprofile_push" />
-
+
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/act_cloud_sync_test_btn_userprofile_pull"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/act_cloud_sync_test_userprofile_pull" />
-
+
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/act_cloud_sync_test_btn_todolist_push"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/act_cloud_sync_test_todolist_push" />
-
+
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/act_cloud_sync_test_btn_todolist_pull"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/act_cloud_sync_test_todolist_pull" />
-
+
     <Button
-        android:id="@+id/button8"
+        android:id="@+id/act_cloud_sync_test_btn_get_timp_tip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/act_cloud_sync_test_get_time_tip" />
-
+
     <Button
-        android:id="@+id/button9"
+        android:id="@+id/act_cloud_sync_test_btn_get_mood_tip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/act_cloud_sync_test_status_defined" />
+
+    <Button
+        android:id="@+id/act_cloud_sync_test_btn_check_network"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/act_cloud_sync_test_check_network" />
 
 </LinearLayout>

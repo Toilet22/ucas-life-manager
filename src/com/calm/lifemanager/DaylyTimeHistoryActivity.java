@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TabHost;
 
 public class DaylyTimeHistoryActivity extends TabActivity {
@@ -70,7 +71,10 @@ public class DaylyTimeHistoryActivity extends TabActivity {
 	                	currentSelectedTab = 2;
 	                }  
 	            }  
-	        });  
+	        });
+	        
+	        final ImageView imgViewTimeCost = (ImageView)findViewById(R.id.activity_history_time_daily_imageView_show_time_cost);
+	        ImageView imgViewShowEfficient = (ImageView)findViewById(R.id.activity_history_time_daily_imageView_show_efficient);
 	        
 	        ImageButton imgButtonBack = (ImageButton)findViewById(R.id.actitivity_history_time_daily_imageButton_back);
 	        ImageButton imgButtonSuggestion = (ImageButton)findViewById(R.id.actitivity_history_time_daily_imageButton_suggestion);
@@ -114,12 +118,17 @@ public class DaylyTimeHistoryActivity extends TabActivity {
 	        		switch(currentSelectedTab){
 	        		//时间分布
 	        		case 0:
+	        			Log.i("DailyTime","Processing Time Distribution...");
+	        			// 测试图片加载
+	        			imgViewTimeCost.setImageResource(R.drawable.ic_launcher);
 	        			break;
 	        		//效率分布
 	        		case 1:
+	        			Log.i("DailyTime","Processing Efficient Distribution...");
 	        			break;
 	        		//查看详单
 	        		case 2:
+	        			Log.i("DailyTime","Processing Details List...");
 	        			break;
 	        		default:
 	        			break;
@@ -134,7 +143,25 @@ public class DaylyTimeHistoryActivity extends TabActivity {
 	        		
 	        		//根据选择的标签切换视图
 	        		
-	        		
+	        		switch(currentSelectedTab){
+	        		//时间分布
+	        		case 0:
+	        			Log.i("DailyTime","Processing Time Distribution...");
+	        			// 测试图片加载
+	        			imgViewTimeCost.setImageResource(R.drawable.ic_action_search);
+	        			break;
+	        		//效率分布
+	        		case 1:
+	        			Log.i("DailyTime","Processing Efficient Distribution...");
+	        			break;
+	        		//查看详单
+	        		case 2:
+	        			Log.i("DailyTime","Processing Details List...");
+	        			break;
+	        		default:
+	        			break;
+	        	
+	        		}
 	        	}
 	        });
 	        

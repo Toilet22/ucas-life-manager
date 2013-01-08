@@ -39,10 +39,10 @@ public class MonthlyMoodHistoryActivity extends TabActivity {
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {  
               
             public void onTabChanged(String tabId) {  
-                if (tabId.equals("One")) {  
+                if (tabId.equals("tab1")) {  
                       
                 }  
-                if (tabId.equals("Two")) {  
+                if (tabId.equals("tab2")) {  
                     
                 }  
             }  

@@ -33,11 +33,12 @@
                     android:id="@+id/activity_history_time_daily_time_cost"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
-
+
                     <ImageButton
                         android:id="@+id/actitivity_history_time_daily_imageButton_back"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@drawable/swap_btn_left"
                         android:src="@drawable/back_btn" />
 
                     <ImageButton
@@ -63,6 +64,14 @@
                         android:layout_alignParentRight="true"
                         android:layout_alignTop="@+id/actitivity_history_time_daily_imageButton_swap_left"
                         android:src="@drawable/swap_btn_right" />
+
+                    <ImageView
+                        android:id="@+id/activity_history_time_daily_imageView_show_time_cost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/bg" />
 
                 </RelativeLayout>
 
@@ -100,6 +109,14 @@
                         android:layout_alignParentRight="true"
                         android:layout_alignTop="@+id/actitivity_history_time_daily_imageButton_swap_left"
                         android:src="@drawable/swap_btn_right" />
+                    
+                     <ImageView
+                         android:id="@+id/activity_history_time_daily_imageView_show_efficient"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_centerHorizontal="true"
+                         android:layout_centerVertical="true"
+                         android:src="@drawable/bg" />
                     
                 </RelativeLayout>
 

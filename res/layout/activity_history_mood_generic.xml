@@ -29,19 +29,97 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/activity_history_mood_daily_distribute"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
+                    
+                    <ImageButton
+                        android:id="@+id/actitivity_history_mood_daily_imageButton_back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@drawable/swap_btn_left"
+                        android:src="@drawable/back_btn" />
 
-                </LinearLayout>
+                    <ImageButton
+                        android:id="@+id/actitivity_history_mood_daily_imageButton_suggestion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/acount_btn" />
 
-                <LinearLayout
+                    <ImageButton
+                        android:id="@+id/actitivity_history_mood_daily_imageButton_swap_left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/swap_btn_left" />
+
+                    <ImageButton
+                        android:id="@+id/actitivity_history_mood_daily_imageButton_swap_right"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@+id/actitivity_history_mood_daily_imageButton_swap_left"
+                        android:src="@drawable/swap_btn_right" />
+
+                    <ImageView
+                        android:id="@+id/activity_history_time_daily_imageView_show_mood_distribute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/bg" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:id="@+id/activity_history_mood_daily_details"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
                     
-                </LinearLayout>
+                    <ImageButton
+                        android:id="@+id/actitivity_history_mood_daily_imageButton_back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@drawable/swap_btn_left"
+                        android:src="@drawable/back_btn" />
+
+                    <ImageButton
+                        android:id="@+id/actitivity_history_mood_daily_imageButton_suggestion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/acount_btn" />
+
+                    <ImageButton
+                        android:id="@+id/actitivity_history_mood_daily_imageButton_swap_left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/swap_btn_left" />
+
+                    <ImageButton
+                        android:id="@+id/actitivity_history_mood_daily_imageButton_swap_right"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@+id/actitivity_history_mood_daily_imageButton_swap_left"
+                        android:src="@drawable/swap_btn_right" />
+
+                    <ListView
+                        android:id="@+id/activity_history_mood_daily_listView_show_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true" />
+                    
+                </RelativeLayout>
+                
             </FrameLayout>
         </LinearLayout>
     </TabHost>

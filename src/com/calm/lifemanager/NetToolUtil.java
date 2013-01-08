@@ -46,13 +46,51 @@ public class NetToolUtil {
 	private static final String TAG = "NetUtil";  
 	
     private static final int TIMEOUT = 10000;// 10秒 
+    
     private static final String serverUrl = "daydayup-timemanager.rhccloud.com";
-    private static final String timeTipUrl = "/tip/time";
-    private static final String moodTipUrl = "/tip/mood";
-    private static final String accountRegisterUrl = "/account/register";
-    private static final String accountLoginUrl = "/account/login";
-    private static final String accountLogoutUrl = "/account/logout";
-  
+    
+    private static final String timeTipUrl = serverUrl + "/tip/time";
+    private static final String moodTipUrl = serverUrl + "/tip/mood";
+    
+    private static final String accountRegisterUrl = serverUrl + "/account/register";
+    private static final String accountLoginUrl = serverUrl + "/account/login";
+    private static final String accountLogoutUrl = serverUrl + "/account/logout";
+    
+    private static final String userProfilePullUrl = serverUrl + "/userdata/userprofile/pull";
+    private static final String userProfilePushUrl = serverUrl + "/userdata/userprofile/push";
+    
+    private static final String userSettingsPullUrl = serverUrl + "/userdata/usersettings/pull";
+    private static final String userSettingsPushUrl = serverUrl + "/userdata/usersettings/push";
+    
+    private static final String todolistPullUrl = serverUrl + "/userdata/todolist/pull";
+    private static final String todolistPushUrl = serverUrl + "/userdata/todolist/push";
+    
+    private static final String wishlistPullUrl = serverUrl + "/userdata/wishlist/pull";
+    private static final String wishlistPushUrl = serverUrl + "/userdata/wishlist/push";
+    
+    private static final String collectorPullUrl = serverUrl + "/userdata/collector/pull";
+    private static final String collectorPushUrl = serverUrl + "/userdata/collector/push";
+    
+    private static final String recordPullUrl = serverUrl + "/userdata/record/pull";
+    private static final String recordPushUrl = serverUrl + "/userdata/record/push";
+
+    private static final String PUSH = "push";
+    private static final String PULL = "pull"; 
+    
+    private static final int SUCCESS = 0;
+    private static final int FAIL = 1;
+    private static final int NOT_LOGIN = 2;
+    private static final int ALREADY_LOGIN = 3;
+    private static final int METHOD_ERROR = 4;
+    
+    private static final int USERNAME_EXISTED = 11;
+    private static final int USER_PASSWORD_ERROR = 12;
+    private static final int USERNAME_TOO_SHORT = 13;
+    private static final int PASSWORD_TOO_SHROT = 14;
+    
+    private static final int SYNC_DATA = 20;
+    private static final int SYNC_DATA_IS_NULL = 21;	
+    private static final int SYNC_DATA_IS_LASTEST = 22;
     
     /** 
      * 网络连接是否可用 
@@ -523,4 +561,70 @@ public class NetToolUtil {
         }  
         return file;  
     }  
-}  
+    
+    // 专用数据同步接口
+    
+    // 获取tips
+    public static JSONObject getTimeTips(String serverUrl, String type, Context context) {
+    	return null;
+    }
+    
+    
+    // 用户注册
+    public static String userRegister(String url, JSONObject param) throws Exception {
+        HttpPost request = new HttpPost(url);  
+        // 先封装一个 JSON 对象  
+        //JSONObject param = new JSONObject();  
+        //param.put("name", "rarnu");  
+        //param.put("password", "123456");  
+        // 绑定到请求 Entry  
+        StringEntity se = new StringEntity(param.toString());   
+        request.setEntity(se);  
+        // 发送请求  
+        HttpResponse httpResponse = new DefaultHttpClient().execute(request);  
+        // 得到应答的字符串，这也是一个 JSON 格式保存的数据  
+        String retSrc = EntityUtils.toString(httpResponse.getEntity());  
+        // 生成 JSON 对象  
+        JSONObject result = new JSONObject(retSrc);  
+        String token = (String) result.get("token");
+        return token;
+    }
+    
+    // 用户登录
+    public static String userLogin(String url, JSONObject param) throws Exception {
+        HttpPost request = new HttpPost(url);  
+        // 先封装一个 JSON 对象  
+        //JSONObject param = new JSONObject();  
+        //param.put("name", "rarnu");  
+        //param.put("password", "123456");  
+        // 绑定到请求 Entry  
+        StringEntity se = new StringEntity(param.toString());   
+        request.setEntity(se);  
+        // 发送请求  
+        HttpResponse httpResponse = new DefaultHttpClient().execute(request);  
+        // 得到应答的字符串，这也是一个 JSON 格式保存的数据  
+        String retSrc = EntityUtils.toString(httpResponse.getEntity());  
+        // 生成 JSON 对象  
+        JSONObject result = new JSONObject(retSrc);  
+        String token = (String) result.get("token");
+        return token;
+    }
+    
+    // 用户登出
+    public static boolean userLogout(String url) {
+    	return true;
+    }
+    
+    // 用户数据同步
+    public static JSONObject userDataSync(String url,String type, Context context, JSONObject param) {
+    	if(type.equals(PUSH)){
+    		
+    	}
+    	else if(type.equals(PULL)){
+    		
+    	}
+    	else
+    		;
+    	return null;
+    }
+}

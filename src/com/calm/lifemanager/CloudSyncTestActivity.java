@@ -18,13 +18,15 @@ public class CloudSyncTestActivity extends Activity {
 	Button btn_get_time_tip;
 	Button btn_get_mood_tip;
 	Button btn_check_network;
-
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cloud_sync_test);
 
         Log.i("Cloud", "Start Init Cloud Sync Test Buttons");
+        
+        Log.i("Cloud","Creating NetToolUtil Manager");
         
         btn_user_register = (Button)findViewById(R.id.act_cloud_sync_test_btn_user_register);
         
@@ -103,6 +105,10 @@ public class CloudSyncTestActivity extends Activity {
     	btn_check_network.setOnClickListener(new Button.OnClickListener(){
 			public void onClick(View v) {
 		        Log.i("Cloud", "Start Testing ...");
+		        if(NetToolUtil.isConnnected(CloudSyncTestActivity.this))
+		        	Log.i("Cloud","Network is Up.");
+		        else
+		        	Log.i("Cloud","Network is Down.");
 			}
         });
         

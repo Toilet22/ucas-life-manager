@@ -1,14 +1,23 @@
 package com.calm.lifemanager;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.TabActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TabHost;
 
 public class DaylyTimeHistoryActivity extends TabActivity {
+	private static int currentSelectedTab = 0;
+	
 	 @Override
 	    public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
@@ -43,21 +52,91 @@ public class DaylyTimeHistoryActivity extends TabActivity {
 			
 			tabHost.setCurrentTab(0);  
 			
-			//添加监听事件  
+			//添加Tab监听事件  
 	        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {  
 	              
-	            public void onTabChanged(String tabId) {  
-	                if (tabId.equals("One")) {  
-	                      
+	            public void onTabChanged(String tabId) {
+	            	
+	                if (tabId.equals("tab1")) {  
+	                	Log.i("DailyTime","Tab 1 selected!");
+	                	currentSelectedTab = 0;
 	                }  
-	                if (tabId.equals("Two")) {  
-	                    
+	                if (tabId.equals("tab2")) {  
+	                	Log.i("DailyTime","Tab 2 selected!");
+	                	currentSelectedTab = 1;
 	                }  
-	                if (tabId.equals("Three")) {  
-	                     
+	                if (tabId.equals("tab3")) {  
+	                	Log.i("DailyTime","Tab 3 selected!");
+	                	currentSelectedTab = 2;
 	                }  
 	            }  
 	        });  
-	          
+	        
+	        ImageButton imgButtonBack = (ImageButton)findViewById(R.id.actitivity_history_time_daily_imageButton_back);
+	        ImageButton imgButtonSuggestion = (ImageButton)findViewById(R.id.actitivity_history_time_daily_imageButton_suggestion);
+	        ImageButton imgButtonSwapLeft = (ImageButton)findViewById(R.id.actitivity_history_time_daily_imageButton_swap_left);
+	        ImageButton imgButtonSwapRight = (ImageButton)findViewById(R.id.actitivity_history_time_daily_imageButton_swap_right);
+	        
+	        // 添加ImageButton添加事件
+	        imgButtonBack.setOnClickListener(new Button.OnClickListener() {
+	        	public void onClick(View v) {
+	        		Log.i("DailyTime","Back Button pushed");
+	        		Intent backIntent = new Intent();
+	        		backIntent.setClass(DaylyTimeHistoryActivity.this,MainActivity.class);
+	        		startActivity(backIntent);
+	        		DaylyTimeHistoryActivity.this.finish();
+	        	}
+	        });
+	        
+	        imgButtonSuggestion.setOnClickListener(new Button.OnClickListener() {
+	        	public void onClick(View v) {
+	        		Log.i("DailyTime","Seggestion Button pushed");
+	        		
+	        		//弹出建议对话框
+	        		AlertDialog.Builder builder = new AlertDialog.Builder(DaylyTimeHistoryActivity.this.getParent());
+	        		
+	        		builder.setTitle("时间建议");
+	        		builder.setMessage("一寸光阴一寸金！");
+	        		builder.setPositiveButton("确定", null);
+	        		builder.setNegativeButton("取消", null); 
+	        		
+	        		AlertDialog suggestionDialog = builder.create();
+	        		
+	        		suggestionDialog.show();
+	        	}
+	        });
+	        
+	        imgButtonSwapLeft.setOnClickListener(new Button.OnClickListener() {
+	        	public void onClick(View v) {
+	        		Log.i("DailyTime","Swap Left Button pushed");
+	        		
+	        		//根据选择的标签切换视图
+	        		switch(currentSelectedTab){
+	        		//时间分布
+	        		case 0:
+	        			break;
+	        		//效率分布
+	        		case 1:
+	        			break;
+	        		//查看详单
+	        		case 2:
+	        			break;
+	        		default:
+	        			break;
+	        	
+	        		}
+	        	}
+	        });
+	        
+	        imgButtonSwapRight.setOnClickListener(new Button.OnClickListener() {
+	        	public void onClick(View v) {
+	        		Log.i("DailyTime","Swap Right Button pushed");
+	        		
+	        		//根据选择的标签切换视图
+	        		
+	        		
+	        	}
+	        });
+	        
 	    }
 }

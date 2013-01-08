@@ -28,27 +28,7 @@
                 android:id="@android:id/tabcontent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
-
-                <LinearLayout
-                    android:id="@+id/activity_history_time_daily_time_cost"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/activity_history_time_daily_efficient"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
-                    
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/activity_history_time_daily_details"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
-                    
-                </LinearLayout>
+                
             </FrameLayout>
         </LinearLayout>
     </TabHost>

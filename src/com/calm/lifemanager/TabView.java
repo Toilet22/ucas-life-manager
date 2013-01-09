@@ -17,7 +17,24 @@ public class TabView extends LinearLayout {
 		listDrawable.addState(ENABLED_STATE_SET, this.getResources().getDrawable(drawable));
 		imageView.setImageDrawable(listDrawable);
 		imageView.setBackgroundColor(Color.TRANSPARENT);
-		setGravity(Gravity.CENTER);
+		//setGravity(Gravity.CENTER);
+		//setGravity(Gravity.LEFT);
+		setGravity(Gravity.FILL);
 		addView(imageView);
 		}
+	
+	public TabView(Context c, int drawable) {
+		super(c);
+		imageView = new ImageView(c);
+		imageView.setImageDrawable(this.getResources().getDrawable(drawable));
+		imageView.setBackgroundColor(Color.TRANSPARENT);
+		setGravity(Gravity.FILL);
+		addView(imageView);
+	}
+	
+	public TabView(Context c) {
+		super(c);
+		imageView = new ImageView(c);
+		addView(imageView);
+	}
 }

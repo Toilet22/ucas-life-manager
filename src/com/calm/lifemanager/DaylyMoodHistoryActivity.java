@@ -38,14 +38,12 @@ public class DaylyMoodHistoryActivity extends TabActivity {
 		TabView moodDistributeView = null;
 		moodDistributeView = new TabView(this, R.drawable.btn_efficient,
 				R.drawable.btn_efficient);
-		moodDistributeView.setBackground(this.getResources().getDrawable(
-				R.drawable.btn_efficient));
+		//moodDistributeView.setBackground(this.getResources().getDrawable(R.drawable.btn_efficient));
 
 		TabView detailsView = null;
 		detailsView = new TabView(this, R.drawable.btn_sheet,
 				R.drawable.btn_sheet);
-		detailsView.setBackground(this.getResources().getDrawable(
-				R.drawable.btn_sheet));
+		//detailsView.setBackground(this.getResources().getDrawable(R.drawable.btn_sheet));
 
 		tabHost.addTab(tabHost.newTabSpec("tab1")
 				.setIndicator(moodDistributeView)

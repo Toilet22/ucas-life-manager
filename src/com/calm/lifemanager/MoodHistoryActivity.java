@@ -62,15 +62,15 @@ public class MoodHistoryActivity extends TabActivity {
 		
 		TabView dailyView = null;
 		dailyView = new TabView(this,R.drawable.btn_day,R.drawable.btn_day);
-		dailyView.setBackground(this.getResources().getDrawable(R.drawable.btn_day));
+		//dailyView.setBackground(this.getResources().getDrawable(R.drawable.btn_day));
 		
 		TabView weeklyView = null;
 		weeklyView = new TabView(this,R.drawable.btn_week,R.drawable.btn_week);
-		weeklyView.setBackground(this.getResources().getDrawable(R.drawable.btn_week));
+		//weeklyView.setBackground(this.getResources().getDrawable(R.drawable.btn_week));
 		
 		TabView monthlyView = null;
 		monthlyView = new TabView(this,R.drawable.btn_month,R.drawable.btn_month);
-		monthlyView.setBackground(this.getResources().getDrawable(R.drawable.btn_month));
+		//monthlyView.setBackground(this.getResources().getDrawable(R.drawable.btn_month));
 		
 		Intent daylyIntent = new Intent(this,DaylyMoodHistoryActivity.class);
 		

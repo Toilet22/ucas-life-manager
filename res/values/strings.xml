@@ -44,5 +44,6 @@
     <string name="act_cloud_sync_test_status_defined">查看预设状态值</string>
     <string name="act_main_cloud_sync_test">云同步测试</string>
     <string name="act_cloud_sync_test_check_network">检测网络状态</string>
+    <string name="btn_achartengine_test">画图引擎测试</string>
 
 </resources>

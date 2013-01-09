@@ -33,36 +33,40 @@
                     android:id="@+id/activity_history_time_daily_time_cost"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
-
+
                     <ImageButton
                         android:id="@+id/actitivity_history_time_daily_imageButton_back"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toLeftOf="@drawable/swap_btn_left"
+                        android:background="@drawable/back_btn"
                         android:src="@drawable/back_btn" />
-
+
                     <ImageButton
                         android:id="@+id/actitivity_history_time_daily_imageButton_suggestion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
+                        android:background="@drawable/acount_btn"
                         android:src="@drawable/acount_btn" />
-
+
                     <ImageButton
                         android:id="@+id/actitivity_history_time_daily_imageButton_swap_left"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
+                        android:background="@drawable/swap_btn_left"
                         android:src="@drawable/swap_btn_left" />
-
+
                     <ImageButton
                         android:id="@+id/actitivity_history_time_daily_imageButton_swap_right"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_alignTop="@+id/actitivity_history_time_daily_imageButton_swap_left"
+                        android:background="@drawable/swap_btn_right"
                         android:src="@drawable/swap_btn_right" />
 
                     <ImageView
@@ -84,6 +88,7 @@
                         android:id="@+id/actitivity_history_time_daily_imageButton_back"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/back_btn"
                         android:src="@drawable/back_btn" />
 
                     <ImageButton
@@ -92,6 +97,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
+                         android:background="@drawable/acount_btn"
                         android:src="@drawable/acount_btn" />
 
                     <ImageButton
@@ -100,6 +106,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
+                        android:background="@drawable/swap_btn_left"
                         android:src="@drawable/swap_btn_left" />
 
                     <ImageButton
@@ -108,6 +115,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_alignTop="@+id/actitivity_history_time_daily_imageButton_swap_left"
+                        android:background="@drawable/swap_btn_right"
                         android:src="@drawable/swap_btn_right" />
                     
                      <ImageView
@@ -129,6 +137,7 @@
                         android:id="@+id/actitivity_history_time_daily_imageButton_back"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/back_btn"
                         android:src="@drawable/back_btn" />
 
                     <ImageButton
@@ -137,6 +146,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
+                         android:background="@drawable/acount_btn"
                         android:src="@drawable/acount_btn" />
 
                     <ImageButton
@@ -145,6 +155,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
+                        android:background="@drawable/swap_btn_left"
                         android:src="@drawable/swap_btn_left" />
 
                     <ImageButton
@@ -153,6 +164,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_alignTop="@+id/actitivity_history_time_daily_imageButton_swap_left"
+                        android:background="@drawable/swap_btn_right"
                         android:src="@drawable/swap_btn_right" />
                     
                 </RelativeLayout>

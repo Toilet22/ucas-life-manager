@@ -18,7 +18,8 @@ public class MainActivity extends Activity {
 	Button btn_tomorrow;
 	
 	Button btn_cloud_sync_test;
-
+	Button btn_achartengine_test;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,13 +29,15 @@ public class MainActivity extends Activity {
          * UI代码：苏轶伦
          ***********************************************************************/
         //声明按钮
-        //Log.i("Toilet", "start init btns");
+        //Log.i("Toilet", "Start Initial Buttons");
         btn_login = (Button)findViewById(R.id.button5_login);
         btn_yesterday = (Button)findViewById(R.id.button1_yester);
         btn_tomorrow = (Button)findViewById(R.id.button3_tomorrow);
         
         btn_cloud_sync_test = (Button)findViewById(R.id.btn_cloud_sync_test);
+        btn_achartengine_test = (Button)findViewById(R.id.btn_achartengine_test);
         
+        		
         //进入设置界面
         //Log.i("Toilet", "before push btn_settings");
         btn_settings = (Button)findViewById(R.id.button4_settings);
@@ -84,6 +87,15 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				// back to main
 				Intent iMain = new Intent(MainActivity.this, CloudSyncTestActivity.class);
+				startActivity(iMain);
+			}
+		});
+        
+        // 画图引擎测试
+        btn_achartengine_test.setOnClickListener(new Button.OnClickListener(){
+			public void onClick(View v) {
+				// back to main
+				Intent iMain = new Intent(MainActivity.this, ChartEngineTestActivity.class);
 				startActivity(iMain);
 			}
 		});

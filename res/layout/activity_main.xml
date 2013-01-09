@@ -54,5 +54,13 @@
         android:layout_below="@+id/linearLayout1"
         android:layout_marginTop="34dp"
         android:text="@string/act_main_cloud_sync_test" />
+
+    <Button
+        android:id="@+id/btn_achartengine_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btn_cloud_sync_test"
+        android:layout_below="@+id/btn_cloud_sync_test"
+        android:text="@string/btn_achartengine_test" />
 
 </RelativeLayout>

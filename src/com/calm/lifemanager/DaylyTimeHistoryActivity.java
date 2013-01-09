@@ -29,18 +29,19 @@ public class DaylyTimeHistoryActivity extends TabActivity {
 	        
 	        TabView timeCostView = null;
 	        timeCostView = new TabView(this,R.drawable.btn_time,R.drawable.btn_time);
-	        timeCostView.setBackground(this.getResources().getDrawable(R.drawable.btn_time));
+	        //timeCostView.setBackground(this.getResources().getDrawable(R.drawable.btn_time));
 			
 			TabView efficientView = null;
 			efficientView = new TabView(this,R.drawable.btn_efficient,R.drawable.btn_efficient);
-			efficientView.setBackground(this.getResources().getDrawable(R.drawable.btn_efficient));
+			//efficientView.setBackground(this.getResources().getDrawable(R.drawable.btn_efficient));
 			
 			TabView detailsView = null;
 			detailsView = new TabView(this,R.drawable.btn_sheet,R.drawable.btn_sheet);
-			detailsView.setBackground(this.getResources().getDrawable(R.drawable.btn_sheet));
+			//detailsView.setBackground(this.getResources().getDrawable(R.drawable.btn_sheet));
 			
 	        tabHost.addTab(tabHost.newTabSpec("tab1")
 	                .setIndicator(timeCostView)
+	        		//.setIndicator("",getResources().getDrawable(R.drawable.btn_time))
 	                .setContent(R.id.activity_history_time_daily_time_cost));
 	        
 	        tabHost.addTab(tabHost.newTabSpec("tab2")
@@ -61,6 +62,7 @@ public class DaylyTimeHistoryActivity extends TabActivity {
 	                if (tabId.equals("tab1")) {  
 	                	Log.i("DailyTime","Tab 1 selected!");
 	                	currentSelectedTab = 0;
+	                	
 	                }  
 	                if (tabId.equals("tab2")) {  
 	                	Log.i("DailyTime","Tab 2 selected!");
@@ -74,6 +76,10 @@ public class DaylyTimeHistoryActivity extends TabActivity {
 	        });
 	        
 	        final ImageView imgViewTimeCost = (ImageView)findViewById(R.id.activity_history_time_daily_imageView_show_time_cost);
+	        //生成时间分布图并显示
+	        //
+	        //imgViewTimeCost.setImageResource(resId);
+	        
 	        ImageView imgViewShowEfficient = (ImageView)findViewById(R.id.activity_history_time_daily_imageView_show_efficient);
 	        
 	        ImageButton imgButtonBack = (ImageButton)findViewById(R.id.actitivity_history_time_daily_imageButton_back);
@@ -120,7 +126,15 @@ public class DaylyTimeHistoryActivity extends TabActivity {
 	        		case 0:
 	        			Log.i("DailyTime","Processing Time Distribution...");
 	        			// 测试图片加载
-	        			imgViewTimeCost.setImageResource(R.drawable.ic_launcher);
+	        			//imgViewTimeCost.setImageResource(R.drawable.ic_launcher);
+	        			
+	        			// 测试achartengine生成Activity视图
+	        			try{
+	        				Intent achartIntent = new PieChartIntentGenerator(new double[]{3,2,1}).execute(DaylyTimeHistoryActivity.this);
+	        				startActivity(achartIntent);
+	        			}catch(Exception e){
+	        				Log.d("ChartEngine",e.getMessage());
+	        			}        			
 	        			break;
 	        		//效率分布
 	        		case 1:
@@ -148,7 +162,15 @@ public class DaylyTimeHistoryActivity extends TabActivity {
 	        		case 0:
 	        			Log.i("DailyTime","Processing Time Distribution...");
 	        			// 测试图片加载
-	        			imgViewTimeCost.setImageResource(R.drawable.ic_action_search);
+	        			//imgViewTimeCost.setImageResource(R.drawable.ic_launcher);
+	        			
+	        			// 测试achartengine生成Activity视图
+	        			try{
+	        				Intent achartIntent = new PieChartIntentGenerator(new double[]{3,2,1}).execute(DaylyTimeHistoryActivity.this);
+	        				startActivity(achartIntent);
+	        			}catch(Exception e){
+	        				Log.d("ChartEngine",e.getMessage());
+	        			}
 	        			break;
 	        		//效率分布
 	        		case 1:

@@ -51,20 +51,26 @@ public class HistoryActivity extends TabActivity {
 		TabView timeView = null;
 		
 		// 时间
-		timeView = new TabView(this,R.drawable.btn_time_cost,R.drawable.btn_time_cost);
+		//timeView = new TabView(this,R.drawable.btn_time_cost,R.drawable.btn_time_cost);
+		//timeView.setBackground(this.getResources().getDrawable(R.drawable.btn_time_cost));
+		
+		//timeView = new TabView(this,R.drawable.btn_time_cost);
+		
+		timeView = new TabView(this);
 		timeView.setBackground(this.getResources().getDrawable(R.drawable.btn_time_cost));
 		
 		Intent timeIntent = new Intent(this,TimeHistoryActivity.class);
 		
         tabHost.addTab(tabHost.newTabSpec("bottom_tab1")     
                 .setIndicator(timeView)
+        		//.setIndicator("时间",getResources().getDrawable(R.drawable.btn_time_cost))
                 .setContent(timeIntent));
         
         TabView moodView = null;
 		
 		// 时间
         moodView = new TabView(this,R.drawable.btn_mood,R.drawable.btn_mood);
-        moodView.setBackground(this.getResources().getDrawable(R.drawable.btn_mood));
+        //moodView.setBackground(this.getResources().getDrawable(R.drawable.btn_mood));
 		
         Intent moodIntent = new Intent(this, MoodHistoryActivity.class);
         tabHost.addTab(tabHost.newTabSpec("bottom_tab2")     

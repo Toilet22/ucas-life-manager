@@ -68,10 +68,13 @@ public class HistoryActivity extends TabActivity {
         
         TabView moodView = null;
 		
-		// 时间
-        moodView = new TabView(this,R.drawable.btn_mood,R.drawable.btn_mood);
+		// 心情
+        //moodView = new TabView(this,R.drawable.btn_mood,R.drawable.btn_mood);
         //moodView.setBackground(this.getResources().getDrawable(R.drawable.btn_mood));
 		
+        moodView = new TabView(this);
+        moodView.setBackground(this.getResources().getDrawable(R.drawable.btn_mood));
+        
         Intent moodIntent = new Intent(this, MoodHistoryActivity.class);
         tabHost.addTab(tabHost.newTabSpec("bottom_tab2")     
                 .setIndicator(moodView)

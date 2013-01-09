@@ -16,12 +16,14 @@ public class MonthlyMoodHistoryActivity extends TabActivity {
         LayoutInflater.from(this).inflate(R.layout.activity_history_mood_generic,tabHost.getTabContentView(),true);
         
 		
-		TabView moodDistributeView = null;
-		moodDistributeView = new TabView(this,R.drawable.btn_efficient,R.drawable.btn_efficient);
+        TabView moodDistributeView = null;
+		//moodDistributeView = new TabView(this, R.drawable.btn_efficient,R.drawable.btn_efficient);
+		moodDistributeView = new TabView(this);
 		moodDistributeView.setBackground(this.getResources().getDrawable(R.drawable.btn_efficient));
-		
+
 		TabView detailsView = null;
-		detailsView = new TabView(this,R.drawable.btn_sheet,R.drawable.btn_sheet);
+		//detailsView = new TabView(this, R.drawable.btn_sheet,R.drawable.btn_sheet);
+		detailsView = new TabView(this);
 		detailsView.setBackground(this.getResources().getDrawable(R.drawable.btn_sheet));
 		
         

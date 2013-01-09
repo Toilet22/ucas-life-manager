@@ -16,15 +16,18 @@ public class MonthlyTimeHistoryActivity extends TabActivity {
 	        LayoutInflater.from(this).inflate(R.layout.activity_history_time_generic,tabHost.getTabContentView(),true);
 	        
 	        TabView timeCostView = null;
-	        timeCostView = new TabView(this,R.drawable.btn_time,R.drawable.btn_time);
+	        //timeCostView = new TabView(this,R.drawable.btn_time,R.drawable.btn_time);
+	        timeCostView = new TabView(this);
 	        timeCostView.setBackground(this.getResources().getDrawable(R.drawable.btn_time));
 			
 			TabView efficientView = null;
-			efficientView = new TabView(this,R.drawable.btn_efficient,R.drawable.btn_efficient);
+			//efficientView = new TabView(this,R.drawable.btn_efficient,R.drawable.btn_efficient);
+			efficientView = new TabView(this);
 			efficientView.setBackground(this.getResources().getDrawable(R.drawable.btn_efficient));
 			
 			TabView detailsView = null;
-			detailsView = new TabView(this,R.drawable.btn_sheet,R.drawable.btn_sheet);
+			//detailsView = new TabView(this,R.drawable.btn_sheet,R.drawable.btn_sheet);
+			detailsView = new TabView(this);
 			detailsView.setBackground(this.getResources().getDrawable(R.drawable.btn_sheet));
 			
 	        tabHost.addTab(tabHost.newTabSpec("tab1")

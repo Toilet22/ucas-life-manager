@@ -24,15 +24,16 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;  
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.entity.UrlEncodedFormEntity;  
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;  
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;  
 import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
 import org.json.JSONObject;
   
 import android.content.Context;
@@ -47,180 +48,54 @@ public class NetToolUtil {
 	
     private static final int TIMEOUT = 10000;// 10秒 
     
-    private static final String serverUrl = "daydayup-timemanager.rhccloud.com";
+    // 开启Cookie
+    public static CookieStore cookieStore;
+    public static String sessionValue;
     
-    private static final String timeTipUrl = serverUrl + "/tip/time";
-    private static final String moodTipUrl = serverUrl + "/tip/mood";
+    public static final String serverUrl = "http://daydayup-timemanager.rhcloud.com";
     
-    private static final String accountRegisterUrl = serverUrl + "/account/register";
-    private static final String accountLoginUrl = serverUrl + "/account/login";
-    private static final String accountLogoutUrl = serverUrl + "/account/logout";
+    public static final String timeTipUrl = serverUrl + "/tip/time";
+    public static final String moodTipUrl = serverUrl + "/tip/mood";
     
-    private static final String userProfilePullUrl = serverUrl + "/userdata/userprofile/pull";
-    private static final String userProfilePushUrl = serverUrl + "/userdata/userprofile/push";
+    public static final String accountRegisterUrl = serverUrl + "/account/register";
+    public static final String accountLoginUrl = serverUrl + "/account/login";
+    public static final String accountLogoutUrl = serverUrl + "/account/logout";
     
-    private static final String userSettingsPullUrl = serverUrl + "/userdata/usersettings/pull";
-    private static final String userSettingsPushUrl = serverUrl + "/userdata/usersettings/push";
+    public static final String userProfilePullUrl = serverUrl + "/userdata/userprofile/pull";
+    public static final String userProfilePushUrl = serverUrl + "/userdata/userprofile/push";
     
-    private static final String todolistPullUrl = serverUrl + "/userdata/todolist/pull";
-    private static final String todolistPushUrl = serverUrl + "/userdata/todolist/push";
+    public static final String userSettingsPullUrl = serverUrl + "/userdata/usersettings/pull";
+    public static final String userSettingsPushUrl = serverUrl + "/userdata/usersettings/push";
     
-    private static final String wishlistPullUrl = serverUrl + "/userdata/wishlist/pull";
-    private static final String wishlistPushUrl = serverUrl + "/userdata/wishlist/push";
+    public static final String todolistPullUrl = serverUrl + "/userdata/todolist/pull";
+    public static final String todolistPushUrl = serverUrl + "/userdata/todolist/push";
     
-    private static final String collectorPullUrl = serverUrl + "/userdata/collector/pull";
-    private static final String collectorPushUrl = serverUrl + "/userdata/collector/push";
+    public static final String wishlistPullUrl = serverUrl + "/userdata/wishlist/pull";
+    public static final String wishlistPushUrl = serverUrl + "/userdata/wishlist/push";
     
-    private static final String recordPullUrl = serverUrl + "/userdata/record/pull";
-    private static final String recordPushUrl = serverUrl + "/userdata/record/push";
+    public static final String collectorPullUrl = serverUrl + "/userdata/collector/pull";
+    public static final String collectorPushUrl = serverUrl + "/userdata/collector/push";
+    
+    public static final String recordPullUrl = serverUrl + "/userdata/record/pull";
+    public static final String recordPushUrl = serverUrl + "/userdata/record/push";
 
-    private static final String PUSH = "push";
-    private static final String PULL = "pull"; 
+    public static final String PUSH = "push";
+    public static final String PULL = "pull"; 
     
-    private static final int SUCCESS = 0;
-    private static final int FAIL = 1;
-    private static final int NOT_LOGIN = 2;
-    private static final int ALREADY_LOGIN = 3;
-    private static final int METHOD_ERROR = 4;
+    public static final int SUCCESS = 0;
+    public static final int FAIL = 1;
+    public static final int NOT_LOGIN = 2;
+    public static final int ALREADY_LOGIN = 3;
+    public static final int METHOD_ERROR = 4;
     
-    private static final int USERNAME_EXISTED = 11;
-    private static final int USER_PASSWORD_ERROR = 12;
-    private static final int USERNAME_TOO_SHORT = 13;
-    private static final int PASSWORD_TOO_SHROT = 14;
+    public static final int USERNAME_EXISTED = 11;
+    public static final int USER_PASSWORD_ERROR = 12;
+    public static final int USERNAME_TOO_SHORT = 13;
+    public static final int PASSWORD_TOO_SHROT = 14;
     
-    private static final int SYNC_DATA = 20;
-    private static final int SYNC_DATA_IS_NULL = 21;	
-    private static final int SYNC_DATA_IS_LASTEST = 22;
-    
-    /** 
-     * 网络连接是否可用 
-     */
-    public static boolean isConnnected(Context context) {  
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);  
-        if (null != connectivityManager) {  
-            NetworkInfo networkInfo[] = connectivityManager.getAllNetworkInfo();  
-  
-            if (null != networkInfo) {  
-                for (NetworkInfo info : networkInfo) {  
-                    if (info.getState() == NetworkInfo.State.CONNECTED) {  
-                        Log.i(TAG, "Network is OK");  
-                        return true;  
-                    }  
-                }  
-            }  
-        }
-        Toast.makeText(context, "网络连接失败", Toast.LENGTH_SHORT).show();  
-        return false;  
-    }  
-  
-    /** 
-     * 网络可用状态下，通过get方式向server端发送请求，并返回响应数据 
-     *  
-     * @param strUrl 请求网址 
-     * @param context 上下文 
-     * @return 响应数据 
-     */  
-    public static JSONObject getResponseForGet(String strUrl, Context context) {  
-        if (isConnnected(context)) {  
-            return getResponseForGet(strUrl);  
-        }  
-        return null;  
-    }  
-  
-    /** 
-     * 通过Get方式处理请求，并返回相应数据 
-     *  
-     * @param strUrl 请求网址 
-     * @return 响应的JSON数据 
-     */  
-    public static JSONObject getResponseForGet(String strUrl) {  
-        HttpGet httpRequest = new HttpGet(strUrl);  
-        return getRespose(httpRequest);  
-    }  
-  
-    /** 
-     * 网络可用状态下，通过post方式向server端发送请求，并返回响应数据 
-     *  
-     * @param market_uri 请求网址 
-     * @param nameValuePairs 参数信息 
-     * @param context 上下文 
-     * @return 响应数据 
-     */  
-    public static JSONObject getResponseForPost(String market_uri, List<NameValuePair> nameValuePairs, Context context) {  
-        if (isConnnected(context)) {  
-            return getResponseForPost(market_uri, nameValuePairs);  
-        }  
-        return null;  
-    }  
-  
-    /** 
-     * 通过post方式向服务器发送请求，并返回响应数据 
-     *  
-     * @param strUrl 请求网址 
-     * @param nameValuePairs 参数信息 
-     * @return 响应数据 
-     */  
-    public static JSONObject getResponseForPost(String market_uri, List<NameValuePair> nameValuePairs) {  
-        if (null == market_uri || "" == market_uri) {  
-            return null;  
-        }  
-        HttpPost request = new HttpPost(market_uri);  
-        try {  
-            request.setEntity(new UrlEncodedFormEntity(nameValuePairs));  
-            return getRespose(request);  
-        } catch (UnsupportedEncodingException e1) {  
-            e1.printStackTrace();  
-        }  
-        return null;  
-    }  
-  
-    /** 
-     * 响应客户端请求 
-     *  
-     * @param request 客户端请求get/post 
-     * @return 响应数据 
-     */  
-    public static JSONObject getRespose(HttpUriRequest request) {  
-        try {  
-            HttpResponse httpResponse = new DefaultHttpClient().execute(request);  
-            int statusCode = httpResponse.getStatusLine().getStatusCode();  
-            if (HttpStatus.SC_OK == statusCode) {  
-                String result = EntityUtils.toString(httpResponse.getEntity());  
-                Log.i(TAG, "results=" + result);  
-                return new JSONObject(result);  
-            }  
-        } catch (ClientProtocolException e) {  
-            e.printStackTrace();  
-        } catch (IOException e) {  
-            e.printStackTrace();  
-        } catch (JSONException e) {  
-            e.printStackTrace();  
-        }  
-        return null;  
-    }  
-    
-    /** 
-     * JSON交互处理 
-     */  
-    
-    public static String sendJson(String url, JSONObject param) throws Exception {
-        HttpPost request = new HttpPost(url);  
-        // 先封装一个 JSON 对象  
-        //JSONObject param = new JSONObject();  
-        //param.put("name", "rarnu");  
-        //param.put("password", "123456");  
-        // 绑定到请求 Entry  
-        StringEntity se = new StringEntity(param.toString());   
-        request.setEntity(se);  
-        // 发送请求  
-        HttpResponse httpResponse = new DefaultHttpClient().execute(request);  
-        // 得到应答的字符串，这也是一个 JSON 格式保存的数据  
-        String retSrc = EntityUtils.toString(httpResponse.getEntity());  
-        // 生成 JSON 对象  
-        JSONObject result = new JSONObject(retSrc);  
-        String token = (String) result.get("token");
-        return token;
-    }
+    public static final int SYNC_DATA = 20;
+    public static final int SYNC_DATA_IS_NULL = 21;	
+    public static final int SYNC_DATA_IS_LASTEST = 22;
     
     /** 
      * 传送文本,例如JSON,XML等 
@@ -319,100 +194,7 @@ public class NetToolUtil {
         return b.toString();  
     }  
   
-    /** 
-     * 通过get方式提交参数给服务器 
-     */  
-    public static String sendGetRequest(String urlPath,  
-            Map<String, String> params, String encoding) throws Exception {  
-  
-        // 使用StringBuilder对象  
-        StringBuilder sb = new StringBuilder(urlPath);  
-        sb.append('?');  
-  
-        // 迭代Map  
-        for (Map.Entry<String, String> entry : params.entrySet()) {  
-            sb.append(entry.getKey()).append('=').append(  
-                    URLEncoder.encode(entry.getValue(), encoding)).append('&');  
-        }  
-        sb.deleteCharAt(sb.length() - 1);  
-        // 打开链接  
-        URL url = new URL(sb.toString());  
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
-        conn.setRequestMethod("GET");  
-        conn.setRequestProperty("Content-Type", "text/xml");  
-        conn.setRequestProperty("Charset", encoding);  
-        conn.setConnectTimeout(TIMEOUT);  
-        // 如果请求响应码是200，则表示成功  
-        if (conn.getResponseCode() == 200) {  
-            // 获得服务器响应的数据  
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn  
-                    .getInputStream(), encoding));  
-            // 数据  
-            String retData = null;  
-            String responseData = "";  
-            while ((retData = in.readLine()) != null) {  
-                responseData += retData;  
-            }  
-            in.close();  
-            return responseData;  
-        }  
-        return "sendGetRequest error!";  
-  
-    }  
-  
-    /** 
-     * 通过Post方式提交参数给服务器,也可以用来传送JSON或XML文件 
-     */  
-    public static String sendPostRequest(String urlPath,  
-            Map<String, String> params, String encoding) throws Exception {  
-        StringBuilder sb = new StringBuilder();
-        // 如果参数不为空  
-        if (params != null && !params.isEmpty()) {  
-            for (Map.Entry<String, String> entry : params.entrySet()) {  
-                // Post方式提交参数的话，不能省略内容类型与长度  
-                sb.append(entry.getKey()).append('=').append(  
-                        URLEncoder.encode(entry.getValue(), encoding)).append(  
-                        '&');  
-            }  
-            sb.deleteCharAt(sb.length() - 1);  
-        }  
-        // 得到实体的二进制数据  
-        byte[] entitydata = sb.toString().getBytes();  
-        URL url = new URL(urlPath);  
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
-        conn.setRequestMethod("POST");  
-        conn.setConnectTimeout(TIMEOUT);  
-        // 如果通过post提交数据，必须设置允许对外输出数据  
-        conn.setDoOutput(true);  
-        // 这里只设置内容类型与内容长度的头字段  
-        conn.setRequestProperty("Content-Type",  
-                "application/x-www-form-urlencoded");  
-        // conn.setRequestProperty("Content-Type", "text/xml");  
-        conn.setRequestProperty("Charset", encoding);  
-        conn.setRequestProperty("Content-Length", String  
-                .valueOf(entitydata.length));  
-        OutputStream outStream = conn.getOutputStream();  
-        // 把实体数据写入是输出流  
-        outStream.write(entitydata);  
-        // 内存中的数据刷入  
-        outStream.flush();  
-        outStream.close();  
-        // 如果请求响应码是200，则表示成功  
-        if (conn.getResponseCode() == 200) {  
-            // 获得服务器响应的数据  
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn  
-                    .getInputStream(), encoding));  
-            // 数据  
-            String retData = null;  
-            String responseData = "";  
-            while ((retData = in.readLine()) != null) {  
-                responseData += retData;  
-            }  
-            in.close();  
-            return responseData;  
-        }  
-        return "sendText error!";  
-    }  
+    
   
     /** 
      * 在遇上HTTPS安全模式或者操作cookie的时候使用HttpClient会方便很多 使用HttpClient（开源项目）向服务器提交参数 
@@ -562,16 +344,35 @@ public class NetToolUtil {
         return file;  
     }  
     
-    // 专用数据同步接口
+	// Http Get For String
+	public static String HTTPGetCall(String WebMethodURL) throws IOException,
+			MalformedURLException {
+		StringBuilder response = new StringBuilder();
+		// Prepare the URL and the connection
+		URL u = new URL(WebMethodURL);
+		HttpURLConnection conn = (HttpURLConnection) u.openConnection();
+		if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+			// Get the Stream reader ready
+			BufferedReader input = new BufferedReader(new InputStreamReader(
+					conn.getInputStream()), 8192);
+			// Loop through the return data and copy it over to the response
+			// object to be processed
+			String line = null;
+			while ((line = input.readLine()) != null) {
+				response.append(line);
+			}
+			input.close();
+		}
+		return response.toString();
+	}
     
-    // 获取tips
-    public static JSONObject getTimeTips(String serverUrl, String type, Context context) {
-    	return null;
-    }
+	//==================================漂亮的分割线=============================================//
+	
+    /** 
+     * JSON交互处理 
+     */  
     
-    
-    // 用户注册
-    public static String userRegister(String url, JSONObject param) throws Exception {
+    public static String sendJson(String url, JSONObject param) throws Exception {
         HttpPost request = new HttpPost(url);  
         // 先封装一个 JSON 对象  
         //JSONObject param = new JSONObject();  
@@ -583,40 +384,387 @@ public class NetToolUtil {
         // 发送请求  
         HttpResponse httpResponse = new DefaultHttpClient().execute(request);  
         // 得到应答的字符串，这也是一个 JSON 格式保存的数据  
-        String retSrc = EntityUtils.toString(httpResponse.getEntity());  
+        String retSrc = EntityUtils.toString(httpResponse.getEntity());
         // 生成 JSON 对象  
         JSONObject result = new JSONObject(retSrc);  
         String token = (String) result.get("token");
         return token;
+    }
+    
+    
+    //=============================以下是Java接口提供的http的get和post实现=============================//
+    /** 
+     * 通过get方式提交参数给服务器 
+     */  
+    public static String sendGetRequest(String urlPath,
+            Map<String, String> params, String encoding) throws Exception {
+  
+        // 使用StringBuilder对象  
+        StringBuilder sb = new StringBuilder(urlPath);  
+        sb.append('?');  
+  
+        // 迭代Map  
+        if(params != null && !params.isEmpty()) {
+        	for (Map.Entry<String, String> entry : params.entrySet()) {
+                sb.append(entry.getKey()).append('=').append(
+                        URLEncoder.encode(entry.getValue(), encoding)).append('&');
+            }
+        }
+        
+        sb.deleteCharAt(sb.length() - 1);  
+        // 打开链接  
+        URL url = new URL(sb.toString());  
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
+        conn.setRequestMethod("GET");  
+        conn.setRequestProperty("Content-Type", "text/xml");  
+        conn.setRequestProperty("Charset", encoding);  
+        conn.setConnectTimeout(TIMEOUT);  
+        
+        // 设置Cookie
+        if(sessionValue !=null && sessionValue.length() > 0) {
+        	conn.setRequestProperty("Cookie", sessionValue);
+        }
+        
+        // 如果请求响应码是200，则表示成功  
+        if (conn.getResponseCode() == 200) {  
+            // 获得服务器响应的数据  
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn  
+                    .getInputStream(), encoding));  
+            // 数据  
+            String retData = null;  
+            String responseData = "";  
+            while ((retData = in.readLine()) != null) {  
+                responseData += retData;  
+            }
+            in.close();  
+            
+            // 获得cookie
+            String cookie = conn.getHeaderField("set-cookie");
+            if(cookie != null && cookie.length() > 0) {
+            	sessionValue = cookie;
+            }
+            
+            return responseData;  
+        }  
+        return "sendGetRequest error!";  
+  
+    }  
+  
+    /** 
+     * 通过Post方式提交参数给服务器,也可以用来传送JSON或XML文件
+     */  
+    public static String sendPostRequest(String urlPath,  
+            Map<String, String> params, String encoding) throws Exception {  
+    	
+        StringBuilder sb = new StringBuilder();
+        // 如果参数不为空  
+        if (params != null && !params.isEmpty()) {  
+            for (Map.Entry<String, String> entry : params.entrySet()) {  
+                // Post方式提交参数的话，不能省略内容类型与长度  
+                sb.append(entry.getKey()).append('=').append(  
+                        URLEncoder.encode(entry.getValue(), encoding)).append(  
+                        '&');
+            }  
+            sb.deleteCharAt(sb.length() - 1);  
+        }  
+        
+        // 得到实体的二进制数据
+        byte[] entitydata = sb.toString().getBytes();  
+        URL url = new URL(urlPath);  
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
+        conn.setRequestMethod("POST");  
+        conn.setConnectTimeout(TIMEOUT);  
+        
+        // 设置Cookie
+        if(sessionValue !=null && sessionValue.length() > 0) {
+        	conn.setRequestProperty("Cookie", sessionValue);
+        }
+        
+        // 如果通过post提交数据，必须设置允许对外输出数据  
+        conn.setDoOutput(true);  
+        // 这里只设置内容类型与内容长度的头字段  
+        conn.setRequestProperty("Content-Type",  
+                "application/x-www-form-urlencoded");  
+        // conn.setRequestProperty("Content-Type", "text/xml");  
+        conn.setRequestProperty("Charset", encoding);  
+        conn.setRequestProperty("Content-Length", String  
+                .valueOf(entitydata.length));  
+        OutputStream outStream = conn.getOutputStream();  
+        // 把实体数据写入是输出流  
+        outStream.write(entitydata);  
+        // 内存中的数据刷入  
+        outStream.flush();  
+        outStream.close();  
+        // 如果请求响应码是200，则表示成功  
+        if (conn.getResponseCode() == 200) {  
+            // 获得服务器响应的数据  
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn  
+                    .getInputStream(), encoding));  
+            // 数据  
+            String retData = null;  
+            String responseData = "";  
+            while ((retData = in.readLine()) != null) {  
+                responseData += retData;
+            }  
+            in.close();  
+            
+            // 获得cookie
+            String cookie = conn.getHeaderField("set-cookie");
+            if(cookie != null && cookie.length() > 0) {
+            	sessionValue = cookie;
+            }
+            
+            return responseData;  
+        }  
+        return "sendText error!";  
+    }
+    
+    /** 
+     * 通过Post方式提交JSON参数给服务器
+     */  
+    public static String sendPostRequestJson(String urlPath,
+            JSONObject params, String encoding) throws Exception {
+        
+        // 得到实体的二进制数据
+        byte[] entitydata = params.toString().getBytes();
+        URL url = new URL(urlPath);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
+        conn.setRequestMethod("POST");  
+        conn.setConnectTimeout(TIMEOUT);  
+        
+        // 设置Cookie
+        if(sessionValue !=null && sessionValue.length() > 0) {
+        	conn.setRequestProperty("Cookie", sessionValue);
+        }
+        
+        // 如果通过post提交数据，必须设置允许对外输出数据  
+        conn.setDoOutput(true);  
+        // 这里只设置内容类型与内容长度的头字段  
+        conn.setRequestProperty("Content-Type",  
+                "application/x-www-form-urlencoded");  
+        // conn.setRequestProperty("Content-Type", "text/xml");  
+        conn.setRequestProperty("Charset", encoding);  
+        conn.setRequestProperty("Content-Length", String  
+                .valueOf(entitydata.length));  
+        OutputStream outStream = conn.getOutputStream();  
+        // 把实体数据写入是输出流  
+        outStream.write(entitydata);  
+        // 内存中的数据刷入  
+        outStream.flush();  
+        outStream.close();  
+        // 如果请求响应码是200，则表示成功  
+        if (conn.getResponseCode() == 200) {  
+            // 获得服务器响应的数据  
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn  
+                    .getInputStream(), encoding));  
+            // 数据  
+            String retData = null;  
+            String responseData = "";  
+            while ((retData = in.readLine()) != null) {  
+                responseData += retData;
+            }  
+            in.close();  
+            
+            // 获得cookie
+            String cookie = conn.getHeaderField("set-cookie");
+            if(cookie != null && cookie.length() > 0) {
+            	sessionValue = cookie;
+            }
+            
+            return responseData;  
+        }  
+        return "sendText error!";  
+    }
+    
+    
+    //=============================以下是Apache接口提供的http的get和post实现=============================//
+	/** 
+     * 网络连接是否可用 
+     */
+    public static boolean isConnnected(Context context) {  
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);  
+        if (null != connectivityManager) {  
+            NetworkInfo networkInfo[] = connectivityManager.getAllNetworkInfo();  
+  
+            if (null != networkInfo) {  
+                for (NetworkInfo info : networkInfo) {  
+                    if (info.getState() == NetworkInfo.State.CONNECTED) {  
+                        Log.i(TAG, "Network is OK");  
+                        return true;  
+                    }  
+                }  
+            }  
+        }
+        Toast.makeText(context, "Please Check Your Network!", Toast.LENGTH_SHORT).show();  
+        return false;  
+    }  
+  
+    /** 
+     * 网络可用状态下，通过get方式向server端发送请求，并返回响应数据 
+     *  
+     * @param strUrl 请求网址 
+     * @param context 上下文 
+     * @return 响应数据 
+     */  
+    public static String getResponseForGet(String strUrl, Context context) {  
+        if (isConnnected(context)) {  
+            return getResponseForGet(strUrl);  
+        }  
+        return null;  
+    }  
+  
+    /** 
+     * 通过Get方式处理请求，并返回相应数据 
+     *  
+     * @param strUrl 请求网址 
+     * @return 响应的JSON数据 
+     */
+    public static String getResponseForGet(String strUrl) {  
+        HttpGet httpRequest = new HttpGet(strUrl);  
+        return getRespose(httpRequest);  
+    }  
+  
+    /** 
+     * 网络可用状态下，通过post方式向server端发送请求，并返回响应数据 
+     *  
+     * @param serverUrl 请求网址 
+     * @param paramData JSON格式的参数信息 
+     * @param context 上下文 
+     * @return 响应数据 
+     */  
+    public static String getResponseForPostJson(String serverUrl, JSONObject paramData, Context context) {  
+        if (isConnnected(context)) {  
+            return getResponseForPostJson(serverUrl, paramData);
+        }  
+        return null;  
+    }  
+  
+    /** 
+     * 通过post方式向服务器发送请求，并返回响应数据 
+     *  
+     * @param serverUrl 请求网址 
+     * @param paramData JSON格式参数信息 
+     * @return 响应数据 
+     */  
+    public static String getResponseForPostJson(String serverUrl, JSONObject paramData) {
+        if (null == serverUrl || "" == serverUrl) {
+            return null;  
+        }  
+        
+        HttpPost request = new HttpPost(serverUrl);
+        request.setHeader("content-type", "application/json");
+        try {
+            //request.setEntity(new StringEntity(paramData.toString()));
+        	
+        	// 设置HTTP POST请求参数必须用NameValuePair对象 
+        	//List<NameValuePair> params = new ArrayList<NameValuePair>();  
+        	//params.add(new BasicNameValuePair("jsondata", paramData.toString()));
+        	//request.setEntity(new UrlEncodedFormEntity(params));
+        	// 设置HTTP POST请求参数必须用NameValuePair对象 
+        	
+        	StringEntity entity = new StringEntity(paramData.toString());
+        	entity.setContentType("application/json");
+        	entity.setContentEncoding("utf-8");
+        	request.setEntity(entity);
+        	
+            return getRespose(request);
+        } catch (UnsupportedEncodingException e1) {
+            e1.printStackTrace();
+        }  
+        return null;  
+    }  
+  
+    /** 
+     * 网络可用状态下，通过post方式向server端发送请求，并返回响应数据 
+     *  
+     * @param market_uri 请求网址 
+     * @param nameValuePairs 参数信息 
+     * @param context 上下文 
+     * @return 响应数据 
+     */  
+    public static String getResponseForPost(String market_uri, List<NameValuePair> nameValuePairs, Context context) {  
+        if (isConnnected(context)) {  
+            return getResponseForPost(market_uri, nameValuePairs);  
+        }  
+        return null;
+    }  
+  
+    /** 
+     * 通过post方式向服务器发送请求，并返回响应数据 
+     *  
+     * @param strUrl 请求网址 
+     * @param nameValuePairs 参数信息 
+     * @return 响应数据 
+     */  
+    public static String getResponseForPost(String market_uri, List<NameValuePair> nameValuePairs) {  
+        if (null == market_uri || "" == market_uri) {  
+            return null;  
+        }  
+        HttpPost request = new HttpPost(market_uri);  
+        try {  
+            request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            return getRespose(request);  
+        } catch (UnsupportedEncodingException e1) {  
+            e1.printStackTrace();  
+        }  
+        return null;  
+    }  
+    
+    /** 
+     * 响应客户端请求 
+     *  
+     * @param request 客户端请求get/post 
+     * @return 响应数据 
+     */  
+    public static String getRespose(HttpUriRequest request) {
+        try {
+        	DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
+        	defaultHttpClient.setCookieStore(cookieStore);
+        	
+            HttpResponse httpResponse = defaultHttpClient.execute(request);
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (HttpStatus.SC_OK == statusCode) {  
+                String result = EntityUtils.toString(httpResponse.getEntity());
+                Log.i(TAG, "results=" + result);
+                return result;
+            }  
+        } catch (ClientProtocolException e) {  
+            e.printStackTrace();  
+        } catch (IOException e) {  
+            e.printStackTrace();  
+        } 
+        return null;  
+    }
+    
+    // 专用数据同步接口
+    
+    // 获取Time tips
+    public static String getTimeTips(String serverUrl, Context context) {
+    	return getResponseForGet(serverUrl,context);
+    }
+    
+    // 获取Mood tips
+    public static String getMoodTips(String serverUrl, Context context) {
+    	return getResponseForGet(serverUrl,context);
+    }
+    
+    // 用户注册
+    public static String userRegister(String serverUrl, JSONObject paramData, Context context) throws Exception {
+        return getResponseForPostJson(serverUrl, paramData, context);
     }
     
     // 用户登录
-    public static String userLogin(String url, JSONObject param) throws Exception {
-        HttpPost request = new HttpPost(url);  
-        // 先封装一个 JSON 对象  
-        //JSONObject param = new JSONObject();  
-        //param.put("name", "rarnu");  
-        //param.put("password", "123456");  
-        // 绑定到请求 Entry  
-        StringEntity se = new StringEntity(param.toString());   
-        request.setEntity(se);  
-        // 发送请求  
-        HttpResponse httpResponse = new DefaultHttpClient().execute(request);  
-        // 得到应答的字符串，这也是一个 JSON 格式保存的数据  
-        String retSrc = EntityUtils.toString(httpResponse.getEntity());  
-        // 生成 JSON 对象  
-        JSONObject result = new JSONObject(retSrc);  
-        String token = (String) result.get("token");
-        return token;
+    public static String userLogin(String serverUrl, JSONObject paramData, Context context) throws Exception {
+    	return getResponseForPostJson(serverUrl, paramData, context);
     }
     
     // 用户登出
-    public static boolean userLogout(String url) {
-    	return true;
+    public static String userLogout(String serverUrl, Context context) {
+    	return getResponseForGet(serverUrl,context);
     }
     
-    // 用户数据同步
-    public static JSONObject userDataSync(String url,String type, Context context, JSONObject param) {
+    // 用户数据同步通用接口
+    public static JSONObject userDataSync(String url,String type, JSONObject param, Context context) {
     	if(type.equals(PUSH)){
     		
     	}
@@ -626,5 +774,10 @@ public class NetToolUtil {
     	else
     		;
     	return null;
+    }
+    
+    //用户数据同步专用接口
+    public static String todolistPull(String serverUrl, JSONObject paramData, Context context) {
+    	return getResponseForPostJson(serverUrl, paramData, context);
     }
 }

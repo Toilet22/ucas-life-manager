@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -25,6 +26,20 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Deprecate android network on main thread exception
+//        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+//        .detectDiskReads()
+//        .detectDiskWrites()
+//        .detectNetwork()   // or .detectAll() for all detectable problems
+//        .penaltyLog()
+//        .build());
+//        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+//        .detectLeakedSqlLiteObjects()
+//        .detectLeakedClosableObjects()
+//        .penaltyLog()
+//        .penaltyDeath()
+//        .build());
+        
         /************************************************************************
          * UI´úÂë£ºËÕéóÂ×
          ***********************************************************************/

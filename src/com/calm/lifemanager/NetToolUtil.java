@@ -144,7 +144,10 @@ public class NetToolUtil {
             
             return responseData;  
         }  
-        return "sendText error!";  
+        else {
+       	 Log.i("Post Request", "Error Code: " + conn.getResponseCode() + conn.getResponseMessage());
+       	 return "sendTxt error!";  
+       }
     }
   
     /** 
@@ -476,19 +479,19 @@ public class NetToolUtil {
             Map<String, String> params, String encoding) throws Exception {  
     	
         StringBuilder sb = new StringBuilder();
-        // 如果参数不为空  
-        if (params != null && !params.isEmpty()) {  
-            for (Map.Entry<String, String> entry : params.entrySet()) {  
+        // 如果参数不为空 
+        if (params != null && !params.isEmpty()) {
+            for (Map.Entry<String, String> entry : params.entrySet()) {
                 // Post方式提交参数的话，不能省略内容类型与长度  
-                sb.append(entry.getKey()).append('=').append(  
+                sb.append(entry.getKey()).append('=').append(
                         URLEncoder.encode(entry.getValue(), encoding)).append(  
                         '&');
-            }  
+            }
             sb.deleteCharAt(sb.length() - 1);  
         }  
         
         // 得到实体的二进制数据
-        byte[] entitydata = sb.toString().getBytes();  
+        byte[] entitydata = sb.toString().getBytes();
         URL url = new URL(urlPath);  
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
         conn.setRequestMethod("POST");  
@@ -503,8 +506,8 @@ public class NetToolUtil {
         conn.setDoOutput(true);  
         // 这里只设置内容类型与内容长度的头字段  
         conn.setRequestProperty("Content-Type",  
-                "application/x-www-form-urlencoded");  
-        // conn.setRequestProperty("Content-Type", "text/xml");  
+                "application/x-www-form-urlencoded");
+        // conn.setRequestProperty("Content-Type", "text/xml");
         conn.setRequestProperty("Charset", encoding);  
         conn.setRequestProperty("Content-Length", String  
                 .valueOf(entitydata.length));  
@@ -514,6 +517,7 @@ public class NetToolUtil {
         // 内存中的数据刷入  
         outStream.flush();  
         outStream.close();
+        
         // 如果请求响应码是200，则表示成功  
         if (conn.getResponseCode() == 200) {  
             // 获得服务器响应的数据  
@@ -552,10 +556,18 @@ public class NetToolUtil {
     	Log.i("PostJson","Data to Post: " + params.toString());
     	
         // 得到实体的二进制数据
+    	//String jsonData = URLEncoder.encode(params.toString(),encoding);
+    	//byte[] entitydata = jsonData.getBytes();
+    	
+    	//String jsonData = String.valueOf(params);
+    	//byte[] entitydata = jsonData.getBytes();
+    	
         byte[] entitydata = params.toString().getBytes();
+    	
+    	
         URL url = new URL(urlPath);
-        HttpURLConnection conn = (HttpURLConnection)url.openConnection();  
-        conn.setRequestMethod("POST");  
+        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+        conn.setRequestMethod("POST");
         conn.setConnectTimeout(TIMEOUT);
         
         // 设置Cookie
@@ -565,12 +577,16 @@ public class NetToolUtil {
         
         // 如果通过post提交数据，必须设置允许对外输出数据  
         conn.setDoOutput(true);  
+        
+        // 设置User-Agent: Fiddler
+        conn.setRequestProperty("ser-Agent", "Fiddler");
+        
         // 这里只设置内容类型与内容长度的头字段  
-        conn.setRequestProperty("Content-Type", "text/xml");
+        conn.setRequestProperty("Content-Type", "application/json");
+        //conn.setRequestProperty("Accept", "application/json");
         conn.setRequestProperty("Charset", encoding);  
-        conn.setRequestProperty("Content-Length", String  
-                .valueOf(entitydata.length));  
-        OutputStream outStream = conn.getOutputStream();  
+        conn.setRequestProperty("Content-Length", String.valueOf(entitydata.length));  
+        OutputStream outStream = conn.getOutputStream();
         // 把实体数据写入是输出流  
         outStream.write(entitydata);  
         // 内存中的数据刷入  

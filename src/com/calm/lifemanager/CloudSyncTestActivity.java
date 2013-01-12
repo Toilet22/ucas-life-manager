@@ -159,10 +159,8 @@ public class CloudSyncTestActivity extends Activity {
 		        	public void run() {
 		        		Log.i("Cloud", "Start Testing User Logout...");
 		        		
-		        		//JSONArray logoutMessage = null;
 		        		String logoutMessage = null;
 		        		
-		        		//logoutMessage = NetToolUtil.userLogout(NetToolUtil.accountLogoutUrl, CloudSyncTestActivity.this);
 		        		try {
 							logoutMessage = NetToolUtil.sendGetRequest(NetToolUtil.accountLogoutUrl, null, "utf-8");
 						} catch (Exception e) {
@@ -170,7 +168,7 @@ public class CloudSyncTestActivity extends Activity {
 							e.printStackTrace();
 						}
 		        		
-		        		if(logoutMessage.length() > 0){
+		        		if(logoutMessage.length() > 0 && logoutMessage != null){
 		        			Log.i("User Logout","Success To Logout");
 		        		}
 		        		else{
@@ -215,43 +213,75 @@ public class CloudSyncTestActivity extends Activity {
 		        	public void run() {
 		        		Log.i("Cloud", "Start Testing Todolist Push...");
 				        
-				        JSONObject todolistToPush = new JSONObject();
-				        try {
-							todolistToPush.put("username","lilihang");
-						} catch (JSONException e) {
+//				        JSONObject todolistToPush = new JSONObject();
+//				        try {
+//							todolistToPush.put("username","lilihang");
+//						} catch (JSONException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//				        
+//				        JSONObject todolistData = new JSONObject();
+//				        try {
+//				        	todolistData.put("title", "created-from-android-client2");
+//				        	todolistData.put("start", 1);
+//				        	todolistData.put("end", 2);
+//				        	todolistData.put("desc", "wtf");
+//				        	todolistData.put("place", "wtf");
+//				        	todolistData.put("kind", 1);
+//				        	todolistData.put("repetition", 1);
+//				        	todolistData.put("reminder", 1);
+//				        	todolistData.put("priority", 1);
+//				        	todolistData.put("status", 1);
+//							todolistData.put("ctime", System.currentTimeMillis());
+//							todolistData.put("mtime", System.currentTimeMillis());
+//							todolistData.put("stime", System.currentTimeMillis());
+//						} catch (JSONException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//				        
+//				        JSONArray todolistDataArray = new JSONArray();
+//				        
+//				        todolistDataArray.put(todolistData);
+//						//todolistToPush.put("data",todolistDataArray);
+//				        
+//				        String todolistConvertString = todolistDataArray.toString();
+//				        todolistConvertString = "\"" + todolistConvertString + "\"";
+//				        
+////				        try {
+////							todolistDataArray = new JSONArray(todolistConvertString);
+////						} catch (JSONException e1) {
+////							// TODO Auto-generated catch block
+////							e1.printStackTrace();
+////						}
+//				        
+//				        Log.i("Push Todolist","Appeded Special: " + todolistConvertString);
+//				        
+//				        try {
+//							todolistToPush.put("data",todolistConvertString);
+//						} catch (JSONException e1) {
+//							// TODO Auto-generated catch block
+//							e1.printStackTrace();
+//						}
+				        
+				        //Log.i("Push Todolist","Data Section" + todolistDataArray.toString());
+				        
+				        //Log.i("Push Todolist","Data to push" + todolistToPush.toString());
+				        
+				        
+		        		// 通过字符串构造一个JSON对象
+		        		String jsonString = "{\"username\":\"lilihang\",\"data\":[{\"ctime\":123,\"mtime\":123,\"stime\":123}]}";
+		        		JSONObject todolistToPush = null;
+						try {
+							todolistToPush = new JSONObject(jsonString);
+						} catch (JSONException e1) {
 							// TODO Auto-generated catch block
-							e.printStackTrace();
+							e1.printStackTrace();
 						}
-				        
-				        JSONObject todolistData = new JSONObject();
-				        try {
-				        	todolistData.put("title", "created-from-android-client");
-				        	todolistData.put("start", 1);
-				        	todolistData.put("end", 2);
-				        	todolistData.put("desc", "wtf");
-				        	todolistData.put("place", "wtf");
-				        	todolistData.put("kind", 1);
-							todolistData.put("ctime", System.currentTimeMillis());
-							todolistData.put("mtime", System.currentTimeMillis());
-							todolistData.put("stime", System.currentTimeMillis());
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-				        
-				        JSONArray todolistDataArray = new JSONArray();
-				        
-				        try {
-				        	todolistDataArray.put(todolistData);
-							todolistToPush.put("data",todolistDataArray);
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-				        
-				        Log.i("Push Todolist","Data to push" + todolistToPush.toString());
-				        
-				        String retStr = null;
+						Log.i("Push Todolist","Data to push" + todolistToPush.toString());
+						
+		        		String retStr = null;
 		        	    try {
 							retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrl, todolistToPush, "utf-8");
 		        	    	//retStr = NetToolUtil.sendTxt(NetToolUtil.todolistPushUrl, todolistToPush.toString(), "utf-8");

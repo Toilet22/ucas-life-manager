@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.widget.TabHost;
 
@@ -53,10 +54,28 @@ public class FutureActivity extends TabActivity {
         wishlistView.setBackground(this.getResources().getDrawable(R.drawable.wishlist_future));
         
         Intent wishlistIntent = new Intent(this, WishlistActivity.class);
-        tabHost.addTab(tabHost.newTabSpec("bottom_tab2")     
+        tabHost.addTab(tabHost.newTabSpec("bottom_tab3")     
                 .setIndicator(wishlistView)
                 .setContent(wishlistIntent));
 		
 		tabHost.setCurrentTab(0);
+		
+		//Ìí¼ÓTab¼àÌýÊÂ¼þ  
+        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {  
+              
+            public void onTabChanged(String tabId) {
+            	
+                if (tabId.equals("bottom_tab1")) {
+                	Log.i("Future","Tab 1 selected!");
+                	
+                }  
+                if (tabId.equals("bottom_tab2")) {  
+                	Log.i("Future","Tab 2 selected!");
+                }  
+                if (tabId.equals("bottom_tab3")) {
+                	Log.i("Future","Tab 3 selected!");
+                }  
+            }  
+        });
 	}
 }

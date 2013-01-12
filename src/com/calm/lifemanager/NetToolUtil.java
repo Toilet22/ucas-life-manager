@@ -391,7 +391,7 @@ public class NetToolUtil {
     
     public static String sendJson(String url, JSONObject param) throws Exception {
         HttpPost request = new HttpPost(url);  
-        // 先封装一个 JSON 对象  
+        // 先封装一个 JSON 对象
         //JSONObject param = new JSONObject();  
         //param.put("name", "rarnu");  
         //param.put("password", "123456");  
@@ -416,11 +416,11 @@ public class NetToolUtil {
     public static String sendGetRequest(String urlPath,
             Map<String, String> params, String encoding) throws Exception {
   
-        // 使用StringBuilder对象  
+        // 使用StringBuilder对象
         StringBuilder sb = new StringBuilder(urlPath);  
-        sb.append('?');  
+        sb.append('?');
   
-        // 迭代Map  
+        // 迭代Map
         if(params != null && !params.isEmpty()) {
         	for (Map.Entry<String, String> entry : params.entrySet()) {
                 sb.append(entry.getKey()).append('=').append(
@@ -429,11 +429,12 @@ public class NetToolUtil {
         }
         
         sb.deleteCharAt(sb.length() - 1);  
-        // 打开链接  
-        URL url = new URL(sb.toString());  
+        
+        // 打开链接 
+        URL url = new URL(sb.toString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
-        conn.setRequestMethod("GET");  
-        conn.setRequestProperty("Content-Type", "text/xml");  
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Content-Type", "text/xml");
         conn.setRequestProperty("Charset", encoding);  
         conn.setConnectTimeout(TIMEOUT);  
         
@@ -448,7 +449,7 @@ public class NetToolUtil {
             BufferedReader in = new BufferedReader(new InputStreamReader(conn  
                     .getInputStream(), encoding));  
             // 数据  
-            String retData = null;  
+            String retData = null;
             String responseData = "";  
             while ((retData = in.readLine()) != null) {  
                 responseData += retData;  
@@ -474,8 +475,8 @@ public class NetToolUtil {
   
     /** 
      * 通过Post方式提交参数给服务器,也可以用来传送JSON或XML文件
-     */  
-    public static String sendPostRequest(String urlPath,  
+     */
+    public static String sendPostRequest(String urlPath,
             Map<String, String> params, String encoding) throws Exception {  
     	
         StringBuilder sb = new StringBuilder();
@@ -484,11 +485,11 @@ public class NetToolUtil {
             for (Map.Entry<String, String> entry : params.entrySet()) {
                 // Post方式提交参数的话，不能省略内容类型与长度  
                 sb.append(entry.getKey()).append('=').append(
-                        URLEncoder.encode(entry.getValue(), encoding)).append(  
+                        URLEncoder.encode(entry.getValue(), encoding)).append(
                         '&');
             }
             sb.deleteCharAt(sb.length() - 1);  
-        }  
+        }
         
         // 得到实体的二进制数据
         byte[] entitydata = sb.toString().getBytes();
@@ -503,9 +504,11 @@ public class NetToolUtil {
         }
         
         // 如果通过post提交数据，必须设置允许对外输出数据  
-        conn.setDoOutput(true);  
+        conn.setDoOutput(true);
+        // 设置不使用缓存
+        conn.setUseCaches(false);
         // 这里只设置内容类型与内容长度的头字段  
-        conn.setRequestProperty("Content-Type",  
+        conn.setRequestProperty("Content-Type",
                 "application/x-www-form-urlencoded");
         // conn.setRequestProperty("Content-Type", "text/xml");
         conn.setRequestProperty("Charset", encoding);  
@@ -576,16 +579,88 @@ public class NetToolUtil {
         }
         
         // 如果通过post提交数据，必须设置允许对外输出数据  
-        conn.setDoOutput(true);  
+        conn.setDoOutput(true);
+        // 设置不使用缓存
+        conn.setUseCaches(false);
         
         // 设置User-Agent: Fiddler
-        conn.setRequestProperty("ser-Agent", "Fiddler");
+        //conn.setRequestProperty("ser-Agent", "Fiddler");
         
-        // 这里只设置内容类型与内容长度的头字段  
+        // 这里只设置内容类型与内容长度的头字段
         conn.setRequestProperty("Content-Type", "application/json");
         //conn.setRequestProperty("Accept", "application/json");
         conn.setRequestProperty("Charset", encoding);  
         conn.setRequestProperty("Content-Length", String.valueOf(entitydata.length));  
+        OutputStream outStream = conn.getOutputStream();
+        // 把实体数据写入是输出流  
+        outStream.write(entitydata);  
+        // 内存中的数据刷入  
+        outStream.flush();  
+        outStream.close();
+        
+        // 如果请求响应码是200，则表示成功  
+        if (conn.getResponseCode() == 200) {
+            // 获得服务器响应的数据  
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn
+                    .getInputStream(), encoding));  
+            // 数据  
+            String retData = null;  
+            String responseData = "";  
+            while ((retData = in.readLine()) != null) {  
+                responseData += retData;
+            }  
+            in.close();  
+            
+            // 获得cookie
+            String cookie = conn.getHeaderField("set-cookie");
+            if(cookie != null && cookie.length() > 0) {
+            	sessionValue = cookie;
+            }
+            
+            return responseData;  
+        }
+        else {
+        	 Log.i("PostJson", "Error Code: " + conn.getResponseCode() + conn.getResponseMessage());
+        	 return "sendJson error!";  
+        }
+    }
+    
+    /** 
+     * 通过Post方式提交String参数给服务器
+     */
+    public static String sendPostRequestJson(String urlPath,
+            String params, String encoding) throws Exception {
+        
+    	Log.i("PostJson","Data to Post: " + params);
+    	
+        // 得到实体的二进制数据
+    	
+        byte[] entitydata = params.getBytes();
+    	
+    	
+        URL url = new URL(urlPath);
+        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+        conn.setRequestMethod("POST");
+        conn.setConnectTimeout(TIMEOUT);
+        
+        // 设置Cookie
+        if(sessionValue !=null && sessionValue.length() > 0) {
+        	conn.setRequestProperty("Cookie", sessionValue);
+        }
+        
+        // 如果通过post提交数据，必须设置允许对外输出数据  
+        conn.setDoOutput(true);  
+        // 设置不使用缓存
+        conn.setUseCaches(false);
+        
+        // 设置User-Agent: Fiddler
+        //conn.setRequestProperty("ser-Agent", "Fiddler");
+        
+        // 这里只设置内容类型与内容长度的头字段
+        conn.setRequestProperty("Content-Type", "application/json");
+        //conn.setRequestProperty("Accept", "application/json");
+        conn.setRequestProperty("Charset", encoding);
+        conn.setRequestProperty("Content-Length", String.valueOf(entitydata.length));
         OutputStream outStream = conn.getOutputStream();
         // 把实体数据写入是输出流  
         outStream.write(entitydata);  

@@ -232,7 +232,7 @@ public class CloudSyncTestActivity extends Activity {
 //				        	todolistData.put("repetition", 1);
 //				        	todolistData.put("reminder", 1);
 //				        	todolistData.put("priority", 1);
-//				        	todolistData.put("status", 1);
+//				        	todolistData.put("status", 0);
 //							todolistData.put("ctime", System.currentTimeMillis());
 //							todolistData.put("mtime", System.currentTimeMillis());
 //							todolistData.put("stime", System.currentTimeMillis());
@@ -271,20 +271,13 @@ public class CloudSyncTestActivity extends Activity {
 				        
 				        
 		        		// 通过字符串构造一个JSON对象
-		        		String jsonString = "{\"username\":\"lilihang\",\"data\":[{\"ctime\":123,\"mtime\":123,\"stime\":123}]}";
-		        		JSONObject todolistToPush = null;
-						try {
-							todolistToPush = new JSONObject(jsonString);
-						} catch (JSONException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-						Log.i("Push Todolist","Data to push" + todolistToPush.toString());
-						
+		        		String jsonString = "{\"username\":\"lilihang\",\"data\":\"[{\"ctime\":123,\"mtime\":123,\"stime\":123,\"title\":\"wtf\",\"start\":123,\"end\":123,\"desc\":\"wtf\",\"place\":\"wtf\",\"kind\":1,\"repetition\":1,\"reminder\":1,\"priority\":1,\"status\":0}]\"}";
+		        		
 		        		String retStr = null;
 		        	    try {
-							retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrl, todolistToPush, "utf-8");
+							//retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrl, todolistToPush, "utf-8");
 		        	    	//retStr = NetToolUtil.sendTxt(NetToolUtil.todolistPushUrl, todolistToPush.toString(), "utf-8");
+							retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrl, jsonString, "utf-8");
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

@@ -44,6 +44,9 @@
         <activity android:name=".FutureActivity"></activity>
         <activity android:name=".CloudSyncTestActivity"></activity>
         <activity android:name=".ChartEngineTestActivity"></activity>
+        <activity android:name=".TodolistActivity"></activity>
+        <activity android:name=".CollectorActivity"></activity>
+        <activity android:name=".WishlistActivity"></activity>
         
     </application>
 

@@ -210,45 +210,61 @@ public class CloudSyncTestActivity extends Activity {
     	
     	btn_todolist_push.setOnClickListener(new Button.OnClickListener(){
 			public void onClick(View v) {
-		        Log.i("Cloud", "Start Testing Todolist Push...");
-		        
-		        JSONObject todolistToPush = new JSONObject();
-		        try {
-					todolistToPush.put("username","lilihang");
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		        
-		        JSONObject todolistData = new JSONObject();
-		        try {
-					todolistData.put("ctime", System.currentTimeMillis());
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		        
-		        JSONArray todolistDataArray = new JSONArray();
-		        
-		        try {
-		        	todolistDataArray.put(todolistData);
-					todolistToPush.put("data",todolistDataArray);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		        
-		        String retStr = null;
-        	    try {
-					retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrl, todolistToPush, "utf-8");
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-        	    
-        	    if(retStr != null) {
-        	    	Log.i("Todolist Push","result:" + retStr);
-        	    }
+				
+				new Thread() {
+		        	public void run() {
+		        		Log.i("Cloud", "Start Testing Todolist Push...");
+				        
+				        JSONObject todolistToPush = new JSONObject();
+				        try {
+							todolistToPush.put("username","lilihang");
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				        
+				        JSONObject todolistData = new JSONObject();
+				        try {
+				        	todolistData.put("title", "created-from-android-client");
+				        	todolistData.put("start", 1);
+				        	todolistData.put("end", 2);
+				        	todolistData.put("desc", "wtf");
+				        	todolistData.put("place", "wtf");
+				        	todolistData.put("kind", 1);
+							todolistData.put("ctime", System.currentTimeMillis());
+							todolistData.put("mtime", System.currentTimeMillis());
+							todolistData.put("stime", System.currentTimeMillis());
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				        
+				        JSONArray todolistDataArray = new JSONArray();
+				        
+				        try {
+				        	todolistDataArray.put(todolistData);
+							todolistToPush.put("data",todolistDataArray);
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				        
+				        Log.i("Push Todolist","Data to push" + todolistToPush.toString());
+				        
+				        String retStr = null;
+		        	    try {
+							retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrl, todolistToPush, "utf-8");
+		        	    	//retStr = NetToolUtil.sendTxt(NetToolUtil.todolistPushUrl, todolistToPush.toString(), "utf-8");
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		        	    
+		        	    if(retStr != null) {
+		        	    	Log.i("Todolist Push","result:" + retStr);
+		        	    }
+		        	}
+				}.start();
 			}
         });
     	

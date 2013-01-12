@@ -75,20 +75,9 @@ public class DaylyMoodHistoryActivity extends TabActivity {
 			}
 		});
 		
-		ImageView imgViewMoodDistribute = (ImageView)findViewById(R.id.activity_history_time_daily_imageView_show_mood_distribute);
+		//ImageView imgViewMoodDistribute = (ImageView)findViewById(R.id.activity_history_time_daily_imageView_show_mood_distribute);
         
-		ListView listViewMoodDetails = (ListView)findViewById(R.id.activity_history_mood_daily_listView_show_details);
-        
-        // 测试列表的显示
-        Cursor cur = getContentResolver().query(People.CONTENT_URI,null,null,null,null);
-        startManagingCursor(cur);
-        ListAdapter adapter = new SimpleCursorAdapter(this, 
-        		android.R.layout.simple_list_item_2, 
-        		cur, 
-        		new String[] {People.NAME, People.NUMBER}, 
-        		new int[] {android.R.id.text1, android.R.id.text2});
-		
-        listViewMoodDetails.setAdapter(adapter);
+		//ListView listViewMoodDetails = (ListView)findViewById(R.id.activity_history_mood_daily_listView_show_details);
         
         ImageButton imgButtonBack = (ImageButton)findViewById(R.id.actitivity_history_mood_daily_imageButton_back);
         ImageButton imgButtonSuggestion = (ImageButton)findViewById(R.id.actitivity_history_mood_daily_imageButton_suggestion);

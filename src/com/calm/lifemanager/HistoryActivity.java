@@ -16,33 +16,6 @@ public class HistoryActivity extends TabActivity {
 		
 		TabHost tabHost = getTabHost();
 		
-//		TabView view = null;
-//		
-//		// 时间
-//		view = new TabView(this,R.drawable.ic_launcher,R.drawable.ic_launcher);
-//		view.setBackground(this.getResources().getDrawable(R.drawable.ic_launcher));
-//		
-//		TabSpec timeSpec = tabHost.newTabSpec("bottom_tab1");
-//		//timeSpec.setIndicator(view);
-//		timeSpec.setIndicator("时间");
-//		
-//		Intent timeIntent = new Intent(this,TimeHistoryActivity.class);
-//		timeSpec.setContent(timeIntent);
-//		
-//		// 心情
-//		view = new TabView(this, R.drawable.ic_launcher, R.drawable.ic_launcher);
-//		view.setBackground(this.getResources().getDrawable(
-//				R.drawable.ic_launcher));
-//
-//		TabSpec moodSpec = tabHost.newTabSpec("bottom_tab2");
-//		//timeSpec.setIndicator(view);
-//		timeSpec.setIndicator("心情");
-//		Intent moodIntent = new Intent(this, MoodHistoryActivity.class);
-//		timeSpec.setContent(moodIntent);
-//		
-//		tabHost.addTab(timeSpec);
-//		tabHost.addTab(moodSpec);
-		
 		//为TabHost添加标签     
         //新建一个newTabSpec(newTabSpec)     
         //设置其标签和图标（setIndicator）     

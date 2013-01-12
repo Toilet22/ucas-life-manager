@@ -16,12 +16,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical" >
-
+
             <TabWidget
                 android:id="@android:id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:gravity="center_horizontal" >
+
             </TabWidget>
 
             <FrameLayout
@@ -69,13 +72,6 @@
                         android:background="@drawable/swap_btn_right"
                         android:src="@drawable/swap_btn_right" />
 
-                    <ImageView
-                        android:id="@+id/activity_history_time_daily_imageView_show_mood_distribute"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/bg" />
 
                 </RelativeLayout>
 
@@ -122,12 +118,6 @@
                         android:background="@drawable/swap_btn_right"
                         android:src="@drawable/swap_btn_right" />
 
-                    <ListView
-                        android:id="@+id/activity_history_mood_daily_listView_show_details"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true" />
                     
                 </RelativeLayout>
                 

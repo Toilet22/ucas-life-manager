@@ -101,37 +101,51 @@ public class NetToolUtil {
      * 传送文本,例如JSON,XML等 
      */  
     public static String sendTxt(String urlPath, String txt, String encoding)  
-            throws Exception {  
-        byte[] sendData = txt.getBytes();  
+            throws Exception {
+        byte[] sendData = txt.getBytes();
         URL url = new URL(urlPath);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
         conn.setRequestMethod("POST");  
-        conn.setConnectTimeout(TIMEOUT);  
+        conn.setConnectTimeout(TIMEOUT);
+        
+        // 设置Cookie
+        if(sessionValue !=null && sessionValue.length() > 0) {
+        	conn.setRequestProperty("Cookie", sessionValue);
+        }
+        
         // 如果通过post提交数据，必须设置允许对外输出数据  
         conn.setDoOutput(true);  
-        conn.setRequestProperty("Content-Type", "text/xml");  
-        conn.setRequestProperty("Charset", encoding);  
+        conn.setRequestProperty("Content-Type", "text/xml");
+        conn.setRequestProperty("Charset", encoding);
         conn.setRequestProperty("Content-Length", String  
                 .valueOf(sendData.length));  
         OutputStream outStream = conn.getOutputStream();  
         outStream.write(sendData);  
         outStream.flush();  
         outStream.close();  
+        
         if (conn.getResponseCode() == 200) {  
             // 获得服务器响应的数据  
             BufferedReader in = new BufferedReader(new InputStreamReader(conn  
                     .getInputStream(), encoding));  
             // 数据  
             String retData = null;  
-            String responseData = "";  
+            String responseData = "";
             while ((retData = in.readLine()) != null) {  
-                responseData += retData;  
+                responseData += retData;
             }  
             in.close();  
+            
+            // 获得cookie
+            String cookie = conn.getHeaderField("set-cookie");
+            if(cookie != null && cookie.length() > 0) {
+            	sessionValue = cookie;
+            }
+            
             return responseData;  
         }  
         return "sendText error!";  
-    }  
+    }
   
     /** 
      * 上传文件 
@@ -446,7 +460,12 @@ public class NetToolUtil {
             
             return responseData;  
         }  
-        return "sendGetRequest error!";  
+        else {
+        	Log.i("PostRequest",
+					"Error Code: " + conn.getResponseCode()
+							+ conn.getResponseMessage());
+        	return "sendGetRequest error!";
+        }
   
     }  
   
@@ -494,7 +513,7 @@ public class NetToolUtil {
         outStream.write(entitydata);  
         // 内存中的数据刷入  
         outStream.flush();  
-        outStream.close();  
+        outStream.close();
         // 如果请求响应码是200，则表示成功  
         if (conn.getResponseCode() == 200) {  
             // 获得服务器响应的数据  
@@ -516,7 +535,12 @@ public class NetToolUtil {
             
             return responseData;  
         }  
-        return "sendText error!";  
+        else {
+			Log.i("PostRequest",
+					"Error Code: " + conn.getResponseCode()
+							+ conn.getResponseMessage());
+			return "sendText error!";
+        }
     }
     
     /** 
@@ -525,12 +549,14 @@ public class NetToolUtil {
     public static String sendPostRequestJson(String urlPath,
             JSONObject params, String encoding) throws Exception {
         
+    	Log.i("PostJson","Data to Post: " + params.toString());
+    	
         // 得到实体的二进制数据
         byte[] entitydata = params.toString().getBytes();
         URL url = new URL(urlPath);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
+        HttpURLConnection conn = (HttpURLConnection)url.openConnection();  
         conn.setRequestMethod("POST");  
-        conn.setConnectTimeout(TIMEOUT);  
+        conn.setConnectTimeout(TIMEOUT);
         
         // 设置Cookie
         if(sessionValue !=null && sessionValue.length() > 0) {
@@ -540,9 +566,7 @@ public class NetToolUtil {
         // 如果通过post提交数据，必须设置允许对外输出数据  
         conn.setDoOutput(true);  
         // 这里只设置内容类型与内容长度的头字段  
-        conn.setRequestProperty("Content-Type",  
-                "application/x-www-form-urlencoded");  
-        // conn.setRequestProperty("Content-Type", "text/xml");  
+        conn.setRequestProperty("Content-Type", "text/xml");
         conn.setRequestProperty("Charset", encoding);  
         conn.setRequestProperty("Content-Length", String  
                 .valueOf(entitydata.length));  
@@ -551,11 +575,12 @@ public class NetToolUtil {
         outStream.write(entitydata);  
         // 内存中的数据刷入  
         outStream.flush();  
-        outStream.close();  
+        outStream.close();
+        
         // 如果请求响应码是200，则表示成功  
-        if (conn.getResponseCode() == 200) {  
+        if (conn.getResponseCode() == 200) {
             // 获得服务器响应的数据  
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn  
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn
                     .getInputStream(), encoding));  
             // 数据  
             String retData = null;  
@@ -572,8 +597,11 @@ public class NetToolUtil {
             }
             
             return responseData;  
-        }  
-        return "sendText error!";  
+        }
+        else {
+        	 Log.i("PostJson", "Error Code: " + conn.getResponseCode() + conn.getResponseMessage());
+        	 return "sendJson error!";  
+        }
     }
     
     

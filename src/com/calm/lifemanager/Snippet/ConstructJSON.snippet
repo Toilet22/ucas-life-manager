@@ -1,0 +1,214 @@
+JSONObject, JSONArray来构建json文本 
+
+// 假设现在要创建这样一个json文本
+//	{
+//		"phone" : ["12345678", "87654321"], // 数组
+//		"name" : "yuanzhifei89", // 字符串
+//		"age" : 100, // 数值
+//		"address" : { "country" : "china", "province" : "jiangsu" }, // 对象
+//		"married" : false // 布尔值
+//	}
+
+try {
+	// 首先最外层是{}，是创建一个对象
+	JSONObject person = new JSONObject();
+	// 第一个键phone的值是数组，所以需要创建数组对象
+	JSONArray phone = new JSONArray();
+	phone.put("12345678").put("87654321");
+	person.put("phone", phone);
+
+	person.put("name", "yuanzhifei89");
+	person.put("age", 100);
+	// 键address的值是对象，所以又要创建一个对象
+	JSONObject address = new JSONObject();
+	address.put("country", "china");
+	address.put("province", "jiangsu");
+	person.put("address", address);
+
+	person.put("married", false);
+} catch (JSONException ex) {
+	// 键为null或使用json不支持的数字格式(NaN, infinities)
+	throw new RuntimeException(ex);
+}
+
+
+getType和optType api的使用 
+try {
+	// 所有使用的对象都是用上面创建的对象
+	// 将第一个电话号码转换为数值和将名字转换为数值
+	phone.getLong(0);
+	person.getLong("name"); // 会抛异常，因为名字无法转换为long
+	
+	phone.optLong(0); // 代码内置的默认值
+	phone.optLong(0, 1000); // 用户提供的默认值
+	person.optLong("name");
+	person.optLong("name", 1000); // 不像上面那样抛异常，而是返回1000
+} catch (JSONException ex) {
+	// 异常处理代码
+}
+
+
+
+除了上面的两个类，还可以使用JSONStringer来构建json文本 
+try {
+	JSONStringer jsonText = new JSONStringer();
+	// 首先是{，对象开始。object和endObject必须配对使用
+	jsonText.object();
+	
+	jsonText.key("phone");
+	// 键phone的值是数组。array和endArray必须配对使用
+	jsonText.array();
+	jsonText.value("12345678").value("87654321");
+	jsonText.endArray();
+	
+	jsonText.key("name");
+	jsonText.value("yuanzhifei89");
+	jsonText.key("age");
+	jsonText.value(100);
+	
+	jsonText.key("address");
+	// 键address的值是对象
+	jsonText.object();
+	jsonText.key("country");
+	jsonText.value("china");
+	jsonText.key("province");
+	jsonText.value("jiangsu");
+	jsonText.endObject();
+	
+	jsonText.key("married");
+	jsonText.value(false);
+	
+	// }，对象结束
+	jsonText.endObject();
+} catch (JSONException ex) {
+	throw new RuntimeException(ex);
+}
+
+json文本解析类JSONTokener
+按照RFC4627规范将json文本解析为相应的对象。 
+
+
+对于将json文本解析为对象，只需要用到该类的两个api：
+构造函数
+public Object nextValue(); 
+//	{
+//		"phone" : ["12345678", "87654321"], // 数组
+//		"name" : "yuanzhifei89", // 字符串
+//		"age" : 100, // 数值
+//		"address" : { "country" : "china", "province" : "jiangsu" }, // 对象
+//		"married" : false // 布尔值
+//	}
+
+private static final String JSON = 
+"{" +
+	"	\"phone\" : [\"12345678\", \"87654321\"]," +
+	"	\"name\" : \"yuanzhifei89\"," +
+	"	\"age\" : 100," +
+	"	\"address\" : { \"country\" : \"china\", \"province\" : \"jiangsu\" }," +
+	"	\"married\" : false," +
+"}";
+
+try {
+	JSONTokener jsonParser = new JSONTokener(JSON);
+	// 此时还未读取任何json文本，直接读取就是一个JSONObject对象。
+	// 如果此时的读取位置在"name" : 了，那么nextValue就是"yuanzhifei89"（String）
+	JSONObject person = (JSONObject) jsonParser.nextValue();
+	// 接下来的就是JSON对象的操作了
+	person.getJSONArray("phone");
+	person.getString("name");
+	person.getInt("age");
+	person.getJSONObject("address");
+	person.getBoolean("married");
+} catch (JSONException ex) {
+	// 异常处理代码
+}
+
+其它的api基本就是用来查看json文本中的文本的 
+try {
+	JSONTokener jsonParser = new JSONTokener(JSON);
+	// 继续向下读8个json文本中的字符。此时刚开始，即在{处
+	jsonParser.next(8); //{    "phone。tab算一个字符
+	
+	// 继续向下读1个json文本中的字符
+	jsonParser.next(); //"
+	
+	// 继续向下读取一个json文本中的字符。该字符不是空白、同时也不是注视中的字符
+	jsonParser.nextClean(); //:
+	
+	// 返回当前的读取位置到第一次遇到'a'之间的字符串（不包括a）。
+	jsonParser.nextString('a'); //  ["12345678", "87654321"],    "n（前面有两个空格）
+	
+	// 返回当前读取位置到第一次遇到字符串中(如"0089")任意字符之间的字符串，同时该字符是trimmed的。（此处就是第一次遇到了89）
+	jsonParser.nextTo("0089"); //me" : "yuanzhifei
+	
+	// 读取位置撤销一个
+	jsonParser.back();
+	jsonParser.next(); //i
+	
+	// 读取位置前进到指定字符串处（包括字符串）
+	jsonParser.skipPast("address");
+	jsonParser.next(8); //" : { "c
+	
+	// 读取位置前进到执行字符处（不包括字符）
+	jsonParser.skipTo('m');
+	jsonParser.next(8); //married"
+} catch (JSONException ex) {
+	// 异常处理代码
+}
+
+
+json中的null和java中的null注意： 
+// json对象的成员为null可能有两种情况：
+// 1: 不出现该成员的名称（对应java中的null）
+// 2: 成员值为null。（对应java中的JSONObject.NULL）
+
+// 完整的Json
+//  {  
+//      "phone" : ["12345678", "87654321"], // 数组  
+//      "name" : "yuanzhifei89", // 字符串  
+//      "age" : 100, // 数值  
+//      "address" : { "country" : "china", "province" : "jiangsu" }, // 对象  
+//      "married" : false // 布尔值  
+//  }  
+
+// 第一种情况：不出现某成员的名称(address)
+String jsonText = "{" +  
+    "   \"phone\" : [\"12345678\", \"87654321\"]," +  
+    "   \"name\" : \"yuanzhifei89\"," +  
+    "   \"age\" : 100," +  
+    "   \"married\" : false," +  
+"}"; 
+
+try {
+    JSONTokener t = new JSONTokener(jsonText);
+    JSONObject obj = (JSONObject) t.nextValue();
+    if (obj.optJSONObject("address") == null || obj.isNull("address")) {
+    }
+} catch (JSONException ex) {
+    ex.printStackTrace();
+}
+
+// 第二种情况：成员值为null(address为null)
+String jsonText = "{" +  
+    "   \"phone\" : [\"12345678\", \"87654321\"]," +  
+    "   \"name\" : \"yuanzhifei89\"," +  
+    "   \"age\" : 100," +  
+    "   \"address\" : null," +  
+    "   \"married\" : false," +  
+"}"; 
+try {
+    JSONTokener t = new JSONTokener(jsonText);
+    JSONObject obj = (JSONObject) t.nextValue();
+    
+    // 应该这样判断json是否为null
+    if (obj.get("address") == JSONObject.NULL || obj.isNull("address")) {
+    }
+} catch (JSONException ex) {
+    ex.printStackTrace();
+}
+
+json中的对象不存在和java中的对应关系 
+json中的null对应java中的JSONObject.NULL，所以jsonObj.put("key", JSONObject.NULL) 相当于{"key" : null}
+
+json中的不出现某成员对应Java中的null，所以jsonObj.put("key", null)相当于删除该成员，即：{}
+

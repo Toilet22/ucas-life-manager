@@ -212,7 +212,43 @@ public class CloudSyncTestActivity extends Activity {
 			public void onClick(View v) {
 		        Log.i("Cloud", "Start Testing Todolist Push...");
 		        
+		        JSONObject todolistToPush = new JSONObject();
+		        try {
+					todolistToPush.put("username","lilihang");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		        
+		        JSONObject todolistData = new JSONObject();
+		        try {
+					todolistData.put("ctime", System.currentTimeMillis());
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		        
+		        JSONArray todolistDataArray = new JSONArray();
+		        
+		        try {
+		        	todolistDataArray.put(todolistData);
+					todolistToPush.put("data",todolistDataArray);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		        
+		        String retStr = null;
+        	    try {
+					retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrl, todolistToPush, "utf-8");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        	    
+        	    if(retStr != null) {
+        	    	Log.i("Todolist Push","result:" + retStr);
+        	    }
 			}
         });
     	

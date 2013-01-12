@@ -17,10 +17,7 @@ public class MainActivity extends Activity {
 	Button btn_yesterday;
 	Button btn_today;
 	Button btn_tomorrow;
-	
-	Button btn_cloud_sync_test;
-	Button btn_achartengine_test;
-	
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +46,8 @@ public class MainActivity extends Activity {
         btn_yesterday = (Button)findViewById(R.id.button1_yester);
         btn_tomorrow = (Button)findViewById(R.id.button3_tomorrow);
         
-        btn_cloud_sync_test = (Button)findViewById(R.id.btn_cloud_sync_test);
-        btn_achartengine_test = (Button)findViewById(R.id.btn_achartengine_test);
+        //btn_cloud_sync_test = (Button)findViewById(R.id.btn_cloud_sync_test);
+        //btn_achartengine_test = (Button)findViewById(R.id.btn_achartengine_test);
         
         		
         //进入设置界面
@@ -97,21 +94,14 @@ public class MainActivity extends Activity {
 			}
 		});
         
-        // 测试云同步
-        btn_cloud_sync_test.setOnClickListener(new Button.OnClickListener(){
+        //进入登录页面
+        btn_login = (Button)findViewById(R.id.button5_login);
+        btn_login.setOnClickListener(new Button.OnClickListener(){
 			public void onClick(View v) {
 				// back to main
-				Intent iMain = new Intent(MainActivity.this, CloudSyncTestActivity.class);
-				startActivity(iMain);
-			}
-		});
-        
-        // 画图引擎测试
-        btn_achartengine_test.setOnClickListener(new Button.OnClickListener(){
-			public void onClick(View v) {
-				// back to main
-				Intent iMain = new Intent(MainActivity.this, ChartEngineTestActivity.class);
-				startActivity(iMain);
+		        Log.v("Toilet", "btn_login pushed");
+				Intent iLogin = new Intent(MainActivity.this, LoginActivity.class);
+				startActivity(iLogin);
 			}
 		});
         

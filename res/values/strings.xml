@@ -20,7 +20,7 @@
     <string name="act_settings_txtvw_started">定时记录已开启</string>
     <string name="act_settings_btn_closeLog">关闭定时记录</string>
     <string name="act_settings_txtvw_closed">定时记录已关闭</string>
-    <string name="act_settings_btn_startLog">开启</string>
+    <string name="act_settings_btn_startLog">开启定时记录</string>
     <string name="act_settings_btn_interval">设定时间间隔</string>
     <string name="act_youRcrd_btn_save">保存</string>
     <string name="act_youRcrd_txtvw_mood">心情指数</string>
@@ -32,7 +32,7 @@
     <string name="act_curr_txtvw_title">现在的我</string>
     <string name="act_iRcd_txtview_title">我要记录时间</string>
     <string name="act_happy_txtvw_titile">开心一下</string>
-    <string name="act_iWantToDo_txtvw_title">我要干活儿</string>
+    <string name="str_act_dosth_txtvw_title">开始做事</string>
     <string name="act_cloud_sync_test_user_register">用户注册</string>
     <string name="act_cloud_sync_test_user_login">用户登入</string>
     <string name="act_cloud_sync_test_user_logout">用户登出</string>
@@ -45,5 +45,19 @@
     <string name="act_main_cloud_sync_test">云同步测试</string>
     <string name="act_cloud_sync_test_check_network">检测网络状态</string>
     <string name="btn_achartengine_test">画图引擎测试</string>
+	<string name="act_iRcd_txt_startTitle">开始时间</string>
+    <string name="act_iRcd_txt_endTitle">结束时间</string>
+    <string name="act_iRcd_txt_startTime">00：00</string>
+    <string name="act_iRcd_txt_endTime">00：00</string>
+    <string name="act_iRcd_btn_setTime">设置</string>
+    <string name="str_act_dosth_txt_time">00 : 00 : 00</string>
+    <string name="str_act_dosth_btn_start">开始</string>
+    <string name="str_act_dosth_btn_complete">完成</string>
+    <string name="act_regst_txtvw_name">用户名</string>
+    <string name="act_regst_txtvw_pswd1">密    码</string>
+    <string name="act_regst_txtvw_pswd2">确    认</string>
+    <string name="act_regst_txtvw_email">邮    箱</string>
+    <string name="act_regst_btn_register">注册</string>
+    <string name="act_regst_btn_back">返回</string>
 
 </resources>

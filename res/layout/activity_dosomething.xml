@@ -4,23 +4,50 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/str_act_dosth_txtvw_title"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Button
         android:id="@+id/act_doSth_btn_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:text="@string/act_current_btn_back" />
 
-    <TextView
-        android:id="@+id/textView1"
+    <Button
+        android:id="@+id/act_doSth_btn_finish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:text="@string/act_iWantToDo_txtvw_title"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_alignLeft="@+id/act_doSth_btn_start"
+        android:layout_below="@+id/act_doSth_btn_start"
+        android:layout_marginTop="32dp"
+        android:text="@string/str_act_dosth_btn_complete" />
+
+    <TextView
+        android:id="@+id/act_doSth_txt_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/act_doSth_btn_back"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="115dp"
+        android:text="@string/str_act_dosth_txt_time"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="50sp" />
+
+    <Button
+        android:id="@+id/act_doSth_btn_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/act_doSth_txt_time"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="41dp"
+        android:text="@string/str_act_dosth_btn_start" />
 
 </RelativeLayout>

@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/yourcd_bg"
     android:orientation="vertical" >
 
     <Button
@@ -45,15 +46,15 @@
             android:layout_height="wrap_content" />
         
         <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/linearLayout2"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:orientation="horizontal"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:paddingTop="4dp" >
+        	xmlns:android="http://schemas.android.com/apk/res/android"
+        	android:id="@+id/linearLayout2"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_alignParentLeft="true"
+        	android:orientation="horizontal"
+        	android:paddingLeft="12dp"
+        	android:paddingRight="12dp"
+        	android:paddingTop="4dp" >
 
         <com.calm.scrollwidget.WheelView
             android:id="@+id/act_youRcd_wheel_fatherType"

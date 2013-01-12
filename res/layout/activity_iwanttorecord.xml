@@ -3,24 +3,147 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-
-
-
     <Button
-        android:id="@+id/act_iRcd_btn_back"
+        android:id="@+id/act_iRcd_btn_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:text="@string/act_current_btn_back" />
+        android:text="@string/act_youRcrd_btn_save" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/act_iRcd_txt_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:text="@string/act_iRcd_txtview_title"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/act_iRcd_btn_save"
+            android:layout_centerHorizontal="true"
+            android:padding="10dp"
+            android:orientation="vertical" >
+            
+            <TableLayout
+  	        	android:layout_width="match_parent"
+            	android:layout_height="wrap_content" >
+
+            <TableRow
+                android:id="@+id/act_iRcd_txt_start_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/act_iRcd_btn_start_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/act_iRcd_txt_startTitle"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <TextView
+                    android:id="@+id/act_iRcd_txt_startTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/act_iRcd_txt_startTime"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <Button
+                    android:id="@+id/act_iRcd_btn_setStart"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/act_iRcd_btn_setTime" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/act_iRcd_txt_end_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/act_iRcd_txt_endTitle"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <TextView
+                    android:id="@+id/act_iRcd_txt_endTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/act_iRcd_txt_endTime"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <Button
+                    android:id="@+id/act_iRcd_btn_setEnd"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/act_iRcd_btn_setTime" />
+
+            </TableRow>
+        </TableLayout>
+
+            <TextView
+                android:id="@+id/act_iRcd_txt_effc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/act_youRcrd_txtvw_effc"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <RatingBar
+                android:id="@+id/act_iRcrd_rtBar_effc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/act_iRcd_txt_mood"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/act_youRcrd_txtvw_mood"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <RatingBar
+                android:id="@+id/act_iRcrd_rtBar_mood"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+               	android:layout_alignParentLeft="true"
+                android:orientation="horizontal"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="4dp" >
+
+                <com.calm.scrollwidget.WheelView
+                    android:id="@+id/act_iRcd_wheel_fatherType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <com.calm.scrollwidget.WheelView
+                    android:id="@+id/act_iRcd_wheel_subType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1.5" />
+            </LinearLayout>
+        </LinearLayout>
 
 </RelativeLayout>

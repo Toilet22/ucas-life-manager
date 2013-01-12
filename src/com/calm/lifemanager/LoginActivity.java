@@ -1,8 +1,12 @@
 package com.calm.lifemanager;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -86,7 +90,29 @@ public class LoginActivity extends Activity {
 	        btn_login.setOnClickListener(new Button.OnClickListener(){
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					
+					new Thread() {
+						public void run() {
+							// 获得用户名和密码
+							String usernanme = edt_name.getText().toString();
+							String password = edt_password.getText().toString();
+							
+							Map<String, String> loginUser = new HashMap<String, String>();
+			        	    loginUser.put("username", usernanme);
+			        	    loginUser.put("password", password);
+			        	    
+			        	    String retStr = null;
+			        	    try {
+								retStr = NetToolUtil.sendPostRequest(NetToolUtil.accountLoginUrl, loginUser, "utf-8");
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+			        	    
+			        	    if(retStr != null) {
+			        	    	Log.i("User Login","result:" + retStr);
+			        	    }
+						}
+					}.start();
 				}       	
 	        });
 	        

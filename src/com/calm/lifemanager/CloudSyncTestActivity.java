@@ -60,7 +60,7 @@ public class CloudSyncTestActivity extends Activity {
 							}
 			        	    
 			        	    if(retStr != null) {
-			        	    	Log.i("User Login","result:" + retStr);
+			        	    	Log.i("User Registration","result:" + retStr);
 			        	    }
 		        	     
 //			        	     String newUser = null;

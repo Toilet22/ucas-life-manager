@@ -3,6 +3,9 @@ package com.calm.lifemanager;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -111,6 +114,40 @@ public class LoginActivity extends Activity {
 			        	    if(retStr != null) {
 			        	    	Log.i("User Login","result:" + retStr);
 			        	    }
+			        	    
+			        	    JSONObject retJson = new JSONObject();
+			        	    try {
+								retJson = new JSONObject(retStr);
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+			        	    
+			        	    String message = null;
+			        	    try {
+								message = retJson.getString("message");
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+			        	    
+			        	    int status = 100;
+			        	    try {
+								status = retJson.getInt("status");
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+			        	    
+			        	    if(status == 0) {
+			        	    	
+			        	    }
+			        	    else {
+			        	    	
+			        	    }
+			        	    
+			        	    Log.i("User Login","Return status is: " + status);
+		        	    	Log.i("User Login","Return message is: " + message);
 						}
 					}.start();
 				}       	

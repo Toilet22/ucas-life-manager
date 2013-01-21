@@ -70,6 +70,10 @@ public class NetToolUtil {
     public static final String todolistPullUrl = serverUrl + "/userdata/todolist/pull";
     public static final String todolistPushUrl = serverUrl + "/userdata/todolist/push";
     
+    public static final String todolistPushUrlJson = serverUrl + "/userdata/todolist/push/json";
+    
+    public static final String todolistPushUrlTestJson = serverUrl + "/test_json";
+    
     public static final String wishlistPullUrl = serverUrl + "/userdata/wishlist/pull";
     public static final String wishlistPushUrl = serverUrl + "/userdata/wishlist/push";
     

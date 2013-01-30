@@ -499,8 +499,8 @@ public class NetToolUtil {
         byte[] entitydata = sb.toString().getBytes();
         URL url = new URL(urlPath);  
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
-        conn.setRequestMethod("POST");  
-        conn.setConnectTimeout(TIMEOUT);  
+        conn.setRequestMethod("POST");
+        conn.setConnectTimeout(TIMEOUT);
         
         // ÉèÖÃCookie
         if(sessionValue !=null && sessionValue.length() > 0) {

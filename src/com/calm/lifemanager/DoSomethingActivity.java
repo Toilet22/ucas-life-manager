@@ -31,8 +31,9 @@ public class DoSomethingActivity extends Activity {
         txt_time.setTypeface(typeFace);
         txt_time.setText("   00 : 00 : 00   ");
 		/*
-		 * ¿ªÊ¼¼ÆÊ±
+		 * ï¿½ï¿½Ê¼ï¿½ï¿½Ê±
 		 */		
+		Log.v("Toilet", "DoSth: before Timer");
 		final Timer timer = new Timer();
 		final Handler handler = new Handler(){
 			public void handleMessage(Message msg){  
@@ -81,7 +82,7 @@ public class DoSomethingActivity extends Activity {
 		});
 		
 		/*
-		 * ·µ»Ø
+		 * ï¿½ï¿½ï¿½ï¿½
 		 */
 		btn_back = (Button)findViewById(R.id.act_doSth_btn_back);
 		btn_back.setOnClickListener(new Button.OnClickListener(){

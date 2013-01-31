@@ -33,8 +33,8 @@ public class LoginActivity extends Activity {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.activity_login);
 	        
-	        remember = true; 
-	        autolog = true;	
+	        remember = true; //?????????????????????????????????????
+	        autolog = true;	//????????????????????????????????????
 
 	        edt_name = (EditText)findViewById(R.id.act_login_name);
 	        edt_password = (EditText)findViewById(R.id.act_login_pswd);
@@ -159,6 +159,7 @@ public class LoginActivity extends Activity {
 	        btn_register = (Button)findViewById(R.id.act_login_register);
 	        btn_register.setOnClickListener(new Button.OnClickListener(){
 				public void onClick(View v) {
+					Log.v("Toilet", "btn_register pushed.");
 					Intent iRegst = new Intent(LoginActivity.this, RegisterActivity.class);
 					startActivity(iRegst);
 					LoginActivity.this.finish();

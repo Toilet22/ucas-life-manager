@@ -15,6 +15,11 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <receiver android:name=".TimeToRecordBroadcastReceiver" android:process=":remote" />
+        <receiver android:name=".bootStarter" >
+            <intent-filter >
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main" >

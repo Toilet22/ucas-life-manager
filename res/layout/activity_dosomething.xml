@@ -2,16 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/dosth_bg"
     android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/str_act_dosth_txtvw_title"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Button
         android:id="@+id/act_doSth_btn_back"
@@ -19,35 +11,36 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:text="@string/act_current_btn_back" />
+        android:layout_marginTop="24dp"
+        android:background="@drawable/current_back" />
 
-    <Button
-        android:id="@+id/act_doSth_btn_finish"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/act_doSth_btn_start"
-        android:layout_below="@+id/act_doSth_btn_start"
-        android:layout_marginTop="32dp"
-        android:text="@string/str_act_dosth_btn_complete" />
-
-    <TextView
-        android:id="@+id/act_doSth_txt_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="30dp"
         android:layout_below="@+id/act_doSth_btn_back"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="115dp"
-        android:text="@string/str_act_dosth_txt_time"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="50sp" />
+        android:background="@drawable/dosth_clock_bg"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/act_doSth_txt_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_act_dosth_txt_time"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="60sp" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/act_doSth_btn_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/act_doSth_txt_time"
+        android:layout_below="@+id/linearLayout1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="41dp"
-        android:text="@string/str_act_dosth_btn_start" />
+        android:layout_marginTop="20dp"
+        android:background="@drawable/countdown_off_btn" />
 
 </RelativeLayout>

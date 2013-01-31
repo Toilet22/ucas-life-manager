@@ -41,21 +41,18 @@ public class MainActivity extends Activity {
          * UI代码：苏轶伦
          ***********************************************************************/
         //声明按钮
-        //Log.i("Toilet", "Start Initial Buttons");
-        btn_login = (Button)findViewById(R.id.button5_login);
-        btn_yesterday = (Button)findViewById(R.id.button1_yester);
-        btn_tomorrow = (Button)findViewById(R.id.button3_tomorrow);
+        Log.v("Toilet", "start init btns");
         
         //btn_cloud_sync_test = (Button)findViewById(R.id.btn_cloud_sync_test);
         //btn_achartengine_test = (Button)findViewById(R.id.btn_achartengine_test);
         
         		
         //进入设置界面
-        //Log.i("Toilet", "before push btn_settings");
+        Log.v("Toilet", "before push any btn");
         btn_settings = (Button)findViewById(R.id.button4_settings);
         btn_settings.setOnClickListener(new Button.OnClickListener(){
 			public void onClick(View v) {
-		        Log.v("Toilet", "push btn_settings");
+		        Log.v("Toilet", "btn_settings pushed");
 				Intent itnt_settings = new Intent(MainActivity.this, SettingsActivity.class);
 				startActivity(itnt_settings);
 				//MainActivity.this.finish();
@@ -69,8 +66,9 @@ public class MainActivity extends Activity {
         btn_yesterday.setOnClickListener(new Button.OnClickListener(){
 			public void onClick(View v) {
 				// back to main
-				Intent iMain = new Intent(MainActivity.this, HistoryActivity.class);
-				startActivity(iMain);
+		        Log.v("Toilet", "btn_yesterday pushed");
+				Intent iHistry = new Intent(MainActivity.this, HistoryActivity.class);
+				startActivity(iHistry);
 			}
 		});
         
@@ -79,8 +77,9 @@ public class MainActivity extends Activity {
         btn_today.setOnClickListener(new Button.OnClickListener(){
 			public void onClick(View v) {
 				// back to main
-				Intent iMain = new Intent(MainActivity.this, CurrentActivity.class);
-				startActivity(iMain);
+		        Log.v("Toilet", "btn_current pushed");
+				Intent iCurr = new Intent(MainActivity.this, CurrentActivity.class);
+				startActivity(iCurr);
 			}
 		});
         
@@ -89,8 +88,9 @@ public class MainActivity extends Activity {
         btn_tomorrow.setOnClickListener(new Button.OnClickListener(){
 			public void onClick(View v) {
 				// back to main
-				Intent iMain = new Intent(MainActivity.this, FutureActivity.class);
-				startActivity(iMain);
+		        Log.v("Toilet", "btn_tomorrow pushed");
+				Intent iFuture = new Intent(MainActivity.this, FutureActivity.class);
+				startActivity(iFuture);
 			}
 		});
         

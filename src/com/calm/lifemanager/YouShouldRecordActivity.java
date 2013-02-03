@@ -8,7 +8,9 @@ import com.calm.scrollwidget.*;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,12 +23,27 @@ public class YouShouldRecordActivity extends Activity {
 	Button btn_save;
 	float rt_effc;
 	float rt_mood;
+	//preferences记录
+	SharedPreferences sharedPref;
+	Boolean isRingOn;
+	Boolean isVibrationOn;
+	int interval;
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		Log.v("Toilet","YouRecord: before setContentView.");
 		setContentView(R.layout.activity_youshouldrecord);
-
+		
+		/*
+		 * 读取preferences
+		 */
+		sharedPref = getSharedPreferences(getString(R.string.curr_usr_name), 
+				Context.MODE_PRIVATE);
+		isRingOn = sharedPref.getBoolean("isRingOn", true);
+		isVibrationOn = sharedPref.getBoolean("isVibrationOn", true);
+		interval = sharedPref.getInt("interval", 30);
+		
+		//获得控件
 		Log.v("Toilet","YouRecord: before find RatingBar.");
 		rtBar_effc = (RatingBar)findViewById(R.id.act_youRcrd_rtBar_effc);
 		rtBar_mood = (RatingBar)findViewById(R.id.act_youRcrd_rtBar_mood);
@@ -92,8 +109,7 @@ public class YouShouldRecordActivity extends Activity {
 	            c.setTimeInMillis(System.currentTimeMillis()); 
 	            //开启定时服务
 	            //???????????interval?????????????????
-	            int interval = 3000;
-				am.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis() + interval, sender); 
+				am.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis() + interval*3000, sender); 
 				// 退出
 				YouShouldRecordActivity.this.finish();
 			}

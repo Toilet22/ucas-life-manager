@@ -1,6 +1,7 @@
 <resources>
 
     <string name="app_name">LifeManager</string>
+    <string name="curr_usr_name">Default</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
@@ -16,12 +17,29 @@
     <string name="act_main_btn_yesterday">昨天的我</string>
     <string name="act_main_btn_today">今天的我</string>
     <string name="act_main_btn_tomorrow">明天的我</string>
-    <string name="act_settings_txtvw_interval">设定时间间隔</string>
-    <string name="act_settings_txtvw_started">定时记录已开启</string>
+    <string name="act_settings_txtvw_regularRcd">定时记录功能</string>
+    <string name="act_settings_txtvw_interval">时间间隔</string>
+    <string name="act_settings_txtvw_time">分钟</string>
+    <string name="act_settings_txtvw_initInterval">30</string>
+    <string name="act_settings_dlg_interval_title">请输入1～300的整数</string>
+    <string name="act_settings_dlg_posBtn">确定</string>
+    <string name="act_settings_dlg_negBtn">取消</string>
+    <string name="act_settings_txtvw_started">是否开启</string>
     <string name="act_settings_btn_closeLog">关闭定时记录</string>
     <string name="act_settings_txtvw_closed">定时记录已关闭</string>
     <string name="act_settings_btn_startLog">开启定时记录</string>
+    <string name="act_settings_txtvw_rcdAlarm">事件提醒方式</string>
+    <string name="act_settings_txtvw_ringtone">手机铃声</string>
+    <string name="act_settings_txtvw_vibration">手机震动</string>
     <string name="act_settings_btn_interval">设定时间间隔</string>
+    <string name="act_settings_toast_ringOn">铃声提醒已开启</string>
+    <string name="act_settings_toast_ringOff">铃声提醒已关闭</string>
+    <string name="act_settings_toast_vibrationOn">震动提醒已开启</string>
+    <string name="act_settings_toast_vibrationOff">震动提醒已关闭</string>
+    <string name="act_settings_toast_rglRcdOn">定时提醒已开启</string>
+    <string name="act_settings_toast_rglRcdOff">定时提醒已关闭</string>
+    <string name="act_settings_toast_intervalChanged">时间间隔已更改，重新开始计时</string>
+    <string name="act_settings_toast_intervalFailed">定时记录功能关闭，时间间隔已更改</string>
     <string name="act_youRcrd_btn_save">保存</string>
     <string name="act_youRcrd_txtvw_mood">心情指数</string>
     <string name="act_youRcrd_txtvw_effc">效率指数</string>

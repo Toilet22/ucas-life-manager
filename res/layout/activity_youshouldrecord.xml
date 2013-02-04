@@ -7,11 +7,11 @@
 
     <Button
         android:id="@+id/act_youRcd_btn_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:text="@string/act_youRcrd_btn_save" />
+        android:background="@drawable/save_btn" />
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/act_youRcd_btn_save"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
         android:orientation="vertical" >
 
         <TextView
@@ -26,54 +27,104 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/act_youRcrd_txtvw_effc"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <RatingBar
             android:id="@+id/act_youRcrd_rtBar_effc"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:minHeight="50dp" />
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:text="@string/act_youRcrd_txtvw_mood"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <RatingBar
-            android:id="@+id/act_youRcrd_rtBar_mood"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
         
-        <LinearLayout
-        	xmlns:android="http://schemas.android.com/apk/res/android"
-        	android:id="@+id/linearLayout2"
+		<LinearLayout
         	android:layout_width="match_parent"
         	android:layout_height="wrap_content"
-        	android:layout_alignParentLeft="true"
-        	android:orientation="horizontal"
-        	android:paddingLeft="12dp"
-        	android:paddingRight="12dp"
-        	android:paddingTop="4dp" >
+        	android:gravity = "center_horizontal"
+        	android:orientation="vertical" >
 
-        <com.calm.scrollwidget.WheelView
-            android:id="@+id/act_youRcd_wheel_fatherType"
-            android:layout_width="wrap_content"
+        	<LinearLayout
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="wrap_content"
+        	    android:layout_marginBottom="5dp"
+        	    android:orientation="horizontal" >
+
+        		<Button
+        		    android:id="@+id/act_youRcd_btn_excited"
+        		    style="?android:attr/buttonStyleSmall"
+        		    android:layout_width="wrap_content"
+        		    android:layout_height="wrap_content"
+        		    android:background="@drawable/excited" />
+
+        		<Button
+        		    android:id="@+id/act_youRcd_btn_happy"
+        		    style="?android:attr/buttonStyleSmall"
+        		    android:layout_width="wrap_content"
+        		    android:layout_height="wrap_content"
+        		    android:background="@drawable/happy" />
+        		
+        		<Button
+        		    android:id="@+id/act_youRcd_btn_ok"
+        		    style="?android:attr/buttonStyleSmall"
+        		    android:layout_width="wrap_content"
+        		    android:layout_height="wrap_content"
+        		    android:background="@drawable/ok" />
+        		
+        		<Button
+        		    android:id="@+id/act_youRcd_btn_sad"
+        		    style="?android:attr/buttonStyleSmall"
+        		    android:layout_width="wrap_content"
+        		    android:layout_height="wrap_content"
+        		    android:background="@drawable/sad" />
+        		
+        		<Button
+        		    android:id="@+id/act_youRcd_btn_angry"
+        		    style="?android:attr/buttonStyleSmall"
+        		    android:layout_width="wrap_content"
+        		    android:layout_height="wrap_content"
+        		    android:background="@drawable/angry" />
+        		        		
+        	</LinearLayout>
+        	
+        </LinearLayout>
+
+		<TextView
+		    android:id="@+id/textView3"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/act_youRcrd_txtvw_type"
+		    android:textAppearance="?android:attr/textAppearanceMedium" />
+		
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_alignParentLeft="true"
+            android:orientation="horizontal"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="4dp" >
 
+            <com.calm.scrollwidget.WheelView
+                android:id="@+id/act_youRcd_wheel_fatherType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5" />
 
-        <com.calm.scrollwidget.WheelView
-            android:id="@+id/act_youRcd_wheel_subType"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1.5" />
-
+            <com.calm.scrollwidget.WheelView
+                android:id="@+id/act_youRcd_wheel_subType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1" />
+        </LinearLayout>
     </LinearLayout>
-    
-    </LinearLayout>
-
-    
 
 </RelativeLayout>

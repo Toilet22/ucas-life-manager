@@ -54,7 +54,9 @@ public class SettingsActivity extends Activity {
 		Log.v("Toilet", "SettingActivity: after setContentView.");
 		
 		Log.v("Toilet", "SettingActivity: before reading the database.");
-		// 读取现有preferences。并完成界面初始化
+		/******************************************
+		 * 读取现有preferences。用以完成界面初始化
+		 *****************************************/
 		sharedPref = getSharedPreferences(
 		        getString(R.string.curr_usr_name), Context.MODE_PRIVATE);
 		if(sharedPref.contains("isLogStarted")){

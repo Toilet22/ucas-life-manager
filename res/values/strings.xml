@@ -43,6 +43,7 @@
     <string name="act_youRcrd_btn_save">保存</string>
     <string name="act_youRcrd_txtvw_mood">心情指数</string>
     <string name="act_youRcrd_txtvw_effc">效率指数</string>
+    <string name="act_youRcrd_txtvw_type">类别选择</string>
     <string name="act_current_btn_adjustMood">让我开心一下</string>
     <string name="act_current_btn_startToDo">干活儿倒计时</string>
     <string name="act_current_btn_iWantToRcd">我要记录时间</string>

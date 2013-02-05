@@ -57,6 +57,7 @@
         <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".TodaySummaryActivity"></activity>
         <activity android:name=".TomorrowPlanActivity"></activity>
+        <activity android:name=".UserTourActivity"></activity>
         
     </application>
 

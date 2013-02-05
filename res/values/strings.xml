@@ -82,5 +82,9 @@
     <string name="act_login_txtvw_pswd">密码</string>
     <string name="act_login_txtvw_remember">保存密码</string>
     <string name="act_login_txtvw_autolog">自动登录</string>
+    <string name="splash">This is a Splash!</string>
+    <string name="context_generic">This is a context!</string>
+    <string name="act_tomorrow_plan_tomorrow_event">明日事项</string>
+    <string name="act_tomorrow_plan_todo_event">待办事项</string>
     
 </resources>

@@ -21,7 +21,7 @@
             </intent-filter>
         </receiver>
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivity"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,6 +30,7 @@
             </intent-filter>
         </activity>
         
+        <activity android:name=".MainActivity"></activity>
         <activity android:name=".TimeHistoryActivity"></activity>
         <activity android:name=".MoodHistoryActivity"></activity>
         <activity android:name=".DaylyTimeHistoryActivity"></activity>

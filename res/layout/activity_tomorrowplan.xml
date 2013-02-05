@@ -1,8 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/tomorrow_plan_bg"
     android:orientation="vertical" >
     
+    <RelativeLayout
+        android:id="@+id/tomorrow_event_list"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="98dp" >
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/textView_tomorrow_event"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/act_tomorrow_plan_tomorrow_event" />
+
+        <ListView
+            android:id="@+id/listView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
+
+    </RelativeLayout>
+
+    <TabHost
+        android:id="@android:id/tabhost"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="0dp"
+        android:foregroundGravity="bottom" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@android:id/tabcontent" >
+            </TabWidget>
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/textView_todo_event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/act_tomorrow_plan_todo_event" />
+
+        </RelativeLayout>
+    </TabHost>
+
+</RelativeLayout>

@@ -15,7 +15,7 @@ public class TodaySummaryActivity extends TabActivity  implements TabHost.TabCon
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_future);
+		setContentView(R.layout.activity_todaysummary);
 		
 		TabHost tabHost = getTabHost();
 		
@@ -58,7 +58,7 @@ public class TodaySummaryActivity extends TabActivity  implements TabHost.TabCon
 		
 		tabHost.setCurrentTab(0);
 		
-		//添加Tab监听事件  
+		//添加Tab监听事件 
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {  
               
             public void onTabChanged(String tabId) {

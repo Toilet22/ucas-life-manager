@@ -53,21 +53,35 @@
             android:text="@string/act_current_btn_iWantToRcd" />
 
         <Button
-            android:id="@+id/act_current_btn_countDown"
+            android:id="@+id/act_curr_btn_history"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="@string/act_current_btn_startToDo" />
+            android:text="@string/act_current_btn_history" />
+
+        <Button
+            android:id="@+id/act_curr_btn_future"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="@string/act_current_btn_future" />
 
     </LinearLayout>
 
     <Button
-        android:id="@+id/act_curr_btn_back"
-        style="?android:attr/buttonStyleSmall"
+        android:id="@+id/act_curr_btn_settings"
         android:layout_width="60dp"
         android:layout_height="30dp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="33dp"
-        android:background="@drawable/current_back" />
+        android:layout_marginTop="20dp"
+        android:background="@drawable/main_setting" />
+
+    <Button
+        android:id="@+id/act_curr_btn_login"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:layout_alignBaseline="@+id/act_curr_btn_settings"
+        android:layout_alignBottom="@+id/act_curr_btn_settings"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/main_login" />
 
 </RelativeLayout>

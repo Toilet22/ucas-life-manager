@@ -19,13 +19,14 @@ public class WeeklyMoodHistoryActivity extends TabActivity {
         TabView moodDistributeView = null;
 		//moodDistributeView = new TabView(this, R.drawable.btn_efficient,R.drawable.btn_efficient);
 		moodDistributeView = new TabView(this);
-		moodDistributeView.setBackground(this.getResources().getDrawable(R.drawable.btn_efficient));
+		//moodDistributeView.setBackground(this.getResources().getDrawable(R.drawable.btn_efficient));
+		moodDistributeView.setBackgroundResource(R.drawable.btn_efficient);
 
 		TabView detailsView = null;
 		//detailsView = new TabView(this, R.drawable.btn_sheet,R.drawable.btn_sheet);
 		detailsView = new TabView(this);
-		detailsView.setBackground(this.getResources().getDrawable(R.drawable.btn_sheet));
-		
+		//detailsView.setBackground(this.getResources().getDrawable(R.drawable.btn_sheet));
+		detailsView.setBackgroundResource(R.drawable.btn_sheet);
         
 		tabHost.addTab(tabHost.newTabSpec("tab1")
                 .setIndicator(moodDistributeView)     

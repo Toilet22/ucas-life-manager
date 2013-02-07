@@ -26,7 +26,8 @@ public class FutureActivity extends TabActivity {
 		
 		// Todolist
 		todolistView = new TabView(this);
-		todolistView.setBackground(this.getResources().getDrawable(R.drawable.todolist_future));
+		//todolistView.setBackground(this.getResources().getDrawable(R.drawable.todolist_future));
+		todolistView.setBackgroundResource(R.drawable.todolist_future);
 		
 		Intent todolistIntent = new Intent(this,TodolistActivity.class);
 		
@@ -40,7 +41,8 @@ public class FutureActivity extends TabActivity {
 		// Collector
         TabView collectorView = null;
         collectorView = new TabView(this);
-        collectorView.setBackground(this.getResources().getDrawable(R.drawable.collector_future));
+        //collectorView.setBackground(this.getResources().getDrawable(R.drawable.collector_future));
+        collectorView.setBackgroundResource(R.drawable.collector_future);
         
         Intent collectorIntent = new Intent(this, CollectorActivity.class);
         tabHost.addTab(tabHost.newTabSpec("bottom_tab2")     
@@ -51,7 +53,8 @@ public class FutureActivity extends TabActivity {
         // Wishlist
         TabView wishlistView = null;
         wishlistView = new TabView(this);
-        wishlistView.setBackground(this.getResources().getDrawable(R.drawable.wishlist_future));
+        //wishlistView.setBackground(this.getResources().getDrawable(R.drawable.wishlist_future));
+        wishlistView.setBackgroundResource(R.drawable.wishlist_future);
         
         Intent wishlistIntent = new Intent(this, WishlistActivity.class);
         tabHost.addTab(tabHost.newTabSpec("bottom_tab3")     

@@ -48,7 +48,6 @@
         <activity android:name=".HistoryActivity"></activity>
         <activity android:name=".CurrentActivity"></activity>
         <activity android:name=".FutureActivity"></activity>
-        <activity android:name=".CloudSyncTestActivity"></activity>
         <activity android:name=".ChartEngineTestActivity"></activity>
         <activity android:name=".TodolistActivity"></activity>
         <activity android:name=".CollectorActivity"></activity>

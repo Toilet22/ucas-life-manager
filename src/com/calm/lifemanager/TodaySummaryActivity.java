@@ -28,7 +28,8 @@ public class TodaySummaryActivity extends TabActivity  implements TabHost.TabCon
 		
 		// Time
 		timeView = new TabView(this);
-		timeView.setBackground(this.getResources().getDrawable(R.drawable.today_summary_time_btn));
+		//timeView.setBackground(this.getResources().getDrawable(R.drawable.today_summary_time_btn));
+		timeView.setBackgroundResource(R.drawable.today_summary_time_btn);
 		
         tabHost.addTab(tabHost.newTabSpec("bottom_tab1")
                 .setIndicator(timeView)
@@ -40,7 +41,8 @@ public class TodaySummaryActivity extends TabActivity  implements TabHost.TabCon
 		// Mood
         TabView moodView = null;
         moodView = new TabView(this);
-        moodView.setBackground(this.getResources().getDrawable(R.drawable.today_summary_mood_btn));
+        //moodView.setBackground(this.getResources().getDrawable(R.drawable.today_summary_mood_btn));
+        moodView.setBackgroundResource(R.drawable.today_summary_mood_btn);
         
         tabHost.addTab(tabHost.newTabSpec("bottom_tab2")     
                 .setIndicator(moodView)
@@ -50,7 +52,8 @@ public class TodaySummaryActivity extends TabActivity  implements TabHost.TabCon
         // Task
         TabView taskView = null;
         taskView = new TabView(this);
-        taskView.setBackground(this.getResources().getDrawable(R.drawable.today_summary_task_btn));
+        //taskView.setBackground(this.getResources().getDrawable(R.drawable.today_summary_task_btn));
+        taskView.setBackgroundResource(R.drawable.today_summary_task_btn);
         
         tabHost.addTab(tabHost.newTabSpec("bottom_tab3")     
                 .setIndicator(taskView)

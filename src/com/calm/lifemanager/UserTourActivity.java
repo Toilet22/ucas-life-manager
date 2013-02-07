@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -112,7 +113,10 @@ public class UserTourActivity extends Activity implements OnClickListener,
 		case MotionEvent.ACTION_MOVE:
 			if ((lastX - event.getX()) > 100
 					&& (currentIndex == views.size() - 1)) {
-				Toast.makeText(this, "在此处添加界面跳转代码哦！", Toast.LENGTH_LONG).show();
+				//Toast.makeText(this, "在此处添加界面跳转代码哦！", Toast.LENGTH_LONG).show();
+				Intent nextIntent = new Intent();
+				nextIntent.setClass(UserTourActivity.this, MainActivity.class);
+				this.startActivity(nextIntent);
 				this.finish();
 			}
 			break;

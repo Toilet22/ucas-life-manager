@@ -23,36 +23,39 @@ public class TomorrowPlanActivity extends TabActivity implements TabHost.TabCont
         //设置其标签和图标（setIndicator）     
         //设置内容（setContent）     
 
-		TabView timeView = null;
+		TabView todolistView = null;
 		
-		// Time
-		timeView = new TabView(this);
-		timeView.setBackground(this.getResources().getDrawable(R.drawable.today_summary_time_btn));
+		// Todolist
+		todolistView = new TabView(this);
+		//todolistView.setBackground(this.getResources().getDrawable(R.drawable.tomorrow_plan_todo_btn));
+		todolistView.setBackgroundResource(R.drawable.tomorrow_plan_todo_btn);
 		
         tabHost.addTab(tabHost.newTabSpec("bottom_tab1")
-                .setIndicator(timeView)
-        		//.setIndicator("时间",getResources().getDrawable(R.drawable.btn_time_cost))
+                .setIndicator(todolistView)
+        		//.setIndicator("时间",getResources().getDrawable(R.drawable.tomorrow_plan_todo_btn))
                 .setContent(this));
         
      
 		
-		// Mood
-        TabView moodView = null;
-        moodView = new TabView(this);
-        moodView.setBackground(this.getResources().getDrawable(R.drawable.today_summary_mood_btn));
+        // Collector
+        TabView collectorView = null;
+        collectorView = new TabView(this);
+        //collectorView.setBackground(this.getResources().getDrawable(R.drawable.tomorrow_plan_collect_btn));
+        collectorView.setBackgroundResource(R.drawable.tomorrow_plan_collect_btn);
         
         tabHost.addTab(tabHost.newTabSpec("bottom_tab2")     
-                .setIndicator(moodView)
+                .setIndicator(collectorView)
                 .setContent(this));
         
       
-        // Task
-        TabView taskView = null;
-        taskView = new TabView(this);
-        taskView.setBackground(this.getResources().getDrawable(R.drawable.today_summary_task_btn));
+        // Wishlist
+        TabView wishlistView = null;
+        wishlistView = new TabView(this);
+        //wishlistView.setBackground(this.getResources().getDrawable(R.drawable.tomorrow_plan_wish_btn));
+        wishlistView.setBackgroundResource(R.drawable.tomorrow_plan_wish_btn);
         
         tabHost.addTab(tabHost.newTabSpec("bottom_tab3")     
-                .setIndicator(taskView)
+                .setIndicator(wishlistView)
                 .setContent(this));
 		
 		tabHost.setCurrentTab(0);

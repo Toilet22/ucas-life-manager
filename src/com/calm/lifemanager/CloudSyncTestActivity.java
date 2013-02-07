@@ -274,8 +274,8 @@ public class CloudSyncTestActivity extends Activity {
 							//retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrl, todolistToPush, "utf-8");
 		        	    	//retStr = NetToolUtil.sendTxt(NetToolUtil.todolistPushUrl, todolistToPush.toString(), "utf-8");
 							//retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrl, jsonString, "utf-8");
-		        	    	retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrlJson, todolistToPush, "utf-8");
-		        	    	//retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrlTestJson, testJson, "utf-8");
+		        	    	//retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrlJson, todolistToPush, "utf-8");
+		        	    	retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrlTestJson, todolistToPush, "utf-8");
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

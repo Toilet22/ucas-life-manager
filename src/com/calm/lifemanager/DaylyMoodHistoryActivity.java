@@ -90,9 +90,9 @@ public class DaylyMoodHistoryActivity extends TabActivity {
         imgButtonBack.setOnClickListener(new Button.OnClickListener() {
         	public void onClick(View v) {
         		Log.i("DailyMood","Back Button pushed");
-        		Intent backIntent = new Intent();
-        		backIntent.setClass(DaylyMoodHistoryActivity.this,MainActivity.class);
-        		startActivity(backIntent);
+        		//Intent backIntent = new Intent();
+        		//backIntent.setClass(DaylyMoodHistoryActivity.this,MainActivity.class);
+        		//startActivity(backIntent);
         		DaylyMoodHistoryActivity.this.finish();
         	}
         });

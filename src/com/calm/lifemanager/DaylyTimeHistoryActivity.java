@@ -118,9 +118,9 @@ public class DaylyTimeHistoryActivity extends TabActivity {
 	        imgButtonBack.setOnClickListener(new Button.OnClickListener() {
 	        	public void onClick(View v) {
 	        		Log.i("DailyTime","Back Button pushed");
-	        		Intent backIntent = new Intent();
-	        		backIntent.setClass(DaylyTimeHistoryActivity.this,MainActivity.class);
-	        		startActivity(backIntent);
+	        		//Intent backIntent = new Intent();
+	        		//backIntent.setClass(DaylyTimeHistoryActivity.this,MainActivity.class);
+	        		//startActivity(backIntent);
 	        		DaylyTimeHistoryActivity.this.finish();
 	        	}
 	        });

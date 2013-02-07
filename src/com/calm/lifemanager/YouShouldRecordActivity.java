@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -13,8 +14,11 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.calm.scrollwidget.ArrayWheelAdapter;
@@ -60,12 +64,21 @@ public class YouShouldRecordActivity extends Activity {
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		/*
+		 * –›√ﬂ÷–ªΩ–—
+		 */
+		final Window win = getWindow();
+		win.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+				| WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+				//| WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+				| WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 		Log.v("Toilet","YouRecord: before setContentView.");
-		setContentView(R.layout.activity_youshouldrecord);
+		setContentView(R.layout.activity_youshouldrecord);	
 		
 		/*
 		 * ∂¡»°preferences
 		 */
+		Log.v("Toilet","YouRecord: before setContentView.");
 		sharedPref = getSharedPreferences(getString(R.string.curr_usr_name), 
 				Context.MODE_PRIVATE);
 		isRingOn = sharedPref.getBoolean("isRingOn", true);
@@ -182,7 +195,7 @@ public class YouShouldRecordActivity extends Activity {
 			}
 		});
 		
-		
+
 	}
 	
 	

@@ -74,7 +74,7 @@ public class SettingsActivity extends Activity {
 			editor.putBoolean("isVibrationOn", isVibrationOn);
 			editor.putInt("interval", interval);
 			editor.commit();
-	}
+		}
 		
 		//btn_logInterval = (Button)findViewById(R.id.button_Interval);
 		//txtvw_logInterval = (Button)findViewById(R.id.textView2_Interval);
@@ -222,28 +222,6 @@ public class SettingsActivity extends Activity {
 		});
 		
 		
-
-/*		spnr_logInterval = (Spinner)findViewById(R.id.act_settings_spn_interval);
-		//定义了一个ArrayAdapter，将datas数组与simple_spinner_item绑定  
-        //android.R.layout.simple_spinner_item是由Android提供的一种标准spinner的布局  
-        arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,intervals);  
-        //声明当控件打开时的外观：为系统提供的simple_spinner_dropdown_item   
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item );   
-        spnr_logInterval.setAdapter(arrayAdapter);  
-        //为spnr_logInterval添加选择事件监听器  
-        spnr_logInterval.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() 
-        {  
-            public void onItemSelected(AdapterView<?> parent, View view,  int position, long id) {  
-                //interval = (position+1) * 1800000;  
-                interval = (position+1) * 3000;  
-            }
-
-			public void onNothingSelected(AdapterView<?> parent) {
-			}  
-        });  
-        spnr_logInterval.setVisibility(View.VISIBLE);  
-
-*/
 		/**************************************
 		 * 是否铃声提醒
 		 **************************************/

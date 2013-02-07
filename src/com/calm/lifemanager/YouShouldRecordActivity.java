@@ -2,21 +2,24 @@ package com.calm.lifemanager;
 
 import java.util.Calendar;
 
-import com.calm.lifemanager.R;
-import com.calm.scrollwidget.*;
-
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.Toast;
+
+import com.calm.scrollwidget.ArrayWheelAdapter;
+import com.calm.scrollwidget.OnWheelChangedListener;
+import com.calm.scrollwidget.WheelView;
 
 public class YouShouldRecordActivity extends Activity {
 	RatingBar rtBar_effc;
@@ -68,6 +71,16 @@ public class YouShouldRecordActivity extends Activity {
 		isRingOn = sharedPref.getBoolean("isRingOn", true);
 		isVibrationOn = sharedPref.getBoolean("isVibrationOn", true);
 		interval = sharedPref.getInt("interval", 30);
+
+		/***************************************
+		 * 铃声和振动
+		 **************************************/
+		if(isVibrationOn){
+			Vibrator vib = (Vibrator) YouShouldRecordActivity.this.getSystemService(Service.VIBRATOR_SERVICE); 
+	        long pattern[] = {20,200,20,200,20,200,100,200,20,200,20,200};
+			vib.vibrate(pattern, -1); 
+		}
+		
 		
 		/***************************************
 		 * 效率
@@ -178,6 +191,15 @@ public class YouShouldRecordActivity extends Activity {
 	 */
 	public void onPause(){
 		super.onPause();
+		
+	}
+	
+	/*
+	 * 在此开启下一次记录的计时
+	 */
+	public void onStop(){
+		super.onStop();
+
 		// 获取记录数据
 		rt_effc = rtBar_effc.getRating();
 		//rt_mood = rtBar_mood.getRating();
@@ -185,10 +207,13 @@ public class YouShouldRecordActivity extends Activity {
 				+ subType[whl_fatherType.getCurrentItem()][whl_subType.getCurrentItem()];
 		Toast.makeText(getApplicationContext(), type, 
 				Toast.LENGTH_SHORT).show();	
+		
 		/************************************
 		 * ?????????????????????????????????
 		 * 存入数据库： 效率，心情，类别
-		 *??????????????????????????????????*/
+		 *??????????????????????????????????
+		 ***********************************/
+		
 		
 		/********************************************
 		//开启下一次计数
@@ -205,7 +230,6 @@ public class YouShouldRecordActivity extends Activity {
         c.setTimeInMillis(System.currentTimeMillis()); 
         //开启定时服务
 		am.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis() + interval*3000, sender); 
-		
 	}
 	
 }

@@ -106,7 +106,6 @@
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:orientation="horizontal"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"

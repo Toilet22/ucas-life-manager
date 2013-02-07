@@ -184,6 +184,7 @@ public class IWantToRecordActivity extends Activity {
 		whl_fatherType = (WheelView) findViewById(R.id.act_iRcd_wheel_fatherType);
         whl_fatherType.setAdapter(new ArrayWheelAdapter<String>(fatherType));
         whl_fatherType.setVisibleItems(5);
+        whl_fatherType.setCurrentItem(2);
         whl_fatherType.setCurrentItem(1);
 
         

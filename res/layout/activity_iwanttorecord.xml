@@ -173,7 +173,6 @@
                 android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
                 android:orientation="horizontal"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
@@ -181,13 +180,13 @@
 
                 <com.calm.scrollwidget.WheelView
                     android:id="@+id/act_iRcd_wheel_fatherType"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_weight="1.5" />
 
                 <com.calm.scrollwidget.WheelView
                     android:id="@+id/act_iRcd_wheel_subType"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1" />

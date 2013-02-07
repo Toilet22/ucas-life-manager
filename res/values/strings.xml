@@ -69,6 +69,7 @@
     <string name="act_iRcd_txt_startTime">00：00</string>
     <string name="act_iRcd_txt_endTime">00：00</string>
     <string name="act_iRcd_btn_setTime">设置</string>
+    <string name="act_iRcd_btn_titleTime">起止时间</string>
     <string name="str_act_dosth_txt_time">  00 : 00 : 00  </string>
     <string name="str_act_dosth_btn_start">开始</string>
     <string name="str_act_dosth_btn_complete">完成</string>

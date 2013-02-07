@@ -7,6 +7,8 @@ import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.app.TimePickerDialog;
+import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,6 +21,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.calm.scrollwidget.ArrayWheelAdapter;
@@ -34,10 +37,18 @@ public class YouShouldRecordActivity extends Activity {
 	Button btn_sad;
 	Button btn_angry;
 	Button btn_save;
+	Button btn_setStart;
+	Button btn_setEnd;
+	TextView txt_startTime;
+	TextView txt_endTime;
 	WheelView whl_fatherType;
 	WheelView whl_subType;
 	float rt_effc;
 	float rt_mood;
+	int startHour;
+	int startMin;
+	int endHour;
+	int endMin;
 	String type;
     String fatherType[] = new String[] {"学习", "工作", "社交", "娱乐", "思考", "运动"};
     String subType[][] = new String[][] {
@@ -64,21 +75,21 @@ public class YouShouldRecordActivity extends Activity {
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		/*
+		/************************************
 		 * 休眠中唤醒
-		 */
+		 ***********************************/
 		final Window win = getWindow();
 		win.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-				| WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+				//| WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
 				//| WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
 				| WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 		Log.v("Toilet","YouRecord: before setContentView.");
 		setContentView(R.layout.activity_youshouldrecord);	
 		
-		/*
+		/************************************
 		 * 读取preferences
-		 */
-		Log.v("Toilet","YouRecord: before setContentView.");
+		 ***********************************/
+		Log.v("Toilet","YouRecord: before get preferences.");
 		sharedPref = getSharedPreferences(getString(R.string.curr_usr_name), 
 				Context.MODE_PRIVATE);
 		isRingOn = sharedPref.getBoolean("isRingOn", true);
@@ -88,11 +99,69 @@ public class YouShouldRecordActivity extends Activity {
 		/***************************************
 		 * 铃声和振动
 		 **************************************/
+
+		Log.v("Toilet","YouRecord: before set vibration.");
 		if(isVibrationOn){
 			Vibrator vib = (Vibrator) YouShouldRecordActivity.this.getSystemService(Service.VIBRATOR_SERVICE); 
 	        long pattern[] = {20,200,20,200,20,200,100,200,20,200,20,200};
 			vib.vibrate(pattern, -1); 
 		}
+		
+		/***************************************
+		 * 读取开始时间并设置
+		 **************************************/
+		Log.v("Toilet","YouRecord: before get Bundle.");
+		Bundle mBundle = YouShouldRecordActivity.this.getIntent().getExtras();
+		startHour = mBundle.getInt("Hour");
+		startMin = mBundle.getInt("Minute");
+		Log.v("Toilet","YouRecord: the startHour is" + Integer.toString(startHour) +".");
+		Log.v("Toilet","YouRecord: the startMin is" + Integer.toString(startMin) +".");
+		
+		/***************************************
+		 * timePicker起止时间设置
+		 **************************************/
+		//get current time
+		Log.v("Toilet","YouRecord: before use timePicker.");
+		Calendar c = Calendar.getInstance();
+		endHour = c.get(Calendar.HOUR_OF_DAY);
+		endMin = c.get(Calendar.MINUTE);
+		// init the time;
+		txt_startTime = (TextView)findViewById(R.id.act_youRcd_txt_startTime);
+		txt_startTime.setText(Integer.toString(startHour) + ":"+Integer.toString(startMin));
+		txt_endTime = (TextView)findViewById(R.id.act_youRcd_txt_endTime);
+		txt_endTime.setText(Integer.toString(endHour) + ":"+Integer.toString(endMin));
+		
+		// set start time;
+		btn_setStart = (Button)findViewById(R.id.act_youRcd_btn_setStart);
+		btn_setStart.setOnClickListener(new Button.OnClickListener(){
+			public void onClick(View view){
+				new TimePickerDialog(YouShouldRecordActivity.this,new OnTimeSetListener(){
+					public void onTimeSet(TimePicker view,int hour,int minute)
+					{
+						//set the startTime
+						//startHour = hour;
+						//startMin = minute;
+						txt_startTime.setText(Integer.toString(startHour) + ":"+Integer.toString(startMin));
+					}
+				}, startHour, startMin, true).show();
+			}
+		});
+		
+		//set end time
+		btn_setEnd = (Button)findViewById(R.id.act_youRcd_btn_setEnd);
+		btn_setEnd.setOnClickListener(new Button.OnClickListener(){
+			public void onClick(View view){
+				new TimePickerDialog(YouShouldRecordActivity.this,new OnTimeSetListener(){
+					public void onTimeSet(TimePicker view,int hour,int minute)
+					{
+						//set the endTime
+						endHour = hour;
+						endMin = minute;
+						txt_endTime.setText(Integer.toString(endHour) + ":"+Integer.toString(endMin));
+					}
+				}, endHour, endMin, true).show();
+			}
+		});
 		
 		
 		/***************************************
@@ -231,15 +300,26 @@ public class YouShouldRecordActivity extends Activity {
 		/********************************************
 		//开启下一次计数
 		 ********************************************/
+		//获得系统时间
+		Calendar c=Calendar.getInstance();
+        int currHour = c.get(Calendar.HOUR_OF_DAY);
+        int currMin = c.get(Calendar.MINUTE);
+        c.setTimeInMillis(System.currentTimeMillis()); 
+        Log.v("Toilet", "SettingsActivity: test currHour: the Hour is "+ Integer.toString(currHour)+".");
 		//指定定时记录的Activity
 		Intent intent = new Intent(YouShouldRecordActivity.this, TimeToRecordBroadcastReceiver.class);
+		//向intent中添加起始时间数据
+        Bundle mBundle = new Bundle();
+        mBundle.putInt("Hour", currHour);
+        mBundle.putInt("Minute", currMin);
+        intent.putExtras(mBundle);
+        Log.v("Toilet", "SettingsActivity: test Bundle: the Hour is "+ Integer.toString(mBundle.getInt("Hour"))+".");
 		//指定PendingIntent
 		PendingIntent sender = PendingIntent.getBroadcast(YouShouldRecordActivity.this, 0, intent, 0);
 		//获得AlarmManager对象
 		AlarmManager am; 
         am = (AlarmManager)getSystemService(ALARM_SERVICE);
         //获得系统时间
-        Calendar c=Calendar.getInstance();
         c.setTimeInMillis(System.currentTimeMillis()); 
         //开启定时服务
 		am.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis() + interval*3000, sender); 

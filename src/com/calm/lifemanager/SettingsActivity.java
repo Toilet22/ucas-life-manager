@@ -15,8 +15,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -96,16 +94,25 @@ public class SettingsActivity extends Activity {
 		btn_logSwitch.setOnClickListener(new Button.OnClickListener()
 		{
 			public void onClick(View v){
+	            //获得系统时间
+				Calendar c=Calendar.getInstance();
+		        int currHour = c.get(Calendar.HOUR_OF_DAY);
+		        int currMin = c.get(Calendar.MINUTE);
+	            c.setTimeInMillis(System.currentTimeMillis()); 
+		        Log.v("Toilet", "SettingsActivity: test currHour: the Hour is "+ Integer.toString(currHour)+".");
 				//指定定时记录的Activity
 				Intent intent = new Intent(SettingsActivity.this, TimeToRecordBroadcastReceiver.class);
+				//向intent中添加起始时间数据
+	            Bundle mBundle = new Bundle();
+	            mBundle.putInt("Hour", currHour);
+	            mBundle.putInt("Minute", currMin);
+	            intent.putExtras(mBundle);
+	            Log.v("Toilet", "SettingsActivity: test Bundle: the Hour is "+ Integer.toString(mBundle.getInt("Hour"))+".");
 				//指定PendingIntent
 				PendingIntent sender = PendingIntent.getBroadcast(SettingsActivity.this, 0, intent, 0);
 				//获得AlarmManager对象
 				AlarmManager am; 
 	            am = (AlarmManager)getSystemService(ALARM_SERVICE);
-	            //获得系统时间
-	            Calendar c=Calendar.getInstance();
-	            c.setTimeInMillis(System.currentTimeMillis()); 
 	            
 				//判断是开启还是关闭
 				if(isLogStarted){
@@ -156,6 +163,12 @@ public class SettingsActivity extends Activity {
 					 * 如果定时记录功能开启，改变interval的操作是有意义的
 					 * 根据新的时间间隔值重新开始计时。
 					 */
+		            //获得系统时间
+		            Calendar c=Calendar.getInstance();
+		            int currHour = c.get(Calendar.HOUR_OF_DAY);
+		            int currMin = c.get(Calendar.MINUTE);
+		            Log.v("Toilet", "SettingsActivity_Dialog: test currHour: the Hour is "+ Integer.toString(currHour)+".");
+		            c.setTimeInMillis(System.currentTimeMillis()); 
 					//指定定时记录的Activity
 					Intent intent = new Intent(SettingsActivity.this, TimeToRecordBroadcastReceiver.class);
 					//指定PendingIntent
@@ -163,15 +176,19 @@ public class SettingsActivity extends Activity {
 					//获得AlarmManager对象
 					AlarmManager am; 
 		            am = (AlarmManager)getSystemService(ALARM_SERVICE);
-		            //获得系统时间
-		            Calendar c=Calendar.getInstance();
-		            c.setTimeInMillis(System.currentTimeMillis()); 
 					//关闭定时服务
 					Log.v("Toilet", "SettingsActivity: before closeLog.");
 					am.cancel(sender);
 					//开启定时服务
 					Log.v("Toilet", "SettingsActivity: before startLog.");
-					PendingIntent new_sender = PendingIntent.getBroadcast(SettingsActivity.this, 0, intent, 0);					
+					//给新开启的Activity传递起始时间
+					Intent new_intent = new Intent(SettingsActivity.this, TimeToRecordBroadcastReceiver.class);
+					Bundle mBundle = new Bundle();
+		            mBundle.putInt("Hour", currHour);
+		            mBundle.putInt("Minute", currMin);
+		            new_intent.putExtras(mBundle);
+		            Log.v("Toilet", "SettingsActivity_Dialog: test Bundle: the Hour is "+ Integer.toString(mBundle.getInt("Hour"))+".");
+					PendingIntent new_sender = PendingIntent.getBroadcast(SettingsActivity.this, 0, new_intent, 0);					
 					am.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis() + interval*3000, new_sender); 
 					//弹出Toast
 					Toast.makeText(getApplicationContext(), R.string.act_settings_toast_intervalChanged, 

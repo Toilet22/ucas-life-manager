@@ -30,13 +30,18 @@ public class MainActivity extends Activity {
 	//开启和关闭定时记录
 	Button btn_logSwitch;
 	Boolean isLogStarted;
+	long nextTimeInMillis;
+	int nextTime_Hour, nextTime_Min;
+	Calendar nextLogTime;
+	
 	//时间间隔
-	final int defaultInterval = 1;
-	int interval = defaultInterval;
+	final long defaultIntervalInMillis = 30*60000;
+	long intervalInMillis = defaultIntervalInMillis;
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_current);
+		nextLogTime = Calendar.getInstance();
 		
 		/******************************************
 		 * 读取现有preferences。用以完成界面初始化
@@ -46,12 +51,13 @@ public class MainActivity extends Activity {
 		        getString(R.string.curr_usr_name), Context.MODE_PRIVATE);
 		if(sharedPref.contains("isLogStarted")){
 			isLogStarted = sharedPref.getBoolean("isLogStarted", true);
-			interval = sharedPref.getInt("interval", defaultInterval);
+			intervalInMillis = sharedPref.getLong("IntervalInMillis", defaultIntervalInMillis);
+			nextTimeInMillis = sharedPref.getLong("NextLogTimeInMillis", 0);
 		}else{
 			isLogStarted = true;
 			SharedPreferences.Editor editor = sharedPref.edit();
 			editor.putBoolean("isLogStarted", isLogStarted);
-			editor.putInt("interval", interval);
+			editor.putLong("IntervalInMillis", intervalInMillis);
 			editor.commit();
 		}
 		//根据是否开启定时记录初始化页面
@@ -62,6 +68,10 @@ public class MainActivity extends Activity {
 		if(isLogStarted){
 			txtvw_logState.setText(R.string.act_current_txtvw_logStarted);
 			btn_logSwitch.setText(R.string.act_current_btn_logStop);
+			nextLogTime.setTimeInMillis(nextTimeInMillis);
+			nextTime_Hour = nextLogTime.get(Calendar.HOUR_OF_DAY);
+			nextTime_Min = nextLogTime.get(Calendar.MINUTE);
+			txtvw_logNextTime.setText(Integer.toString(nextTime_Hour)+":"+Integer.toString(nextTime_Min));
 		}else{
 			txtvw_logState.setText(R.string.act_current_txtvw_logStopped);
 			btn_logSwitch.setText(R.string.act_current_btn_logStart);
@@ -72,7 +82,45 @@ public class MainActivity extends Activity {
 		btn_logSwitch.setOnClickListener(new Button.OnClickListener()
 		{
 			public void onClick(View v){
-		        //获得系统时间
+				TimeLoggerHelper timgLoggerHelper = new TimeLoggerHelper(MainActivity.this);
+				/*********************************
+				 * 判断应该开启还是关闭定时记录
+				 ********************************/
+				if(isLogStarted){
+					/************************
+					 * 如果已开启，则关闭
+					 ***********************/
+					timgLoggerHelper.stopTimeLogger();
+					
+					//改变UI
+					isLogStarted = false;
+					txtvw_logState.setText(R.string.act_current_txtvw_logStopped);
+					btn_logSwitch.setText(R.string.act_current_btn_logStart);
+					txtvw_logNextTime.setText(R.string.act_current_txtvw_nextLogTime);
+					
+					//弹出Toast
+					Toast.makeText(getApplicationContext(), R.string.act_settings_toast_rglRcdOff, 
+							Toast.LENGTH_SHORT).show();
+				}else{
+					/************************
+					 * 如果已关闭，则开启
+					 ***********************/
+					timgLoggerHelper.launchTimeLogger();
+					//改变UI
+					isLogStarted = true;
+					txtvw_logState.setText(R.string.act_current_txtvw_logStarted);
+					btn_logSwitch.setText(R.string.act_current_btn_logStop);
+					txtvw_logNextTime.setText(Integer.toString(nextTime_Hour)+":"+Integer.toString(nextTime_Min));
+					nextTimeInMillis = sharedPref.getLong("NextLogTimeInMillis", 30*60000);
+					nextLogTime.setTimeInMillis(nextTimeInMillis);
+					nextTime_Hour = nextLogTime.get(Calendar.HOUR_OF_DAY);
+					nextTime_Min = nextLogTime.get(Calendar.MINUTE);
+					txtvw_logNextTime.setText(Integer.toString(nextTime_Hour)+":"+Integer.toString(nextTime_Min));
+					Toast.makeText(getApplicationContext(), R.string.act_settings_toast_rglRcdOn, 
+							Toast.LENGTH_SHORT).show();
+				}
+		        /*
+				//获得系统时间
 				Calendar c=Calendar.getInstance();
 		        int currHour = c.get(Calendar.HOUR_OF_DAY);
 		        int currMin = c.get(Calendar.MINUTE);
@@ -100,6 +148,7 @@ public class MainActivity extends Activity {
 					btn_logSwitch.setText(R.string.act_current_btn_logStart);
 					//关闭定时服务
 					am.cancel(sender);
+					txtvw_logNextTime.setText(R.string.act_current_txtvw_nextLogTime);
 					Toast.makeText(getApplicationContext(), R.string.act_settings_toast_rglRcdOff, 
 							Toast.LENGTH_SHORT).show();
 					
@@ -109,10 +158,19 @@ public class MainActivity extends Activity {
 					txtvw_logState.setText(R.string.act_current_txtvw_logStarted);
 					btn_logSwitch.setText(R.string.act_current_btn_logStop);
 					//开启定时服务
-					am.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis() + interval*3000, sender); 
+					am.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis() + interval*60000, sender); 
+					//将下次弹出时间写入preference
+					SharedPreferences.Editor editor = sharedPref.edit();
+					editor.putInt("NextLogTime_Hour", currHour + interval/60);
+					editor.putInt("NextLogTime_Min", currMin + interval % 60);
+					editor.commit();
+					Log.v("Toilet", "SettingsActivity: test the NextLogTime_Hour:" +Integer.toString(currHour + interval/60)+".");
+					Log.v("Toilet", "SettingsActivity: test the NextLogTime_Min:" +Integer.toString(currMin + interval%60)+".");
+					txtvw_logNextTime.setText(Integer.toString(currHour + interval/60)+" : "+Integer.toString(currHour + interval/60));
 					Toast.makeText(getApplicationContext(), R.string.act_settings_toast_rglRcdOn, 
 							Toast.LENGTH_SHORT).show();
 				}
+				*/
 			}
 		});
 		
@@ -159,7 +217,8 @@ public class MainActivity extends Activity {
 		btn_settings.setOnClickListener(new Button.OnClickListener(){
 			public void onClick(View v) {
 				Intent iSettings = new Intent(MainActivity.this, SettingsActivity.class);
-				startActivity(iSettings);				
+				startActivity(iSettings);	
+				finish();
 			}		
 		});
 		
@@ -189,4 +248,26 @@ public class MainActivity extends Activity {
 		editor.commit();
 	}
 
+	public void onStart(){
+		super.onStart();
+
+		/********************************
+		 * 初始化与定时记录相关的UI
+		 *******************************/
+		sharedPref = getSharedPreferences(
+		        getString(R.string.curr_usr_name), Context.MODE_PRIVATE);
+		if(isLogStarted){
+			Log.v("Toilet", "MainActivity onStart(): reinit the UIs.");
+			txtvw_logState.setText(R.string.act_current_txtvw_logStarted);
+			btn_logSwitch.setText(R.string.act_current_btn_logStop);
+			nextTimeInMillis = sharedPref.getLong("NextLogTimeInMillis", 30*60000);
+			nextLogTime.setTimeInMillis(nextTimeInMillis);
+			nextTime_Hour = nextLogTime.get(Calendar.HOUR_OF_DAY);
+			nextTime_Min = nextLogTime.get(Calendar.MINUTE);
+			txtvw_logNextTime.setText(Integer.toString(nextTime_Hour)+":"+Integer.toString(nextTime_Min));
+		}else{
+			txtvw_logState.setText(R.string.act_current_txtvw_logStopped);
+			btn_logSwitch.setText(R.string.act_current_btn_logStart);
+		}		
+	}
 }

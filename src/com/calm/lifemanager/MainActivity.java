@@ -25,8 +25,6 @@ public class MainActivity extends Activity {
 	//TextView
 	TextView txtvw_logState;
 	TextView txtvw_logNextTime;
-	//preferences记录
-	SharedPreferences sharedPref;
 	//开启和关闭定时记录
 	Button btn_logSwitch;
 	Boolean isLogStarted;
@@ -47,14 +45,16 @@ public class MainActivity extends Activity {
 		 * 读取现有preferences。用以完成界面初始化
 		 *****************************************/
 		Log.v("Toilet", "NewCurrAct: before sharedPref.");
+		//preferences记录
+		SharedPreferences sharedPref;
 		sharedPref = getSharedPreferences(
 		        getString(R.string.curr_usr_name), Context.MODE_PRIVATE);
 		if(sharedPref.contains("isLogStarted")){
-			isLogStarted = sharedPref.getBoolean("isLogStarted", true);
+			isLogStarted = sharedPref.getBoolean("isLogStarted", false);
 			intervalInMillis = sharedPref.getLong("IntervalInMillis", defaultIntervalInMillis);
 			nextTimeInMillis = sharedPref.getLong("NextLogTimeInMillis", 0);
 		}else{
-			isLogStarted = true;
+			isLogStarted = false;
 			SharedPreferences.Editor editor = sharedPref.edit();
 			editor.putBoolean("isLogStarted", isLogStarted);
 			editor.putLong("IntervalInMillis", intervalInMillis);
@@ -111,6 +111,10 @@ public class MainActivity extends Activity {
 					txtvw_logState.setText(R.string.act_current_txtvw_logStarted);
 					btn_logSwitch.setText(R.string.act_current_btn_logStop);
 					txtvw_logNextTime.setText(Integer.toString(nextTime_Hour)+":"+Integer.toString(nextTime_Min));
+					//preferences记录
+					SharedPreferences sharedPref;
+					sharedPref = getSharedPreferences(
+					        getString(R.string.curr_usr_name), Context.MODE_PRIVATE);
 					nextTimeInMillis = sharedPref.getLong("NextLogTimeInMillis", 30*60000);
 					nextLogTime.setTimeInMillis(nextTimeInMillis);
 					nextTime_Hour = nextLogTime.get(Calendar.HOUR_OF_DAY);
@@ -243,17 +247,25 @@ public class MainActivity extends Activity {
 		/*
 		 * 保存更改
 		 */
+		//preferences记录
+		SharedPreferences sharedPref;
+		sharedPref = getSharedPreferences(
+		        getString(R.string.curr_usr_name), MODE_PRIVATE);
 		SharedPreferences.Editor editor = sharedPref.edit();
 		editor.putBoolean("isLogStarted", isLogStarted);
 		editor.commit();
 	}
 
-	public void onStart(){
-		super.onStart();
+	public void onRestart(){
+		super.onRestart();
 
 		/********************************
 		 * 初始化与定时记录相关的UI
 		 *******************************/
+		//preferences记录
+		SharedPreferences sharedPref;
+		sharedPref = getSharedPreferences(
+		        getString(R.string.curr_usr_name), Context.MODE_PRIVATE);
 		sharedPref = getSharedPreferences(
 		        getString(R.string.curr_usr_name), Context.MODE_PRIVATE);
 		if(isLogStarted){
@@ -264,6 +276,7 @@ public class MainActivity extends Activity {
 			nextLogTime.setTimeInMillis(nextTimeInMillis);
 			nextTime_Hour = nextLogTime.get(Calendar.HOUR_OF_DAY);
 			nextTime_Min = nextLogTime.get(Calendar.MINUTE);
+			Log.v("Toilet", "MainActivity.onStart(): NextLogTimeInMillis = "+Long.toString(nextTimeInMillis)+".");
 			txtvw_logNextTime.setText(Integer.toString(nextTime_Hour)+":"+Integer.toString(nextTime_Min));
 		}else{
 			txtvw_logState.setText(R.string.act_current_txtvw_logStopped);

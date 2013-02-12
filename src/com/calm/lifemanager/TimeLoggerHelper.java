@@ -29,12 +29,14 @@ public class TimeLoggerHelper {
 		 * 并将下次弹出时间写入preference
 		 ********************************/
 		SharedPreferences sharedPref = thisActivity.getSharedPreferences(
-		        thisActivity.getString(R.string.curr_usr_name), Context.MODE_PRIVATE);
+		        thisActivity.getString(R.string.curr_usr_name), thisActivity.MODE_PRIVATE);
 		long intervalInMillis = sharedPref.getLong("IntervalInMillis", 30 * 60000);
+		Log.v("Toilet", "TimeLoggerHelper: test IntervalInMillis is "+ Long.toString(intervalInMillis)+".");
         Calendar c=Calendar.getInstance();
         currTimeInMillis = c.getTimeInMillis();
         nextTimeInMillis = currTimeInMillis + intervalInMillis;
-        Log.v("Toilet", "SettingsActivity_Dialog: test currTime is "+ Long.toString(currTimeInMillis)+".");
+        Log.v("Toilet", "TimeLoggerHelper: test currTimeInMillis is "+ Long.toString(currTimeInMillis)+".");
+        Log.v("Toilet", "TimeLoggerHelper: test nextTimeInMillis is "+ Long.toString(nextTimeInMillis)+".");
         c.setTimeInMillis(System.currentTimeMillis()); 
 		SharedPreferences.Editor editor = sharedPref.edit();
 		editor.putLong("NextLogTimeInMillis", nextTimeInMillis);
@@ -47,9 +49,9 @@ public class TimeLoggerHelper {
 		//制定要开启的Activity
 		Intent new_intent = new Intent(thisActivity, TimeToRecordBroadcastReceiver.class);				
 		Bundle mBundle = new Bundle();
-        mBundle.putLong("startTimeInMillis", currTimeInMillis);
+        mBundle.putLong("StartTimeInMillis", currTimeInMillis);
         new_intent.putExtras(mBundle);
-        Log.v("Toilet", "SettingsActivity_Dialog: test Bundle: the currTimeInMillis is "+ Long.toString(mBundle.getLong("startTimeInMillis"))+".");
+        Log.v("Toilet", "TimeLoggerHelper: test Bundle: the currTimeInMillis is "+ Long.toString(mBundle.getLong("startTimeInMillis"))+".");
         
         /********************************
          * 启动定时器 

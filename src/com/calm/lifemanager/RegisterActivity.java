@@ -3,6 +3,9 @@ package com.calm.lifemanager;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -41,16 +44,23 @@ public class RegisterActivity extends Activity {
 						public void run() {
 							String username = edt_name.getText().toString();
 							String password1 = edt_pswd1.getText().toString();
-							String password2 = edt_pswd1.getText().toString();
+							String password2 = edt_pswd2.getText().toString();
 							String email = edt_email.getText().toString();
 							
+							// Validate User Registration Info
 							if(username.length() < 2) {
 								Log.i("User Registration","User Name Too Short");
+								
+								// Pop up a dialog to alert that user name too short
 							}
 							
 							if(!(password1.equals(password2))) {
 								Log.i("User Registration","Please input the same password");
+								
+								// Pop up a dialog to alert that password should be the same
 							}
+							
+							// Pop up a dialog to alert user to retry
 							
 							if(email.length() <=0 || email == null) {
 								// Do Nothing
@@ -59,7 +69,8 @@ public class RegisterActivity extends Activity {
 							Map<String, String> newUser = new HashMap<String, String>();
 							newUser.put("username", username);
 							newUser.put("password", password1);
-	
+							newUser.put("visit_type", "android");
+							
 							String retStr = null;
 							try {
 								retStr = NetToolUtil.sendPostRequest(
@@ -73,6 +84,44 @@ public class RegisterActivity extends Activity {
 							if (retStr != null) {
 								Log.i("User Registation", "result:" + retStr);
 							}
+							
+							// Get info out of the String
+							JSONObject retJson = new JSONObject();
+			        	    try {
+								retJson = new JSONObject(retStr);
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+			        	    
+			        	    String message = null;
+			        	    try {
+								message = retJson.getString("message");
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+			        	    
+			        	    int status = 100;
+			        	    try {
+								status = retJson.getInt("status");
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+			        	    
+			        	    if(status == 0) {
+			        	    	// Pop up a dialog to inform user success of registration
+			        	    	
+			        	    }
+			        	    else {
+			        	    	// Pop up a dialog to inform failure status and message of registration
+			        	    	
+			        	    }
+			        	    
+			        	    Log.i("User Login","Return status is: " + status);
+			        	    Log.i("User Login","Return message is: " + message);
+							
 							}
 					}.start();
 				}	        	

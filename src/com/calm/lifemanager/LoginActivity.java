@@ -12,10 +12,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class LoginActivity extends Activity {
 	Button btn_remember;
@@ -34,12 +36,24 @@ public class LoginActivity extends Activity {
 	private String userNameValue,passwordValue;  
     private SharedPreferences sp;  
 	
-	
+    Handler mHandler;
+    Runnable mRunnableShowToast;
+    
 	 public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.activity_login);
 	        
 	        sp = this.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);  
+	        
+	        mHandler = new Handler();
+	        
+	        mRunnableShowToast = new Runnable()
+	        {
+	                    public void run() {
+	                            // TODO Auto-generated method stub
+	                    		Toast.makeText(LoginActivity.this,"Login Successfully!", Toast.LENGTH_LONG).show();
+	                    }
+	        }; 
 	        
 	        remember = true; //?????????????????????????????????????
 	        autolog = true;	//????????????????????????????????????
@@ -214,14 +228,19 @@ public class LoginActivity extends Activity {
 					}
 	        	    
 	        	    if(status == 0) {
-	        	    	
+	        	    	// Login Successfully
+	        	    	Intent iMain = new Intent(LoginActivity.this, MainActivity.class);
+						startActivity(iMain);
+						LoginActivity.this.finish();
+						
+						mHandler.post(mRunnableShowToast);
 	        	    }
 	        	    else {
-	        	    	
+	        	    	// Login failed, pop up a dialog to alert user what is wrong
 	        	    }
 	        	    
 	        	    Log.i("User Login","Return status is: " + status);
-     	    	Log.i("User Login","Return message is: " + message);
+	        	    Log.i("User Login","Return message is: " + message);
 				}
 			}.start();
 	 }

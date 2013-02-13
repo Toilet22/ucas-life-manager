@@ -17,11 +17,13 @@ public class DatabaseUtil{
 	 * Database Name
 	 */
 	private static final String DATABASE_NAME = "lifemanager.db";
+	public static String dbName = "default_user.db";
 
 	/**
 	 * Database Version
 	 */
 	private static final int DATABASE_VERSION = 1;
+	public static int dbVersion = 1;
 
 	/**
 	 * Table Name
@@ -273,8 +275,10 @@ public class DatabaseUtil{
 	 */
 	private static class DatabaseHelper extends SQLiteOpenHelper {
 		DatabaseHelper(Context context) {
-			super(context, DATABASE_NAME, null, DATABASE_VERSION);
+			//super(context, DATABASE_NAME, null, DATABASE_VERSION);
+			super(context, dbName, null, dbVersion);
 		}
+		
 		/**
 		 * onCreate method is called for the 1st time when database doesn't exists.
 		 */
@@ -339,6 +343,17 @@ public class DatabaseUtil{
 	 */
 	public DatabaseUtil(Context ctx) {
 		this.mCtx = ctx;
+	}
+	
+	public DatabaseUtil(Context ctx, String dbName) {
+		this.mCtx = ctx;
+		DatabaseUtil.dbName = dbName;
+	}
+	
+	public DatabaseUtil(Context ctx, String dbName, int dbVersion) {
+		this.mCtx = ctx;
+		DatabaseUtil.dbName = dbName;
+		DatabaseUtil.dbVersion = dbVersion;
 	}
 	
 	/**

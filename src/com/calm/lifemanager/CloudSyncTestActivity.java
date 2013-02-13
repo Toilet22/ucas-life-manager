@@ -225,7 +225,8 @@ public class CloudSyncTestActivity extends Activity {
 				        
 				        JSONObject todolistData = new JSONObject();
 				        try {
-				        	todolistData.put("title", "created-from-android-client2");
+				        	//todolistData.put("title", "created-from-android-client2");
+				        	todolistData.put("title", "由Android客户端创建的todolist条目");
 				        	todolistData.put("start", 1);
 				        	todolistData.put("end", 2);
 				        	todolistData.put("desc", "wtf");
@@ -235,9 +236,12 @@ public class CloudSyncTestActivity extends Activity {
 				        	todolistData.put("reminder", 1);
 				        	todolistData.put("priority", 1);
 				        	todolistData.put("status", 0);
-							todolistData.put("ctime", System.currentTimeMillis());
-							todolistData.put("mtime", System.currentTimeMillis());
-							todolistData.put("stime", System.currentTimeMillis());
+							//todolistData.put("ctime", System.currentTimeMillis());
+							//todolistData.put("mtime", System.currentTimeMillis());
+							//todolistData.put("stime", System.currentTimeMillis());
+							todolistData.put("ctime", 2);
+							todolistData.put("mtime", 2);
+							todolistData.put("stime", 3);
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -277,9 +281,9 @@ public class CloudSyncTestActivity extends Activity {
 		        	    try {
 							//retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrl, todolistToPush, "utf-8");
 		        	    	//retStr = NetToolUtil.sendTxt(NetToolUtil.todolistPushUrl, todolistToPush.toString(), "utf-8");
-							//retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrl, jsonString, "utf-8");
+							retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrl, todolistToPush, "utf-8");
 		        	    	//retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrlJson, todolistToPush, "utf-8");
-		        	    	retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrlTestJson, todolistToPush, "utf-8");
+		        	    	//retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrlTestJson, todolistToPush, "utf-8");
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

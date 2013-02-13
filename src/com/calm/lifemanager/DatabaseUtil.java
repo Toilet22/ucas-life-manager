@@ -16,13 +16,13 @@ public class DatabaseUtil{
 	/**
 	 * Database Name
 	 */
-	private static final String DATABASE_NAME = "lifemanager.db";
+	//private static final String DATABASE_NAME = "lifemanager.db";
 	public static String dbName = "default_user.db";
 
 	/**
 	 * Database Version
 	 */
-	private static final int DATABASE_VERSION = 1;
+	//private static final int DATABASE_VERSION = 1;
 	public static int dbVersion = 1;
 
 	/**
@@ -284,7 +284,7 @@ public class DatabaseUtil{
 		 */
 		@Override
 		public void onCreate(SQLiteDatabase db) {
-			Log.i(TAG, "Creating DataBase: " + DATABASE_NAME);
+			Log.i(TAG, "Creating DataBase: " + dbName);
 			
 			db.execSQL(CREATE_USER_TABLE);
 			Log.i(TAG,"Creating DataBase Table: " + USER);

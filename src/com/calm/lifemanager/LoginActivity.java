@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -36,8 +37,10 @@ public class LoginActivity extends Activity {
 	private String userNameValue,passwordValue;  
     private SharedPreferences sp;  
 	
-    Handler mHandler;
-    Runnable mRunnableShowToast;
+    private  Handler mHandler;
+    private Runnable mRunnableShowToast;
+    
+    private static final int PASSWORD_ERROR = 12;
     
 	 public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
@@ -45,7 +48,17 @@ public class LoginActivity extends Activity {
 	        
 	        sp = this.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);  
 	        
-	        mHandler = new Handler();
+	        mHandler = new Handler() {
+	        	public void handleMessage(Message msg) {  
+	                switch (msg.what) {  
+	                case PASSWORD_ERROR:
+	                	;
+	                default:
+	                	;
+	                }  
+	                super.handleMessage(msg); 
+	            };
+	        };
 	        
 	        mRunnableShowToast = new Runnable()
 	        {

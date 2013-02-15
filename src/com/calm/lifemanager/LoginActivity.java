@@ -7,12 +7,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class LoginActivity extends Activity {
 	Button btn_remember;
@@ -28,10 +34,39 @@ public class LoginActivity extends Activity {
 	boolean remember;
 	boolean autolog;
 	
+	private String userNameValue,passwordValue;  
+    private SharedPreferences sp;  
 	
+    private  Handler mHandler;
+    private Runnable mRunnableShowToast;
+    
+    private static final int PASSWORD_ERROR = 12;
+    
 	 public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.activity_login);
+	        
+	        sp = this.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);  
+	        
+	        mHandler = new Handler() {
+	        	public void handleMessage(Message msg) {  
+	                switch (msg.what) {  
+	                case PASSWORD_ERROR:
+	                	;
+	                default:
+	                	;
+	                }  
+	                super.handleMessage(msg); 
+	            };
+	        };
+	        
+	        mRunnableShowToast = new Runnable()
+	        {
+	                    public void run() {
+	                            // TODO Auto-generated method stub
+	                    		Toast.makeText(LoginActivity.this,"Login Successfully!", Toast.LENGTH_LONG).show();
+	                    }
+	        }; 
 	        
 	        remember = true; //?????????????????????????????????????
 	        autolog = true;	//????????????????????????????????????
@@ -54,9 +89,13 @@ public class LoginActivity extends Activity {
 					if(remember){
 						btn_remember.setBackgroundResource(R.drawable.switch_off);
 						remember = false;
+						
+						sp.edit().putBoolean("ISCHECK", false).commit(); 
 					}else{
 						btn_remember.setBackgroundResource(R.drawable.switch_on);	
 						remember = true;
+						
+						sp.edit().putBoolean("ISCHECK", true).commit(); 
 					}					
 				}	        	
 	        });
@@ -77,14 +116,37 @@ public class LoginActivity extends Activity {
 					if(autolog){
 						btn_autolog.setBackgroundResource(R.drawable.switch_off);
 						autolog = false;
+						
+						sp.edit().putBoolean("AUTO_ISCHECK", false).commit(); 
 					}else{
 						btn_autolog.setBackgroundResource(R.drawable.switch_on);
 						autolog = true;
 						btn_remember.setBackgroundResource(R.drawable.switch_on);	
 						remember = true;
+						
+						sp.edit().putBoolean("AUTO_ISCHECK", true).commit(); 
 					}
 				}	        	
 	        });
+	        
+			/*
+			 * 判断记住密码多选框的状态
+			 */
+			if (sp.getBoolean("ISCHECK", false)) {
+				// 设置默认是记录密码状态
+				btn_remember.setBackgroundResource(R.drawable.switch_on);
+				
+				edt_name.setText(sp.getString("USERNAME", ""));
+				edt_password.setText(sp.getString("PASSWORD", ""));
+				// 判断自动登陆多选框状态
+				if (sp.getBoolean("AUTO_ISCHECK", false)) {
+					// 设置默认是自动登录状态
+					btn_autolog.setBackgroundResource(R.drawable.switch_on);
+					
+					// 验证用户登录
+					validateUserLogin();
+				}
+			}
 	        
 	        /*
 	         * 登录
@@ -93,64 +155,8 @@ public class LoginActivity extends Activity {
 	        btn_login.setOnClickListener(new Button.OnClickListener(){
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					new Thread() {
-						public void run() {
-							// 获得用户名和密码
-							String usernanme = edt_name.getText().toString();
-							String password = edt_password.getText().toString();
-							
-							Map<String, String> loginUser = new HashMap<String, String>();
-			        	    loginUser.put("username", usernanme);
-			        	    loginUser.put("password", password);
-			        	    
-			        	    String retStr = null;
-			        	    try {
-								retStr = NetToolUtil.sendPostRequest(NetToolUtil.accountLoginUrl, loginUser, "utf-8");
-							} catch (Exception e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-			        	    
-			        	    if(retStr != null) {
-			        	    	Log.i("User Login","result:" + retStr);
-			        	    }
-			        	    
-			        	    JSONObject retJson = new JSONObject();
-			        	    try {
-								retJson = new JSONObject(retStr);
-							} catch (JSONException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-			        	    
-			        	    String message = null;
-			        	    try {
-								message = retJson.getString("message");
-							} catch (JSONException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-			        	    
-			        	    int status = 100;
-			        	    try {
-								status = retJson.getInt("status");
-							} catch (JSONException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-			        	    
-			        	    if(status == 0) {
-			        	    	
-			        	    }
-			        	    else {
-			        	    	
-			        	    }
-			        	    
-			        	    Log.i("User Login","Return status is: " + status);
-		        	    	Log.i("User Login","Return message is: " + message);
-						}
-					}.start();
-				}       	
+					validateUserLogin();
+				}
 	        });
 	        
 	        /*
@@ -176,5 +182,79 @@ public class LoginActivity extends Activity {
 					
 				}
 	        });
+	 }
+	 
+	 public void validateUserLogin() {
+		 new Thread() {
+				public void run() {
+					// 获得用户名和密码
+					userNameValue = edt_name.getText().toString();
+					passwordValue = edt_password.getText().toString();
+					
+					if(remember == true) {
+						//记住用户名、密码、  
+	                      Editor editor = sp.edit();
+	                      editor.putString("USERNAME", userNameValue);
+	                      editor.putString("PASSWORD",passwordValue);
+	                      editor.commit();  
+					}
+					
+					Map<String, String> loginUser = new HashMap<String, String>();
+	        	    loginUser.put("username", userNameValue);
+	        	    loginUser.put("password", passwordValue);
+	        	    loginUser.put("visit_type", "android");
+	        	    
+	        	    String retStr = null;
+	        	    try {
+						retStr = NetToolUtil.sendPostRequest(NetToolUtil.accountLoginUrl, loginUser, "utf-8");
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	        	    
+	        	    if(retStr != null) {
+	        	    	Log.i("User Login","result:" + retStr);
+	        	    }
+	        	    
+	        	    JSONObject retJson = new JSONObject();
+	        	    try {
+						retJson = new JSONObject(retStr);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	        	    
+	        	    String message = null;
+	        	    try {
+						message = retJson.getString("message");
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	        	    
+	        	    int status = 100;
+	        	    try {
+						status = retJson.getInt("status");
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	        	    
+	        	    if(status == 0) {
+	        	    	// Login Successfully
+	        	    	Intent iMain = new Intent(LoginActivity.this, MainActivity.class);
+						startActivity(iMain);
+						LoginActivity.this.finish();
+						
+						mHandler.post(mRunnableShowToast);
+	        	    }
+	        	    else {
+	        	    	// Login failed, pop up a dialog to alert user what is wrong
+	        	    }
+	        	    
+	        	    Log.i("User Login","Return status is: " + status);
+	        	    Log.i("User Login","Return message is: " + message);
+				}
+			}.start();
 	 }
 }

@@ -48,8 +48,9 @@ public class CloudSyncTestActivity extends Activity {
 		        	     Log.i("Cloud", "Start Testing User Register ...");
 		        	     
 		        	     Map<String, String> newUser = new HashMap<String, String>();
-		        	     newUser.put("username", "created-by-android-client");
+		        	     newUser.put("username", "created-by-android-client2");
 		        	     newUser.put("password", "daydayup");
+		        	     newUser.put("visit_type", "android");
 			        	    
 			        	    String retStr = null;
 			        	    try {
@@ -104,8 +105,9 @@ public class CloudSyncTestActivity extends Activity {
 		        	    Log.i("Cloud", "Start Testing User Login...");
 		        	    
 		        	    Map<String, String> loginUser = new HashMap<String, String>();
-		        	    loginUser.put("username", "lilihang");
+		        	    loginUser.put("username", "created-by-android-client");
 		        	    loginUser.put("password", "daydayup");
+		        	    loginUser.put("visit_type", "android");
 		        	    
 		        	    String retStr = null;
 		        	    try {
@@ -215,7 +217,7 @@ public class CloudSyncTestActivity extends Activity {
 				        
 				        JSONObject todolistToPush = new JSONObject();
 				        try {
-							todolistToPush.put("username","lilihang");
+							todolistToPush.put("username","created-by-android-client");
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -223,7 +225,8 @@ public class CloudSyncTestActivity extends Activity {
 				        
 				        JSONObject todolistData = new JSONObject();
 				        try {
-				        	todolistData.put("title", "created-from-android-client2");
+				        	//todolistData.put("title", "created-from-android-client2");
+				        	todolistData.put("title", "由Android客户端创建的todolist条目");
 				        	todolistData.put("start", 1);
 				        	todolistData.put("end", 2);
 				        	todolistData.put("desc", "wtf");
@@ -233,9 +236,12 @@ public class CloudSyncTestActivity extends Activity {
 				        	todolistData.put("reminder", 1);
 				        	todolistData.put("priority", 1);
 				        	todolistData.put("status", 0);
-							todolistData.put("ctime", System.currentTimeMillis());
-							todolistData.put("mtime", System.currentTimeMillis());
-							todolistData.put("stime", System.currentTimeMillis());
+							//todolistData.put("ctime", System.currentTimeMillis());
+							//todolistData.put("mtime", System.currentTimeMillis());
+							//todolistData.put("stime", System.currentTimeMillis());
+							todolistData.put("ctime", 2);
+							todolistData.put("mtime", 2);
+							todolistData.put("stime", 3);
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -244,8 +250,10 @@ public class CloudSyncTestActivity extends Activity {
 				        JSONArray todolistDataArray = new JSONArray();
 				        
 				        todolistDataArray.put(todolistData);
+				        
 						try {
 							todolistToPush.put("data",todolistDataArray);
+							todolistToPush.put("visit_type", "android");
 						} catch (JSONException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -273,9 +281,9 @@ public class CloudSyncTestActivity extends Activity {
 		        	    try {
 							//retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrl, todolistToPush, "utf-8");
 		        	    	//retStr = NetToolUtil.sendTxt(NetToolUtil.todolistPushUrl, todolistToPush.toString(), "utf-8");
-							//retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrl, jsonString, "utf-8");
+							retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrl, todolistToPush, "utf-8");
 		        	    	//retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrlJson, todolistToPush, "utf-8");
-		        	    	retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrlTestJson, todolistToPush, "utf-8");
+		        	    	//retStr = NetToolUtil.sendPostRequestJson(NetToolUtil.todolistPushUrlTestJson, todolistToPush, "utf-8");
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -299,9 +307,10 @@ public class CloudSyncTestActivity extends Activity {
 		        		Log.i("Cloud", "Start Testing Todolist Pull...");
 		        		
 		        		  Map<String, String> todolistRet = new HashMap<String, String>();
-		        		  todolistRet.put("username", "lilihang");
+		        		  todolistRet.put("username", "created-by-android-client");
 		        		  //todolistRet.put("last_time", System.currentTimeMillis());
 		        		  todolistRet.put("last_time", "0");
+		        		  todolistRet.put("visit_type", "android");
 			        	    
 			        	    String retStr = null;
 			        	    try {

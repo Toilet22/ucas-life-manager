@@ -23,46 +23,40 @@ public class DatabaseUtil{
 	 */
 	private static final int DATABASE_VERSION = 1;
 
-	/**
-	 * Table Name
-	 */
+	/***************************************
+	 * 用户列表
+	 * *************************************/
+	// Table Name
 	public static final String USER = "tb_user";
 
-	/**
-	 * Table columns
-	 */
+	// Table columns
 	public static final String KEY_USERNAME = "username";
 	public static final String KEY_PASSWORD = "password";
 	public static final String KEY_CTIME = "ctime";
 	public static final String KEY_MTIME = "mtime";
 	public static final String KEY_STIME = "stime";
 
-	/**
-	 * Database creation SQL statement
-	 */
+	// Database creation SQL statement
 	private static final String CREATE_USER_TABLE =
 		"create table " + USER + " ("
 	    + KEY_USERNAME + " VARCHAR(30) not null, "
 		+ KEY_PASSWORD + " VARCHAR(16) not null, " 
 	    + KEY_CTIME + " INTEGER not null);";
 
-	/**
-	 * Table Name
-	 */
+	/***************************************
+	 * 用户资料
+	 **************************************/
+	// Table Name
 	public static final String USER_PROFILE = "tb_user_profile";
 
-	/**
-	 * Table columns
-	 */
+	// Table columns
 	public static final String KEY_NICKNAME = "nickname";
 	public static final String KEY_EMAIL = "email";
 	public static final String KEY_SEX = "sex";
 	public static final String KEY_AGE = "age";
 	public static final String KEY_JOB = "job";
 
-	/**
-	 * Database creation SQL statement
-	 */
+	// Database creation SQL statement
 	private static final String CREATE_USER_PROFILE_TABLE =
 		"create table " + USER_PROFILE + " ("
 	    + KEY_USERNAME + " VARCHAR(30) not null, "
@@ -75,21 +69,18 @@ public class DatabaseUtil{
 		+ KEY_MTIME + " INTEGER not null, "
 		+ KEY_STIME + " INTEGER not null);";
 	
-	/**
-	 * Table Name
-	 */
+	/***************************************
+	 * 用户设定
+	 **************************************/
+	// Table Name
 	public static final String USER_SETTINGS = "tb_user_settings";
 
-	/**
-	 * Table columns
-	 */
+	// Table columns
 	public static final String KEY_MODE = "mode";
 	public static final String KEY_RINGLEVEL = "ringlevel";
 	public static final String KEY_ALARMTYPE = "alarmtype";
 
-	/**
-	 * Database creation SQL statement
-	 */
+	// Database creation SQL statement
 	private static final String CREATE_USER_SETTINGS_TABLE =
 		"create table " + USER_SETTINGS + " (" 
 	    + KEY_USERNAME + " VARCHAR(30) not null, "
@@ -100,15 +91,13 @@ public class DatabaseUtil{
 		+ KEY_MTIME + " INTEGER not null, "
 		+ KEY_STIME + " INTEGER not null);";
 	
-	
-	/**
-	 * Table Name
-	 */
+	/***************************************
+	 * todoList列表
+	 **************************************/
+	// Table Name
 	public static final String TODOLIST = "tb_todolist";
 
-	/**
-	 * Table columns
-	 */
+	// Table columns
 	public static final String KEY_TITLE = "title";
 	public static final String KEY_START = "start_time";
 	public static final String KEY_END = "end_time";
@@ -120,9 +109,7 @@ public class DatabaseUtil{
 	public static final String KEY_PRIORITY = "priority";
 	public static final String KEY_STATUS = "status";
 
-	/**
-	 * Database creation SQL statement
-	 */
+	// Database creation SQL statement
 	private static final String CREATE_TODOLIST_TABLE =
 		"create table " + TODOLIST + " (" 
 	    + KEY_TITLE + " text not null, "
@@ -138,18 +125,15 @@ public class DatabaseUtil{
 		+ KEY_MTIME + " INTEGER not null, "
 		+ KEY_STIME + " INTEGER not null);";
 	
-	/**
-	 * Table Name
-	 */
+	/***************************************
+	 * collector列表
+	 **************************************/
+	// Table Name
 	public static final String COLLECTOR = "tb_collector";
 
-	/**
-	 * Table columns
-	 */
+	// Table columns
 
-	/**
-	 * Database creation SQL statement
-	 */
+	// Database creation SQL statement
 	private static final String CREATE_COLLECTOR_TABLE =
 		"create table " + COLLECTOR + " (" 
 	    + KEY_TITLE + " text not null, "
@@ -165,18 +149,15 @@ public class DatabaseUtil{
 		+ KEY_MTIME + " INTEGER not null, "
 		+ KEY_STIME + " INTEGER not null);";
 	
-	/**
-	 * Table Name
-	 */
+	/***************************************
+	 * wishList列表
+	 **************************************/
+	// Table Name
 	private static final String WISHLIST = "tb_wishlist";
 
-	/**
-	 * Table columns
-	 */
+	// Table columns
 
-	/**
-	 * Database creation SQL statement
-	 */
+	// Database creation SQL statement
 	private static final String CREATE_WISHLIST_TABLE =
 		"create table " + WISHLIST + " (" 
 	    + KEY_TITLE + " text not null, "
@@ -192,22 +173,18 @@ public class DatabaseUtil{
 		+ KEY_MTIME + " INTEGER not null, "
 		+ KEY_STIME + " INTEGER not null);";
 	
-	
-	/**
-	 * Table Name
-	 */
+	/***************************************
+	 * timeLog 列表
+	 **************************************/
+	// Table Name
 	public static final String RECORD = "tb_record";
 
-	/**
-	 * Table columns
-	 */
+	// Table columns
 	public static final String KEY_COST = "cost_time";
 	public static final String KEY_RATING = "rating";
 	public static final String KEY_MOOD = "mood";
 	
-	/**
-	 * Database creation SQL statement
-	 */
+	// Database creation SQL statement
 	private static final String CREATE_RECORD_TABLE =
 		"create table " + RECORD + " (" 
 		+ KEY_TYPE + " SMALLINT, "
@@ -221,62 +198,54 @@ public class DatabaseUtil{
 		+ KEY_MTIME + " INTEGER not null, "
 		+ KEY_STIME + " INTEGER not null);";
 	
-	/**
-	 * Table Name
-	 */
+	// Table Name
 	public static final String TIME_TIPS = "tb_time_tips";
 
-	/**
-	 * Table columns
-	 */
+	// Table columns
 	public static final String KEY_CONTENT = "content";
 	public static final String KEY_INDEX = "tip_index";
 	
-	/**
-	 * Database creation SQL statement
-	 */
+	// Database creation SQL statement
 	private static final String CREATE_TIME_TIPS_TABLE =
 		"create table " + TIME_TIPS + " ("
 		+ KEY_TITLE + " text not null, "
 		+ KEY_CONTENT + " text not null, "
 		+ KEY_INDEX + " VARCHAR(50) not null);";
 	
-	
-	/**
-	 * Table Name
-	 */
+	/***************************************
+	 * 心情建议列表
+	 **************************************/
+	// Table Name
 	public static final String MOOD_TIPS = "tb_mood_tips";
 
-	/**
-	 * Table columns
-	 */
+	// Table columns
 	
-	/**
-	 * Database creation SQL statement
-	 */
+	// Database creation SQL statement
 	private static final String CREATE_MOOD_TIPS_TABLE =
 		"create table " + MOOD_TIPS + " (" 
 		+ KEY_TITLE + " text not null, "
 		+ KEY_CONTENT + " text not null, "
 		+ KEY_INDEX + " VARCHAR(50) not null);";
 	
-	/**
-	 * Context
-	 */
+	/***************************************
+	 * 声明变量
+	 **************************************/
 	private final Context mCtx;
-
 	private DatabaseHelper mDbHelper;
 	private SQLiteDatabase mDb;
 
-	/**
-	 * Inner private class. Database Helper class for creating and updating database.
-	 */
+	/***************************************
+	 * Inner private class. 
+	 *   DatabaseHelper class for creating 
+	 *   and updating database.
+	 **************************************/
 	private static class DatabaseHelper extends SQLiteOpenHelper {
 		DatabaseHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		}
 		/**
-		 * onCreate method is called for the 1st time when database doesn't exists.
+		 * onCreate method is called for the 1st time 
+		 *   when database doesn't exists.
 		 */
 		@Override
 		public void onCreate(SQLiteDatabase db) {
@@ -358,10 +327,12 @@ public class DatabaseUtil{
 		mDbHelper.close();
 	}
 
-	// 提供的通用数据操作接口
-	// All Tables
-	// 新增记录，删除记录，更新记录，查询记录
 	
+	/******************************************
+	 *  提供的通用数据操作接口
+	 *  All Tables
+	 *  新增记录，删除记录，更新记录，查询记录
+	 *****************************************/
 	/**
 	 * This is a generic interface used to insert new record to the specified table.
 	 * @param tb

@@ -7,12 +7,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
@@ -37,10 +39,15 @@ public class LoginActivity extends Activity {
 	private String userNameValue,passwordValue;  
     private SharedPreferences sp;  
 	
+    private ProgressDialog pd;
+    private Bundle loginBundle = new Bundle();
+    
     private  Handler mHandler;
     private Runnable mRunnableShowToast;
     
-    private static final int PASSWORD_ERROR = 12;
+    private static final int LOGIN_SUCCESS = 0;
+    private static final int LOGIN_ERROR = 1;
+    private static final int HTTP_ERROR = -1;
     
 	 public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
@@ -48,17 +55,44 @@ public class LoginActivity extends Activity {
 	        
 	        sp = this.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);  
 	        
-	        mHandler = new Handler() {
-	        	public void handleMessage(Message msg) {  
-	                switch (msg.what) {  
-	                case PASSWORD_ERROR:
-	                	;
-	                default:
-	                	;
-	                }  
-	                super.handleMessage(msg); 
-	            };
-	        };
+		mHandler = new Handler() {
+			public void handleMessage(Message msg) {
+				super.handleMessage(msg);  
+				switch (msg.what) {
+				case LOGIN_SUCCESS:
+					Intent iMain = new Intent(LoginActivity.this,
+							MainActivity.class);
+					startActivity(iMain);
+					LoginActivity.this.finish();
+
+					// Bundle User Database
+					DatabaseUtil.dbName = userNameValue + ".db";
+					DatabaseUtil dbUtil = new DatabaseUtil(
+							LoginActivity.this);
+					dbUtil.open();
+					dbUtil.close();
+					break;
+					
+				case LOGIN_ERROR:
+					Bundle errorBundle = (Bundle) msg.obj;
+					int error = errorBundle.getInt("error");
+					String errorMsg = errorBundle.getString("errorMsg");
+					Toast.makeText(LoginActivity.this,
+							"错误编号：" + error + "\n错误信息：" + errorMsg,
+							Toast.LENGTH_LONG).show();
+					break;
+					
+				case HTTP_ERROR:
+					Toast.makeText(LoginActivity.this,
+							getText(R.string.login_http_error),
+							Toast.LENGTH_LONG).show();
+					break;
+
+				default:
+					break;
+				}
+			};
+		};
 	        
 	        mRunnableShowToast = new Runnable()
 	        {
@@ -68,8 +102,8 @@ public class LoginActivity extends Activity {
 	                    }
 	        }; 
 	        
-	        remember = true; //?????????????????????????????????????
-	        autolog = true;	//????????????????????????????????????
+	        remember = true; 
+	        autolog = true;	
 
 	        edt_name = (EditText)findViewById(R.id.act_login_name);
 	        edt_password = (EditText)findViewById(R.id.act_login_pswd);
@@ -184,83 +218,84 @@ public class LoginActivity extends Activity {
 	        });
 	 }
 	 
-	 public void validateUserLogin() {
-		 new Thread() {
+	public void validateUserLogin() {
+		// 获得用户名和密码
+		userNameValue = edt_name.getText().toString();
+		passwordValue = edt_password.getText().toString();
+
+		if (userNameValue == null || "".equals(userNameValue)) {
+			Toast.makeText(LoginActivity.this, "请先输入帐号！", Toast.LENGTH_LONG)
+					.show();
+		} else if (passwordValue == null || "".equals(passwordValue)) {
+			Toast.makeText(LoginActivity.this, "请先输入密码！", Toast.LENGTH_LONG)
+					.show();
+		} else {
+			pd = ProgressDialog.show(LoginActivity.this, "", getString(R.string.is_logining_in));
+			
+			new Thread() {
 				public void run() {
-					// 获得用户名和密码
-					userNameValue = edt_name.getText().toString();
-					passwordValue = edt_password.getText().toString();
 					
-					if(remember == true) {
-						//记住用户名、密码、  
-	                      Editor editor = sp.edit();
-	                      editor.putString("USERNAME", userNameValue);
-	                      editor.putString("PASSWORD",passwordValue);
-	                      editor.commit();  
-					}
-					
+					Looper.prepare(); 
+					Message msg = new Message(); 
+
 					Map<String, String> loginUser = new HashMap<String, String>();
-	        	    loginUser.put("username", userNameValue);
-	        	    loginUser.put("password", passwordValue);
-	        	    loginUser.put("visit_type", "android");
-	        	    
-	        	    String retStr = null;
-	        	    try {
-						retStr = NetToolUtil.sendPostRequest(NetToolUtil.accountLoginUrl, loginUser, "utf-8");
+					loginUser.put("username", userNameValue);
+					loginUser.put("password", passwordValue);
+					loginUser.put("visit_type", "android");
+
+					String retStr = null;
+					String message = null;
+					int status = 100;
+					
+					try {
+						retStr = NetToolUtil
+								.sendPostRequest(NetToolUtil.accountLoginUrl,
+										loginUser, "utf-8");
+						if (retStr != null) {
+							Log.i("User Login", "result:" + retStr);
+						}
+						
+						JSONObject retJson = new JSONObject(retStr);
+						message = retJson.getString("message");
+						status = retJson.getInt("status");
+						
+						if (status == 0) {
+							// Login Successfully
+							
+							if (remember == true) {
+								// 记住用户名、密码、
+								Editor editor = sp.edit();
+								editor.putString("USERNAME", userNameValue);
+								editor.putString("PASSWORD", passwordValue);
+								editor.commit();
+							}
+							
+							msg.what = LOGIN_SUCCESS;
+							mHandler.post(mRunnableShowToast);
+						} else {
+							// Login failed, pop up a dialog to alert user what is
+							// wrong
+							loginBundle.putInt("error", status);  
+	                        loginBundle.putString("errorMsg", message);
+	                        msg.what = LOGIN_ERROR;  
+						}
+						 msg.obj = loginBundle;  
+	                     mHandler.sendMessage(msg);
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
+						msg.what = HTTP_ERROR;
+						mHandler.sendMessage(msg);
 						e.printStackTrace();
-					}
-	        	    
-	        	    if(retStr != null) {
-	        	    	Log.i("User Login","result:" + retStr);
-	        	    }
-	        	    
-	        	    JSONObject retJson = new JSONObject();
-	        	    try {
-						retJson = new JSONObject(retStr);
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-	        	    
-	        	    String message = null;
-	        	    try {
-						message = retJson.getString("message");
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-	        	    
-	        	    int status = 100;
-	        	    try {
-						status = retJson.getInt("status");
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-	        	    
-	        	    if(status == 0) {
-	        	    	// Login Successfully
-	        	    	Intent iMain = new Intent(LoginActivity.this, MainActivity.class);
-						startActivity(iMain);
-						LoginActivity.this.finish();
-						
-						mHandler.post(mRunnableShowToast);
-						
-						// Bundle User Database
-						DatabaseUtil.dbName = userNameValue+".db";
-	        	    	DatabaseUtil dbUtil = new DatabaseUtil(LoginActivity.this);
-	        	    	dbUtil.open();
-	        	    	dbUtil.close();
-	        	    }
-	        	    else {
-	        	    	// Login failed, pop up a dialog to alert user what is wrong
-	        	    }
-	        	    
-	        	    Log.i("User Login","Return status is: " + status);
-	        	    Log.i("User Login","Return message is: " + message);
+					}finally {  
+                        pd.dismiss();
+                        Looper.loop();  
+                    }
+
+					Log.i("User Login", "Return status is: " + status);
+					Log.i("User Login", "Return message is: " + message);
 				}
 			}.start();
-	 }
+		}
+
+	}
 }

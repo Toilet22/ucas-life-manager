@@ -87,5 +87,7 @@
     <string name="context_generic">This is a context!</string>
     <string name="act_tomorrow_plan_tomorrow_event">明日事项</string>
     <string name="act_tomorrow_plan_todo_event">待办事项</string>
+    <string name="is_logining_in">正在登录</string>
+    <string name="login_http_error">http通信错误</string>
     
 </resources>

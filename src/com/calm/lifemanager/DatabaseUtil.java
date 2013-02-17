@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.SyncStateContract.Columns;
 import android.util.Log;
 
 public class DatabaseUtil{
@@ -256,7 +255,7 @@ public class DatabaseUtil{
 
 	// Database creation SQL statement
 	private static final String CREATE_SUB_TYPES_TABLE =
-		"create table " + PRIM_TYPES + " (" 
+		"create table " + SUB_TYPES + " (" 
 		+ KEY_TYPE_NAME + " VARCHAR(30) not null, "
 		+ KEY_TYPE_ICON + " text" 
 		+ KEY_TYPE_BELONGTO + "VARCHAR(30) not null);";

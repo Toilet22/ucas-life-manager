@@ -230,6 +230,38 @@ public class DatabaseUtil{
 		+ KEY_INDEX + " VARCHAR(50) not null);";
 	
 	/***************************************
+	 * 用户自定义类别,初级列表
+	 **************************************/
+	// Table Name
+	public static final String PRIM_TYPES = "tb_prim_types";
+
+	// Table columns
+	public static final String KEY_TYPE_NAME = "type_name";
+	public static final String KEY_TYPE_ICON = "type_icon";
+
+	// Database creation SQL statement
+	private static final String CREATE_PRIM_TYPES_TABLE =
+		"create table " + PRIM_TYPES + " (" 
+		+ KEY_TYPE_NAME + " VARCHAR(30) not null, "
+		+ KEY_TYPE_ICON + " text);";
+	
+	/***************************************
+	 * 用户自定义类别,次级列表
+	 **************************************/
+	// Table Name
+	public static final String SUB_TYPES = "tb_sub_types";
+
+	// Table columns
+	public static final String KEY_TYPE_BELONGTO = "type_belongto";
+
+	// Database creation SQL statement
+	private static final String CREATE_SUB_TYPES_TABLE =
+		"create table " + PRIM_TYPES + " (" 
+		+ KEY_TYPE_NAME + " VARCHAR(30) not null, "
+		+ KEY_TYPE_ICON + " text" 
+		+ KEY_TYPE_BELONGTO + "VARCHAR(30) not null);";
+	
+	/***************************************
 	 * 声明变量
 	 **************************************/
 	private final Context mCtx;
@@ -281,6 +313,12 @@ public class DatabaseUtil{
 			
 			db.execSQL(CREATE_MOOD_TIPS_TABLE);
 			Log.i(TAG,"Creating DataBase Table: " + MOOD_TIPS);
+
+			db.execSQL(CREATE_PRIM_TYPES_TABLE);
+			Log.i(TAG, "Creating DataBase Table: " + PRIM_TYPES);
+			
+			db.execSQL(CREATE_SUB_TYPES_TABLE);
+			Log.i(TAG, "Creating DataBase Table: " + SUB_TYPES);
 		}
 		
 		/**
@@ -297,6 +335,8 @@ public class DatabaseUtil{
 			db.execSQL("DROP TABLE IF EXISTS tb_record");
 			db.execSQL("DROP TABLE IF EXISTS tb_time_tips");
 			db.execSQL("DROP TABLE IF EXISTS tb_mood_tips");
+			db.execSQL("DROP TABLE IF EXISTS tb_prim_types");
+			db.execSQL("DROP TABLE IF EXISTS tb_sub_types");
 			onCreate(db);
 			
 			Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
@@ -332,7 +372,7 @@ public class DatabaseUtil{
 	 */
 	public DatabaseUtil open() throws SQLException {
 		mDbHelper = new DatabaseHelper(mCtx);
-		mDb = mDbHelper.getWritableDatabase();
+		mDb = mDbHelper.getWritableDatabase();  //???不需要传入需要打开的db名？
 		return this;
 	}
 	/**
@@ -365,6 +405,9 @@ public class DatabaseUtil{
 	 * @param keyValue
 	 * @return boolean
 	 */
+	/*????????????????????????????????????
+	 * 是不是删除所有keyWord ='keyValue'的项？
+	 */
 	public boolean deleteData(String tb,String keyWord, String keyValue) {
 		return mDb.delete(tb, keyWord + "='" + keyValue + "'", null) > 0;
 	}
@@ -377,6 +420,10 @@ public class DatabaseUtil{
 	 * @param updateValues
 	 * @return boolean
 	 */
+	/*????????????????????????????????????
+	 * 是不是将所有keyWord ='keyValue'的项的值改为updateValues？
+	 */
+	
 	public boolean updateData(String tb, String keyWord, String keyValue, ContentValues updateValues) {
 		return mDb.update(tb, updateValues, keyWord + "=" + keyValue, null) > 0;
 	}

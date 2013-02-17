@@ -24,6 +24,11 @@ public class SplashActivity extends Activity {
 				Intent nextIntent = new Intent();
 				if(isFirstUse) {
 					nextIntent.setClass(SplashActivity.this, UserTourActivity.class);
+					
+					// First Use, Create anonymous_user.db
+					DatabaseUtil dbUtil = new DatabaseUtil(SplashActivity.this);
+        	    	dbUtil.open();
+        	    	dbUtil.close();
 				}
 				else {
 					nextIntent.setClass(SplashActivity.this, MainActivity.class);
@@ -37,6 +42,6 @@ public class SplashActivity extends Activity {
 		Editor editor = judgeFirstUse.edit();
 		editor.putBoolean("firstUseApp", false);
 		editor.commit();
-
+		
 	}
 }

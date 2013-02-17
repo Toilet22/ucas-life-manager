@@ -17,7 +17,7 @@ public class DatabaseUtil{
 	 * Database Name
 	 */
 	//private static final String DATABASE_NAME = "lifemanager.db";
-	public static String dbName = "default_user.db";
+	public static String dbName = "anonymous_user.db";
 
 	/**
 	 * Database Version

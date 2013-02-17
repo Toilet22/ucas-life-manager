@@ -9,10 +9,13 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class RegisterActivity extends Activity {
 	EditText edt_name;
@@ -23,10 +26,34 @@ public class RegisterActivity extends Activity {
 	Button btn_regst;
 	Button btn_back;
 	
-
+	private  Handler mHandler;
+	private Runnable mRunnableShowToast;
+	
+	private static final int USERNAME_EXSISTED = 11;
+	    
 	 public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.activity_register);
+	        
+	        mHandler = new Handler() {
+	        	public void handleMessage(Message msg) {  
+	                switch (msg.what) {  
+	                case USERNAME_EXSISTED:
+	                	;
+	                default:
+	                	;
+	                }  
+	                super.handleMessage(msg); 
+	            };
+	        };
+	        
+	        mRunnableShowToast = new Runnable()
+	        {
+	                    public void run() {
+	                            // TODO Auto-generated method stub
+	                    		Toast.makeText(RegisterActivity.this,"Register Successfully!", Toast.LENGTH_LONG).show();
+	                    }
+	        }; 
 	        
 	        edt_name = (EditText)findViewById(R.id.act_regst_edt_name);
 	        edt_pswd1 = (EditText)findViewById(R.id.act_regst_edt_pswd1);
@@ -113,6 +140,18 @@ public class RegisterActivity extends Activity {
 			        	    if(status == 0) {
 			        	    	// Pop up a dialog to inform user success of registration
 			        	    	
+			        	    	// Create User Database
+			        	    	DatabaseUtil dbUtil = new DatabaseUtil(RegisterActivity.this, username);
+			        	    	dbUtil.open();
+			        	    	dbUtil.close();
+			        	    	
+								// Show Toast of Successful Registration
+								mHandler.post(mRunnableShowToast);
+								
+								// User Login
+			        	    	Intent iLogin = new Intent(RegisterActivity.this, MainActivity.class);
+								startActivity(iLogin);
+								RegisterActivity.this.finish();
 			        	    }
 			        	    else {
 			        	    	// Pop up a dialog to inform failure status and message of registration

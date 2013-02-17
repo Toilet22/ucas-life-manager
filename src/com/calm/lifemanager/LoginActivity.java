@@ -247,6 +247,12 @@ public class LoginActivity extends Activity {
 						LoginActivity.this.finish();
 						
 						mHandler.post(mRunnableShowToast);
+						
+						// Bundle User Database
+						DatabaseUtil.dbName = userNameValue;
+	        	    	DatabaseUtil dbUtil = new DatabaseUtil(LoginActivity.this);
+	        	    	dbUtil.open();
+	        	    	dbUtil.close();
 	        	    }
 	        	    else {
 	        	    	// Login failed, pop up a dialog to alert user what is wrong

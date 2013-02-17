@@ -1,5 +1,7 @@
 package com.calm.lifemanager;
 
+import java.io.File;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -16,12 +18,14 @@ public class DatabaseUtil{
 	 * Database Name
 	 */
 	//private static final String DATABASE_NAME = "lifemanager.db";
+	public static String defaultDbName = "anonymous_user.db";
 	public static String dbName = "anonymous_user.db";
 
 	/**
 	 * Database Version
 	 */
 	//private static final int DATABASE_VERSION = 1;
+	public static int defaultDbVersion = 1;
 	public static int dbVersion = 1;
 
 	/***************************************
@@ -371,16 +375,43 @@ public class DatabaseUtil{
 	 */
 	public DatabaseUtil open() throws SQLException {
 		mDbHelper = new DatabaseHelper(mCtx);
-		mDb = mDbHelper.getWritableDatabase();  //???不需要传入需要打开的db名？
+		mDb = mDbHelper.getWritableDatabase();
 		return this;
 	}
+	
 	/**
 	 * This method is used for closing the connection.
 	 */
 	public void close() {
 		mDbHelper.close();
 	}
-
+	
+	/**
+	 * This method is used to check if a database existed
+	 * @param dbName
+	 * @return
+	 */
+	public boolean exist(String dbName) {
+		File dbFile = mCtx.getDatabasePath(dbName);
+		if (dbFile.exists() == true) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * This method is used to rename an existed database
+	 * @param oldDbName
+	 * @param newDbName
+	 * @return void
+	 */
+	public void rename (String oldDbName, String newDbName) {
+		File dbFile = mCtx.getDatabasePath(dbName);
+		File newDbFile = new File(dbFile.getParentFile(), newDbName);
+		dbFile.renameTo(newDbFile);
+		newDbFile.delete();
+	}
 	
 	/******************************************
 	 *  提供的通用数据操作接口
@@ -404,9 +435,7 @@ public class DatabaseUtil{
 	 * @param keyValue
 	 * @return boolean
 	 */
-	/*????????????????????????????????????
-	 * 是不是删除所有keyWord ='keyValue'的项？
-	 */
+
 	public boolean deleteData(String tb,String keyWord, String keyValue) {
 		return mDb.delete(tb, keyWord + "='" + keyValue + "'", null) > 0;
 	}
@@ -418,9 +447,6 @@ public class DatabaseUtil{
 	 * @param keyValue
 	 * @param updateValues
 	 * @return boolean
-	 */
-	/*????????????????????????????????????
-	 * 是不是将所有keyWord ='keyValue'的项的值改为updateValues？
 	 */
 	
 	public boolean updateData(String tb, String keyWord, String keyValue, ContentValues updateValues) {

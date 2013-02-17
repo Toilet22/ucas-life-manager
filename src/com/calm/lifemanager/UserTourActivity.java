@@ -117,7 +117,6 @@ public class UserTourActivity extends Activity implements OnClickListener,
 				Intent nextIntent = new Intent();
 				nextIntent.setClass(UserTourActivity.this, MainActivity.class);
 				this.startActivity(nextIntent);
-				this.finish();
 			}
 			break;
 		default:

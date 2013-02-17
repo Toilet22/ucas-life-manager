@@ -249,7 +249,7 @@ public class LoginActivity extends Activity {
 						mHandler.post(mRunnableShowToast);
 						
 						// Bundle User Database
-						DatabaseUtil.dbName = userNameValue;
+						DatabaseUtil.dbName = userNameValue+".db";
 	        	    	DatabaseUtil dbUtil = new DatabaseUtil(LoginActivity.this);
 	        	    	dbUtil.open();
 	        	    	dbUtil.close();

@@ -140,10 +140,19 @@ public class RegisterActivity extends Activity {
 			        	    if(status == 0) {
 			        	    	// Pop up a dialog to inform user success of registration
 			        	    	
-			        	    	// Create User Database
-			        	    	DatabaseUtil dbUtil = new DatabaseUtil(RegisterActivity.this, username);
-			        	    	dbUtil.open();
-			        	    	dbUtil.close();
+			        	    	// Check Anonymous User Database, If exist then rename it, else create a new one
+			        	    	DatabaseUtil dbUtil = new DatabaseUtil(RegisterActivity.this);
+			        	    	if(dbUtil.exist(DatabaseUtil.defaultDbName)) {
+			        	    		Log.i("Registraion", "First registration, Renaming " + DatabaseUtil.defaultDbName + " to " + username +".db");
+			        	    		dbUtil.rename(DatabaseUtil.defaultDbName, username);
+			        	    	}
+			        	    	else {
+				        	    	// Create A New User Database
+			        	    		Log.i("Registration","Not First User, create a new database");
+				        	    	dbUtil = new DatabaseUtil(RegisterActivity.this, username+".db");
+				        	    	dbUtil.open();
+				        	    	dbUtil.close();
+			        	    	}
 			        	    	
 								// Show Toast of Successful Registration
 								mHandler.post(mRunnableShowToast);

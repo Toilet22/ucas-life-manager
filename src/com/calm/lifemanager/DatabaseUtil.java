@@ -28,6 +28,9 @@ public class DatabaseUtil{
 	public static int defaultDbVersion = 1;
 	public static int dbVersion = 1;
 
+	// Table columns
+	public static final String KEY_ID = "_id";
+		
 	/***************************************
 	 * 用户列表
 	 * *************************************/
@@ -64,7 +67,6 @@ public class DatabaseUtil{
 	// Database creation SQL statement
 	private static final String CREATE_USER_PROFILE_TABLE =
 		"create table " + USER_PROFILE + " ("
-	    + KEY_USERNAME + " VARCHAR(30) not null, "
 		+ KEY_NICKNAME + " VARCHAR(30), " 
 		+ KEY_EMAIL + " VARCHAR(30), " 
 		+ KEY_SEX + " SMALLINT, " 
@@ -88,7 +90,6 @@ public class DatabaseUtil{
 	// Database creation SQL statement
 	private static final String CREATE_USER_SETTINGS_TABLE =
 		"create table " + USER_SETTINGS + " (" 
-	    + KEY_USERNAME + " VARCHAR(30) not null, "
 		+ KEY_MODE + " SMALLINT, " 
 		+ KEY_RINGLEVEL + " SMALLINT, "
 		+ KEY_ALARMTYPE + " SMALLINT, "
@@ -117,6 +118,7 @@ public class DatabaseUtil{
 	// Database creation SQL statement
 	private static final String CREATE_TODOLIST_TABLE =
 		"create table " + TODOLIST + " (" 
+		+ KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 	    + KEY_TITLE + " text not null, "
 		+ KEY_START + " INTEGER, " 
 		+ KEY_END + " INTEGER, " 
@@ -141,6 +143,7 @@ public class DatabaseUtil{
 	// Database creation SQL statement
 	private static final String CREATE_COLLECTOR_TABLE =
 		"create table " + COLLECTOR + " (" 
+		+ KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 	    + KEY_TITLE + " text not null, "
 		+ KEY_START + " INTEGER, " 
 		+ KEY_END + " INTEGER, " 
@@ -165,6 +168,7 @@ public class DatabaseUtil{
 	// Database creation SQL statement
 	private static final String CREATE_WISHLIST_TABLE =
 		"create table " + WISHLIST + " (" 
+		+ KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 	    + KEY_TITLE + " text not null, "
 		+ KEY_START + " INTEGER, " 
 		+ KEY_END + " INTEGER, " 
@@ -192,6 +196,7 @@ public class DatabaseUtil{
 	// Database creation SQL statement
 	private static final String CREATE_RECORD_TABLE =
 		"create table " + RECORD + " (" 
+		+ KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 		+ KEY_TYPE + " SMALLINT, "
 		+ KEY_START + " INTEGER, " 
 		+ KEY_END + " INTEGER, " 
@@ -213,6 +218,7 @@ public class DatabaseUtil{
 	// Database creation SQL statement
 	private static final String CREATE_TIME_TIPS_TABLE =
 		"create table " + TIME_TIPS + " ("
+		+ KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 		+ KEY_TITLE + " text not null, "
 		+ KEY_CONTENT + " text not null, "
 		+ KEY_INDEX + " VARCHAR(50) not null);";
@@ -228,6 +234,7 @@ public class DatabaseUtil{
 	// Database creation SQL statement
 	private static final String CREATE_MOOD_TIPS_TABLE =
 		"create table " + MOOD_TIPS + " (" 
+		+ KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 		+ KEY_TITLE + " text not null, "
 		+ KEY_CONTENT + " text not null, "
 		+ KEY_INDEX + " VARCHAR(50) not null);";
@@ -245,8 +252,12 @@ public class DatabaseUtil{
 	// Database creation SQL statement
 	private static final String CREATE_PRIM_TYPES_TABLE =
 		"create table " + PRIM_TYPES + " (" 
+		+ KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 		+ KEY_TYPE_NAME + " VARCHAR(30) not null, "
-		+ KEY_TYPE_ICON + " text);";
+		+ KEY_TYPE_ICON + " text, "
+		+ KEY_CTIME + " INTEGER not null, "
+		+ KEY_MTIME + " INTEGER not null, "
+		+ KEY_STIME + " INTEGER not null);";
 	
 	/***************************************
 	 * 用户自定义类别,次级列表
@@ -260,9 +271,13 @@ public class DatabaseUtil{
 	// Database creation SQL statement
 	private static final String CREATE_SUB_TYPES_TABLE =
 		"create table " + SUB_TYPES + " (" 
+		+ KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 		+ KEY_TYPE_NAME + " VARCHAR(30) not null, "
-		+ KEY_TYPE_ICON + " text" 
-		+ KEY_TYPE_BELONGTO + "VARCHAR(30) not null);";
+		+ KEY_TYPE_ICON + " text, "
+		+ KEY_TYPE_BELONGTO + " VARCHAR(30) not null, "
+		+ KEY_CTIME + " INTEGER not null, "
+		+ KEY_MTIME + " INTEGER not null, "
+		+ KEY_STIME + " INTEGER not null);";
 	
 	/***************************************
 	 * 声明变量
@@ -565,9 +580,8 @@ public class DatabaseUtil{
 	 * @param stime
 	 * @return long
 	 */
-	public long createUserProfile(String username, String nickname, String email, int sex, int age, int job, long ctime, long mtime, long stime){
+	public long createUserProfile(String nickname, String email, int sex, int age, int job, long ctime, long mtime, long stime){
 		ContentValues initialValues = new ContentValues();
-		initialValues.put(KEY_USERNAME, username);
 		initialValues.put(KEY_NICKNAME, nickname);
 		initialValues.put(KEY_EMAIL, email);
 		initialValues.put(KEY_SEX, sex);
@@ -636,9 +650,8 @@ public class DatabaseUtil{
 	 * @param stime
 	 * @return long
 	 */
-	public long createUserSettings(String username, int mode, int ringLevel, int alarmType, long ctime, long mtime, long stime) {
+	public long createUserSettings(int mode, int ringLevel, int alarmType, long ctime, long mtime, long stime) {
 		ContentValues initialValues = new ContentValues();
-		initialValues.put(KEY_USERNAME, username);
 		initialValues.put(KEY_MODE, mode);
 		initialValues.put(KEY_RINGLEVEL, ringLevel);
 		initialValues.put(KEY_ALARMTYPE, alarmType);
@@ -681,7 +694,6 @@ public class DatabaseUtil{
 	
 	/**
 	 * This method is used to create new todolist event.
-	 * @param username
 	 * @param title
 	 * @param start_time
 	 * @param end_time
@@ -697,10 +709,9 @@ public class DatabaseUtil{
 	 * @param stime
 	 * @return
 	 */
-	public long createTodolistEvent(String username, String title, long start_time, long end_time, String place, String description, 
+	public long createTodolistEvent(String title, long start_time, long end_time, String place, String description, 
 			int event_type, int repetition, int reminder, int priority, int status, long ctime, long mtime, long stime) {
 		ContentValues initialValues = new ContentValues();
-		initialValues.put(KEY_USERNAME, username);
 		initialValues.put(KEY_TITLE, title);
 		initialValues.put(KEY_START, start_time);
 		initialValues.put(KEY_END, end_time);
@@ -723,7 +734,6 @@ public class DatabaseUtil{
 	
 	/**
 	 * This method is used to create new collector event.
-	 * @param username
 	 * @param title
 	 * @param start_time
 	 * @param end_time
@@ -739,10 +749,9 @@ public class DatabaseUtil{
 	 * @param stime
 	 * @return long
 	 */
-	public long createCollectorEvent(String username, String title, long start_time, long end_time, String place, String description, 
+	public long createCollectorEvent(String title, long start_time, long end_time, String place, String description, 
 			int event_type, int repetition, int reminder, int priority, int status, long ctime, long mtime, long stime) {
 		ContentValues initialValues = new ContentValues();
-		initialValues.put(KEY_USERNAME, username);
 		initialValues.put(KEY_TITLE, title);
 		initialValues.put(KEY_START, start_time);
 		initialValues.put(KEY_END, end_time);
@@ -765,7 +774,6 @@ public class DatabaseUtil{
 	
 	/**
 	 * This method is used to create new wishlist event.
-	 * @param username
 	 * @param title
 	 * @param start_time
 	 * @param end_time
@@ -781,10 +789,9 @@ public class DatabaseUtil{
 	 * @param stime
 	 * @return long
 	 */
-	public long createWishlistEvent(String username, String title, long start_time, long end_time, String place, String description, 
+	public long createWishlistEvent(String title, long start_time, long end_time, String place, String description, 
 			int event_type, int repetition, int reminder, int priority, int status, long ctime, long mtime, long stime) {
 		ContentValues initialValues = new ContentValues();
-		initialValues.put(KEY_USERNAME, username);
 		initialValues.put(KEY_TITLE, title);
 		initialValues.put(KEY_START, start_time);
 		initialValues.put(KEY_END, end_time);
@@ -807,7 +814,6 @@ public class DatabaseUtil{
 	
 	/**
 	 * This method is used to create new record event.
-	 * @param username
 	 * @param event_type
 	 * @param start_time
 	 * @param end_time
@@ -820,9 +826,8 @@ public class DatabaseUtil{
 	 * @param stime
 	 * @return long
 	 */
-	public long createRecordEvent(String username, int event_type, long start_time, long end_time, long cost_time, int rating, int mood, int status, long ctime, long mtime, long stime) {
+	public long createRecordEvent(int event_type, long start_time, long end_time, long cost_time, int rating, int mood, int status, long ctime, long mtime, long stime) {
 		ContentValues initialValues = new ContentValues();
-		initialValues.put(KEY_USERNAME, username);
 		initialValues.put(KEY_TYPE, event_type);
 		initialValues.put(KEY_START, start_time);
 		initialValues.put(KEY_END, end_time);
@@ -870,6 +875,190 @@ public class DatabaseUtil{
 		initialValues.put(KEY_TITLE, title);
 		initialValues.put(KEY_CONTENT, content);
 		return mDb.insert(MOOD_TIPS, null, initialValues);
+	}
+	
+	//提供的数据操作接口
+	//Prime_types Table
+	//初始化types，新增types，删除types，更新types，查询types
+	
+	/**
+	 * This method is used to initial prime types.
+	 */
+	public void initPrimeTypes() {
+		Log.i("DatabaseUtil","Creating Assigned Prime Types...");
+		
+		createPrimeTypes("学习", null, System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createPrimeTypes("工作", null, System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createPrimeTypes("社交", null, System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createPrimeTypes("运动", null, System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createPrimeTypes("思考", null, System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createPrimeTypes("娱乐", null, System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createPrimeTypes("购物", null, System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createPrimeTypes("其它", null, System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createPrimeTypes("未记录", null, System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		
+		Log.i("DatabaseUtil","Creating Assigned Prime Types Done!");
+	}
+	
+	/**
+	 * This method is used to create/insert new Prime Types.
+	 * @param username
+	 * @param typeName
+	 * @param typeIcon
+	 * @param ctime
+	 * @param mtime
+	 * @param stime
+	 * @return long
+	 */
+	public long createPrimeTypes(String typeName, String typeIcon, long ctime, long mtime, long stime) {
+		ContentValues initialValues = new ContentValues();
+		initialValues.put(KEY_TYPE_NAME, typeName);
+		initialValues.put(KEY_TYPE_ICON, typeIcon);
+		initialValues.put(KEY_CTIME, ctime);
+		initialValues.put(KEY_MTIME, mtime);
+		initialValues.put(KEY_STIME, stime);
+		return mDb.insert(PRIM_TYPES, null, initialValues);
+	}
+	
+	/**
+	 * This method will delete Prime Types.
+	 * @param username
+	 * @return boolean
+	 */
+	public boolean deletePrimeTypes(int id) {
+		return mDb.delete(PRIM_TYPES, KEY_ID + "='" + id + "'", null) > 0;
+	}
+	
+	/**
+	 * This method will update Prime Types with selected columns.
+	 * @param username
+	 * @param updateValues
+	 * @return boolean
+	 */
+	public boolean updatePrimeTypes(int id, ContentValues updateValues) {
+		return mDb.update(PRIM_TYPES, updateValues, KEY_ID + "='" + id + "'", null) > 0;
+	}
+	
+	public Cursor fetchPrimeTypes(int id, String[] selectColumns) throws SQLException {
+		Cursor mCursor = 
+				mDb.query(true, PRIM_TYPES, selectColumns, KEY_ID + "='" + id + "'", null, null, null, null, null);
+		if (mCursor != null)
+			mCursor.moveToFirst();
+		return mCursor;
+	}
+	
+	//提供的数据操作接口
+	//Prime_types Table
+	//新增types，删除types，更新types，查询types
+	
+	/**
+	 * This method is used to initial prime types.
+	 */
+	public void initSubTypes() {
+		Log.i("DatabaseUtil","Creating Assigned Sub Types...");
+		
+		createSubTypes("专业知识", null, "学习", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("人文知识", null, "学习", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("艺术修养", null, "学习", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("其他", null, "学习", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		
+		
+		createSubTypes("规划工作", null, "工作", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("处理文档", null, "工作", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("联系客户", null, "工作", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("编写代码", null, "工作", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("其他", null, "工作", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		
+		
+		createSubTypes("电话联系", null, "社交", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("网络交流", null, "社交", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("外出聚会", null, "社交", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("登门造访", null, "社交", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("其他", null, "社交", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		
+		
+		createSubTypes("散步慢跑", null, "运动", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("大球运动", null, "运动", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("小球运动", null, "运动", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("健身健美", null, "运动", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("其他", null, "运动", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		
+		
+		createSubTypes("人生愿景", null, "思考", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("长期规划", null, "思考", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("短期规划", null, "思考", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("人情世故", null, "思考", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("其他", null, "思考", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		
+		
+		createSubTypes("户外旅途", null, "娱乐", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("电影音乐", null, "娱乐", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("棋牌游戏", null, "娱乐", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("上网冲浪", null, "娱乐", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("其他", null, "娱乐", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		
+		createSubTypes("日常用品", null, "购物", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("逛街血拼", null, "购物", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("大宗产品", null, "购物", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("便捷网购", null, "购物", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("其他", null, "购物", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		
+		createSubTypes("交通路途", null, "其他", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		createSubTypes("其他", null, "其他", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		
+		
+		createSubTypes("未记录", null, "未记录", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+		
+		Log.i("DatabaseUtil","Creating Assigned Sub Types Done!");
+	}
+	
+	/**
+	 * This method is used to create/insert new Prime Types.
+	 * @param username
+	 * @param typeName
+	 * @param typeIcon
+	 * @param typeBelongTo
+	 * @param ctime
+	 * @param mtime
+	 * @param stime
+	 * @return long
+	 */
+	public long createSubTypes(String typeName, String typeIcon, String typeBelongTo, long ctime, long mtime, long stime) {
+		ContentValues initialValues = new ContentValues();
+		initialValues.put(KEY_TYPE_NAME, typeName);
+		initialValues.put(KEY_TYPE_ICON, typeIcon);
+		initialValues.put(KEY_TYPE_BELONGTO, typeBelongTo);
+		initialValues.put(KEY_CTIME, ctime);
+		initialValues.put(KEY_MTIME, mtime);
+		initialValues.put(KEY_STIME, stime);
+		return mDb.insert(SUB_TYPES, null, initialValues);
+	}
+	
+	/**
+	 * This method will delete Sub Types.
+	 * @param username
+	 * @return boolean
+	 */
+	public boolean deleteSubTypes(int id) {
+		return mDb.delete(SUB_TYPES, KEY_ID + "='" + id + "'", null) > 0;
+	}
+	
+	/**
+	 * This method will update Sub Types with selected columns.
+	 * @param username
+	 * @param updateValues
+	 * @return boolean
+	 */
+	public boolean updateSubTypes(int id, ContentValues updateValues) {
+		return mDb.update(SUB_TYPES, updateValues, KEY_ID + "='" + id + "'", null) > 0;
+	}
+	
+	public Cursor fetchSubTypes(int id, String[] selectColumns) throws SQLException {
+		Cursor mCursor = 
+				mDb.query(true, SUB_TYPES, selectColumns, KEY_ID + "='" + id + "'", null, null, null, null, null);
+		if (mCursor != null)
+			mCursor.moveToFirst();
+		return mCursor;
 	}
 	
 	// 外部调用实例

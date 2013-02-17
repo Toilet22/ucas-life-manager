@@ -28,6 +28,11 @@ public class SplashActivity extends Activity {
 					// First Use, Create anonymous_user.db
 					DatabaseUtil dbUtil = new DatabaseUtil(SplashActivity.this);
         	    	dbUtil.open();
+        	    	
+        	    	// Initial Assigned Types
+        	    	dbUtil.initPrimeTypes();
+        	    	dbUtil.initSubTypes();
+        	    	
         	    	dbUtil.close();
 				}
 				else {

@@ -151,6 +151,11 @@ public class RegisterActivity extends Activity {
 			        	    		Log.i("Registration","Not First User, create a new database");
 				        	    	dbUtil = new DatabaseUtil(RegisterActivity.this, username+".db");
 				        	    	dbUtil.open();
+				        	    	
+				        	    	// Initial Assigned Types
+				        	    	dbUtil.initPrimeTypes();
+				        	    	dbUtil.initSubTypes();
+				        	    	
 				        	    	dbUtil.close();
 			        	    	}
 			        	    	

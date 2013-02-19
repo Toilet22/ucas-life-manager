@@ -29,15 +29,24 @@ public class SettingsActivity extends Activity {
 	//开启和关闭定时记录
 	Button btn_logSwitch;
 	Boolean isLogStarted;
+	
 	//是否开启铃声
 	Button btn_ringtone;
 	Boolean isRingOn;
+	
 	//是否开启震动
 	Button btn_vibration;
 	Boolean isVibrationOn;
+	
 	//返回保存
 	Button btn_save;
 	Button btn_back;
+	
+	
+	// 用户登录和数据同步
+	Button btn_switch_user;
+	Button btn_sync_data;
+	TextView txtvw_current_loged_in_user;
 	
 	//选择时间间隔
 	//Button btn_setInterval;
@@ -299,6 +308,25 @@ public class SettingsActivity extends Activity {
 				finish();
 			}
 		});		
+		
+		
+		// User Data Sync
+		txtvw_current_loged_in_user = (TextView)findViewById(R.id.act_settings_txtvw_current_loged_user);
+		txtvw_current_loged_in_user.setText("DayDayUp");
+		
+		btn_switch_user = (Button)findViewById(R.id.act_settings_btn_switch_user);
+		btn_switch_user.setOnClickListener(new Button.OnClickListener() {
+			public void onClick(View v){
+				
+			}
+		});
+		
+		btn_sync_data = (Button)findViewById(R.id.act_settings_btn_sync_data);
+		btn_switch_user.setOnClickListener(new Button.OnClickListener() {
+			public void onClick(View v){
+				
+			}
+		});
 	}
 	
 	public void onPause(){
@@ -313,5 +341,4 @@ public class SettingsActivity extends Activity {
 		editor.putInt("interval", interval);
 		editor.commit();
 	}
-
 }

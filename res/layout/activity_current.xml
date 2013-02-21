@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/act_current_btn_back"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/current_bg"
@@ -10,38 +11,77 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center_horizontal"
         android:orientation="vertical" >
 
-        <Button
-            android:id="@+id/act_current_btn_countDown"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/current_dosth" />
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/act_curr_txtvw_logState"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/act_current_txtvw_logStopped"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/act_curr_txtvw_logNextTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/act_current_txtvw_nextLogTime"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="40sp" />
+
+            <Button
+                android:id="@+id/act_curr_btn_logSwitch"
+                style="android:buttonStyle"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="@string/act_current_btn_logStart" />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/act_current_btn_Rcd"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/current_ircd" />
+            android:text="@string/act_current_btn_iWantToRcd" />
 
         <Button
-            android:id="@+id/act_current_btn_mood"
-            android:layout_width="wrap_content"
+            android:id="@+id/act_curr_btn_history"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/current_happy" />
+            android:text="@string/act_current_btn_history" />
+
+        <Button
+            android:id="@+id/act_curr_btn_future"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="@string/act_current_btn_future" />
 
     </LinearLayout>
 
     <Button
-        android:id="@+id/act_current_btn_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/act_curr_btn_settings"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/current_back" />
+        android:layout_marginTop="20dp"
+        android:background="@drawable/main_setting" />
+
+    <Button
+        android:id="@+id/act_curr_btn_login"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:layout_alignBaseline="@+id/act_curr_btn_settings"
+        android:layout_alignBottom="@+id/act_curr_btn_settings"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/main_login" />
 
 </RelativeLayout>

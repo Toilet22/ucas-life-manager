@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 public class SettingsActivity extends Activity {
 
-	final int defaultInterval = 1;
+	final long defaultIntervalInMillis = 30*60000;
 	//preferences记录
 	SharedPreferences sharedPref;
 	
@@ -41,6 +41,8 @@ public class SettingsActivity extends Activity {
 	//返回保存
 	Button btn_save;
 	Button btn_back;
+	//自定义类别
+	Button btn_types;
 	
 	
 	// 用户登录和数据同步
@@ -52,7 +54,7 @@ public class SettingsActivity extends Activity {
 	//Button btn_setInterval;
 	TextView txtvw_interval;
 	//Spinner spnr_logInterval;
-	int interval = defaultInterval;
+	long intervalInMillis = defaultIntervalInMillis;
 	//static final String[] intervals = { "0.5小时", "1小时", "1.5小时", "2小时", "2.5小时", "3小时","3.5小时", "4小时"};  
     //ArrayAdapter <String> arrayAdapter = null;  
 	
@@ -68,20 +70,20 @@ public class SettingsActivity extends Activity {
 		 *****************************************/
 		sharedPref = getSharedPreferences(
 		        getString(R.string.curr_usr_name), Context.MODE_PRIVATE);
-		if(sharedPref.contains("isLogStarted")){
-			isLogStarted = sharedPref.getBoolean("isLogStarted", true);
-			interval = sharedPref.getInt("interval", defaultInterval);
+		if(sharedPref.contains("IntervalInMillis")){
+			isLogStarted = sharedPref.getBoolean("isLogStarted", false);
+			intervalInMillis = sharedPref.getLong("IntervalInMillis", defaultIntervalInMillis);
 			isRingOn = sharedPref.getBoolean("isRingOn", true);
 			isVibrationOn = sharedPref.getBoolean("isVibrationOn", true);
 		}else{
-			isLogStarted = true;
+			isLogStarted = false;
 			isRingOn = true;
 			isVibrationOn = true;
 			SharedPreferences.Editor editor = sharedPref.edit();
 			editor.putBoolean("isLogStarted", isLogStarted);
 			editor.putBoolean("isRingOn", isRingOn);
 			editor.putBoolean("isVibrationOn", isVibrationOn);
-			editor.putInt("interval", interval);
+			editor.putLong("IntervalInMillis", intervalInMillis);
 			editor.commit();
 		}
 		
@@ -103,7 +105,33 @@ public class SettingsActivity extends Activity {
 		btn_logSwitch.setOnClickListener(new Button.OnClickListener()
 		{
 			public void onClick(View v){
-	            //获得系统时间
+				TimeLoggerHelper timgLoggerHelper = new TimeLoggerHelper(SettingsActivity.this);
+				/*********************************
+				 * 判断应该开启还是关闭定时记录
+				 ********************************/
+				if(isLogStarted){
+					/************************
+					 * 如果已开启，则关闭
+					 ***********************/
+					timgLoggerHelper.stopTimeLogger();
+					//改变UI
+					isLogStarted = false;
+					btn_logSwitch.setBackgroundResource(R.drawable.switch_off);
+					//弹出Toast
+					Toast.makeText(getApplicationContext(), R.string.act_settings_toast_rglRcdOff, 
+							Toast.LENGTH_SHORT).show();
+				}else{
+					/************************
+					 * 如果已关闭，则开启
+					 ***********************/
+					timgLoggerHelper.launchTimeLogger();
+					//改变UI
+					isLogStarted = true;
+					btn_logSwitch.setBackgroundResource(R.drawable.switch_on);
+					Toast.makeText(getApplicationContext(), R.string.act_settings_toast_rglRcdOn, 
+							Toast.LENGTH_SHORT).show();
+				}
+	           /*/获得系统时间
 				Calendar c=Calendar.getInstance();
 		        int currHour = c.get(Calendar.HOUR_OF_DAY);
 		        int currMin = c.get(Calendar.MINUTE);
@@ -139,10 +167,18 @@ public class SettingsActivity extends Activity {
 					isLogStarted = true;
 					btn_logSwitch.setBackgroundResource(R.drawable.switch_on);
 					//开启定时服务
-					am.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis() + interval*3000, sender); 
+					am.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis() + interval*60000, sender); 
+					//将下次弹出时间写入preference
+					SharedPreferences.Editor editor = sharedPref.edit();
+					editor.putInt("NextLogTime_Hour", currHour + interval/60);
+					editor.putInt("NextLogTime_Min", currMin + interval % 60);
+					editor.commit();
+					Log.v("Toilet", "SettingsActivity: test the NextLogTime_Hour:" +Integer.toString(currHour + interval/60)+".");
+					Log.v("Toilet", "SettingsActivity: test the NextLogTime_Min:" +Integer.toString(currHour + interval%60)+".");
 					Toast.makeText(getApplicationContext(), R.string.act_settings_toast_rglRcdOn, 
 							Toast.LENGTH_SHORT).show();
 				}
+				*/
 			}
 		});
 		
@@ -151,54 +187,39 @@ public class SettingsActivity extends Activity {
 		 * 选择时间间隔
 		 **************************************/
 		Log.v("Toilet", "before get btn_logInterval.");	
-		txtvw_interval = (TextView)findViewById(R.id.act_settings_txtvw_interval);
 		//时间间隔初始化
-		txtvw_interval.setText(Integer.toString(interval));
+		txtvw_interval = (TextView)findViewById(R.id.act_settings_txtvw_interval);
+		txtvw_interval.setText(Long.toString(intervalInMillis/60000));
 		
-		/*
-		 * 点击时间间隔的TextView，将弹出对话框，供输入时间间隔
-		 */
+		/***********************************
+		 * 点击时间间隔的TextView，
+		 * 将弹出对话框，供输入时间间隔
+		 **********************************/
 		//以下是Dialog的输入框
 		final EditText edttxt_interval = new EditText(SettingsActivity.this);
 		edttxt_interval.setInputType(0x00000002);
 		//以下是Dialog的按钮监听
 		final DialogInterface.OnClickListener posListener = new DialogInterface.OnClickListener() {		
 			public void onClick(DialogInterface dialog, int which) {
-				interval = Integer.parseInt(edttxt_interval.getText().toString());
-				txtvw_interval.setText(Integer.toString(interval));
-				//判断是定时记录功能是开启还是关闭
+				intervalInMillis = (Integer.parseInt(edttxt_interval.getText().toString()))*60000;
+				txtvw_interval.setText(Long.toString(intervalInMillis/60000));
+				//写入preferences
+				SharedPreferences.Editor editor = sharedPref.edit();
+				editor.putLong("IntervalInMillis", intervalInMillis);
+				editor.commit();
+				
+				/**********************************
+				 * 判断是定时记录功能是开启还是关闭
+				 * 如果已开启，则根据新间隔重启定时服务
+				 * 如果未开启，则不做任何事
+				 *********************************/
 				if(isLogStarted){
 					/*
 					 * 如果定时记录功能开启，改变interval的操作是有意义的
 					 * 根据新的时间间隔值重新开始计时。
 					 */
-		            //获得系统时间
-		            Calendar c=Calendar.getInstance();
-		            int currHour = c.get(Calendar.HOUR_OF_DAY);
-		            int currMin = c.get(Calendar.MINUTE);
-		            Log.v("Toilet", "SettingsActivity_Dialog: test currHour: the Hour is "+ Integer.toString(currHour)+".");
-		            c.setTimeInMillis(System.currentTimeMillis()); 
-					//指定定时记录的Activity
-					Intent intent = new Intent(SettingsActivity.this, TimeToRecordBroadcastReceiver.class);
-					//指定PendingIntent
-					PendingIntent sender = PendingIntent.getBroadcast(SettingsActivity.this, 0, intent, 0);
-					//获得AlarmManager对象
-					AlarmManager am; 
-		            am = (AlarmManager)getSystemService(ALARM_SERVICE);
-					//关闭定时服务
-					Log.v("Toilet", "SettingsActivity: before closeLog.");
-					am.cancel(sender);
-					//开启定时服务
-					Log.v("Toilet", "SettingsActivity: before startLog.");
-					//给新开启的Activity传递起始时间
-					Intent new_intent = new Intent(SettingsActivity.this, TimeToRecordBroadcastReceiver.class);
-					Bundle mBundle = new Bundle();
-		            mBundle.putInt("Hour", currHour);
-		            mBundle.putInt("Minute", currMin);
-		            new_intent.putExtras(mBundle);
-		            Log.v("Toilet", "SettingsActivity_Dialog: test Bundle: the Hour is "+ Integer.toString(mBundle.getInt("Hour"))+".");
-					PendingIntent new_sender = PendingIntent.getBroadcast(SettingsActivity.this, 0, new_intent, 0);					
-					am.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis() + interval*3000, new_sender); 
+		            TimeLoggerHelper timeLoggerHelper = new TimeLoggerHelper(SettingsActivity.this);
+		            timeLoggerHelper.launchTimeLogger();
 					//弹出Toast
 					Toast.makeText(getApplicationContext(), R.string.act_settings_toast_intervalChanged, 
 							Toast.LENGTH_SHORT).show();					
@@ -207,7 +228,6 @@ public class SettingsActivity extends Activity {
 					 * 如果定时记录功能关闭，改变interval的操作是没有意义的
 					 * 根据新的时间间隔值重新开始计时。
 					 */
-					//txtvw_interval.setText(Integer.toString(interval));
 					Toast.makeText(getApplicationContext(), R.string.act_settings_toast_intervalFailed, 
 							Toast.LENGTH_SHORT).show();					
 				}				
@@ -298,6 +318,20 @@ public class SettingsActivity extends Activity {
 			}
 		});
         
+
+		/**************************************
+		 * 开启和关闭定时记录功能
+		 **************************************/
+		btn_types = (Button)findViewById(R.id.act_settings_btn_setTypes);
+		btn_types.setOnClickListener(new Button.OnClickListener(){
+			public void onClick(View v) {
+				// back to main
+		        Log.v("Toilet", "btn_types pushed");
+				Intent intent = new Intent(SettingsActivity.this, PrimTypesActivity.class);
+				startActivity(intent);
+			}
+		});
+		
         /*******************************************
          * 返回
          ********************************************/
@@ -305,6 +339,8 @@ public class SettingsActivity extends Activity {
 		btn_back = (Button)findViewById(R.id.act_settings_btn_back);
 		btn_back.setOnClickListener(new Button.OnClickListener(){
 			public void onClick(View v){
+				Intent iSettings = new Intent(SettingsActivity.this, MainActivity.class);
+				startActivity(iSettings);
 				finish();
 			}
 		});		
@@ -338,7 +374,6 @@ public class SettingsActivity extends Activity {
 		editor.putBoolean("isLogStarted", isLogStarted);
 		editor.putBoolean("isRingOn", isRingOn);
 		editor.putBoolean("isVibrationOn", isVibrationOn);
-		editor.putInt("interval", interval);
 		editor.commit();
 	}
 }

@@ -260,7 +260,14 @@
         android:layout_marginTop="24dp"
         android:layout_marginLeft="10dp"
         android:orientation="vertical" >
-
+		
+         <Button
+        android:id="@+id/act_settings_btn_setTypes"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="设置类别列表" />
+         
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"

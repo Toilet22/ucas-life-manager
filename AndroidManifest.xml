@@ -8,7 +8,6 @@
         android:targetSdkVersion="15" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
@@ -59,6 +58,7 @@
         <activity android:name=".TodaySummaryActivity"></activity>
         <activity android:name=".TomorrowPlanActivity"></activity>
         <activity android:name=".UserTourActivity"></activity>
+        <activity android:name=".PrimTypesActivity"></activity>
         
     </application>
 

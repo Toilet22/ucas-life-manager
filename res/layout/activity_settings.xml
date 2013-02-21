@@ -257,7 +257,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/linearLayout1"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="4dp"
         android:layout_marginLeft="10dp"
         android:orientation="vertical" >
 		

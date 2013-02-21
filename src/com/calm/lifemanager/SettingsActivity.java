@@ -3,6 +3,8 @@ package com.calm.lifemanager;
 
 import java.util.Calendar;
 
+import org.json.JSONException;
+
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -58,6 +60,9 @@ public class SettingsActivity extends Activity {
 	//static final String[] intervals = { "0.5小时", "1小时", "1.5小时", "2小时", "2.5小时", "3小时","3.5小时", "4小时"};  
     //ArrayAdapter <String> arrayAdapter = null;  
 	
+	// 云同步最近同步时间
+	long defaultLastSyncTime = 0;
+	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		Log.v("Toilet", "SettingActivity: before setContentView.");
@@ -75,6 +80,7 @@ public class SettingsActivity extends Activity {
 			intervalInMillis = sharedPref.getLong("IntervalInMillis", defaultIntervalInMillis);
 			isRingOn = sharedPref.getBoolean("isRingOn", true);
 			isVibrationOn = sharedPref.getBoolean("isVibrationOn", true);
+			userDataSync.lastSyncTime = sharedPref.getLong("lastSyncTime", defaultLastSyncTime);
 		}else{
 			isLogStarted = false;
 			isRingOn = true;
@@ -84,6 +90,7 @@ public class SettingsActivity extends Activity {
 			editor.putBoolean("isRingOn", isRingOn);
 			editor.putBoolean("isVibrationOn", isVibrationOn);
 			editor.putLong("IntervalInMillis", intervalInMillis);
+			editor.putLong("lastSyncTime", userDataSync.lastSyncTime);
 			editor.commit();
 		}
 		
@@ -348,7 +355,8 @@ public class SettingsActivity extends Activity {
 		
 		// User Data Sync
 		txtvw_current_loged_in_user = (TextView)findViewById(R.id.act_settings_txtvw_current_loged_user);
-		txtvw_current_loged_in_user.setText("DayDayUp");
+		//txtvw_current_loged_in_user.setText("DayDayUp");
+		txtvw_current_loged_in_user.setText(userDataSync.currentLogedInUser);
 		
 		btn_switch_user = (Button)findViewById(R.id.act_settings_btn_switch_user);
 		btn_switch_user.setOnClickListener(new Button.OnClickListener() {
@@ -360,7 +368,38 @@ public class SettingsActivity extends Activity {
 		btn_sync_data = (Button)findViewById(R.id.act_settings_btn_sync_data);
 		btn_switch_user.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v){
-				
+				// Sync User Data as a background service
+				new Thread() {
+					public void run() {
+						// Make sure user is connected to network & is online
+						if(NetToolUtil.isConnnected(SettingsActivity.this)) {
+							Toast.makeText(SettingsActivity.this,
+									getText(R.string.login_http_error),
+									Toast.LENGTH_LONG).show();
+						} else if(null == userDataSync.currentLogedInUser || "".equals(userDataSync.currentLogedInUser)) {
+							Toast.makeText(SettingsActivity.this,
+									getText(R.string.login_http_error),
+									Toast.LENGTH_LONG).show();
+						} else {
+							// Sync User Data Table by Table
+							DatabaseUtil dbUtil = new DatabaseUtil(SettingsActivity.this);
+							dbUtil.open();
+							
+							
+							try {
+								userDataSync.currentSyncDataTable = DatabaseUtil.USER_PROFILE;
+								userDataSync.doUserDataSync(NetToolUtil.userProfilePullUrl, userDataSync.PULL, DatabaseUtil.USER_PROFILE, dbUtil, userDataSync.lastSyncTime);
+								userDataSync.doUserDataSync(NetToolUtil.userProfilePushUrl, userDataSync.PUSH, DatabaseUtil.USER_PROFILE, dbUtil, userDataSync.lastSyncTime);
+								
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							
+						}
+						
+					}
+				}.start();
 			}
 		});
 	}

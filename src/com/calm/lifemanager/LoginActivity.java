@@ -71,6 +71,10 @@ public class LoginActivity extends Activity {
 					DatabaseUtil dbUtil = new DatabaseUtil(LoginActivity.this);
 					dbUtil.open();
 					dbUtil.close();
+					
+					// Bundle User Name to Data Sync Service
+					userDataSync.currentLogedInUser = userNameValue;
+					
 					break;
 
 				case LOGIN_ERROR:

@@ -704,7 +704,7 @@ public class NetToolUtil {
 	/** 
      * 网络连接是否可用 
      */
-    public static boolean isConnnected(Context context) {  
+    public static boolean isConnnected(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);  
         if (null != connectivityManager) {  
             NetworkInfo networkInfo[] = connectivityManager.getAllNetworkInfo();  

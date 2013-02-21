@@ -47,6 +47,7 @@ public class DatabaseUtil{
 	// Database creation SQL statement
 	private static final String CREATE_USER_TABLE =
 		"create table " + USER + " ("
+		+ KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 	    + KEY_USERNAME + " VARCHAR(30) not null, "
 		+ KEY_PASSWORD + " VARCHAR(16) not null, " 
 	    + KEY_CTIME + " INTEGER not null);";
@@ -67,6 +68,7 @@ public class DatabaseUtil{
 	// Database creation SQL statement
 	private static final String CREATE_USER_PROFILE_TABLE =
 		"create table " + USER_PROFILE + " ("
+		+ KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 		+ KEY_NICKNAME + " VARCHAR(30), " 
 		+ KEY_EMAIL + " VARCHAR(30), " 
 		+ KEY_SEX + " SMALLINT, " 
@@ -90,6 +92,7 @@ public class DatabaseUtil{
 	// Database creation SQL statement
 	private static final String CREATE_USER_SETTINGS_TABLE =
 		"create table " + USER_SETTINGS + " (" 
+		+ KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 		+ KEY_MODE + " SMALLINT, " 
 		+ KEY_RINGLEVEL + " SMALLINT, "
 		+ KEY_ALARMTYPE + " SMALLINT, "

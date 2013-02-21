@@ -43,8 +43,8 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
-public class NetToolUtil {  
-	private static final String TAG = "NetUtil";  
+public class NetToolUtil {
+	private static final String TAG = "NetUtil";
 	
     private static final int TIMEOUT = 10000;// 10√Î 
     

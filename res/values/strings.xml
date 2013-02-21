@@ -4,7 +4,7 @@
     <string name="curr_usr_name">Default</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">DayDayUp</string>
     <string name="activity_history_time">查看时间</string>
     <string name="activity_history_mood">查看心情</string>
     <string name="activity_history_dayly">按日查看</string>
@@ -83,7 +83,6 @@
     <string name="act_login_txtvw_pswd">密码</string>
     <string name="act_login_txtvw_remember">保存密码</string>
     <string name="act_login_txtvw_autolog">自动登录</string>
-    <string name="splash">This is a Splash!</string>
     <string name="context_generic">This is a context!</string>
     <string name="act_tomorrow_plan_tomorrow_event">明日事项</string>
     <string name="act_tomorrow_plan_todo_event">待办事项</string>
@@ -93,5 +92,13 @@
     <string name="act_sub_types_title">子类别</string>
     <string name="act_sub_types_add">添加</string>
     <string name="act_sub_types_back">返回</string>
-    
+    <string name="is_logining_in">正在登录</string>
+    <string name="is_registering">正在注册</string>
+    <string name="login_http_error">http通信错误</string>
+    <string name="splash">Splash</string>
+    <string name="switch_user">切换用户</string>
+    <string name="user_data_sync">用户数据同步</string>
+    <string name="current_loged_in_user">当前登录账户：</string>
+    <string name="loged_in_user_indicator">没有用户</string>
+    <string name="sync_data">同步数据</string>
 </resources>

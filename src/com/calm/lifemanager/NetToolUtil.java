@@ -43,8 +43,8 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
-public class NetToolUtil {  
-	private static final String TAG = "NetUtil";  
+public class NetToolUtil {
+	private static final String TAG = "NetUtil";
 	
     private static final int TIMEOUT = 10000;// 10秒 
     
@@ -704,15 +704,15 @@ public class NetToolUtil {
 	/** 
      * 网络连接是否可用 
      */
-    public static boolean isConnnected(Context context) {  
+    public static boolean isConnnected(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);  
         if (null != connectivityManager) {  
-            NetworkInfo networkInfo[] = connectivityManager.getAllNetworkInfo();  
+            NetworkInfo networkInfo[] = connectivityManager.getAllNetworkInfo();
   
-            if (null != networkInfo) {  
+            if (null != networkInfo) {
                 for (NetworkInfo info : networkInfo) {  
                     if (info.getState() == NetworkInfo.State.CONNECTED) {  
-                        Log.i(TAG, "Network is OK");  
+                        Log.i(TAG, "Network is OK");
                         return true;  
                     }  
                 }  

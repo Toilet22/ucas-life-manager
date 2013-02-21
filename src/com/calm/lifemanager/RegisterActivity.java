@@ -80,7 +80,7 @@ public class RegisterActivity extends Activity {
 					
 					// User Login
 					Intent iLogin = new Intent(RegisterActivity.this,
-							MainActivity.class);
+							LoginActivity.class);
 					startActivity(iLogin);
 					RegisterActivity.this.finish();
 					

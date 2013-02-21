@@ -101,6 +101,7 @@
     <string name="act_sub_types_back">返回</string>
     <string name="is_logining_in">正在登录</string>
     <string name="is_registering">正在注册</string>
+    <string name="is_logingout">正在登出</string>
     <string name="login_http_error">http通信错误</string>
     <string name="splash">Splash</string>
     <string name="switch_user">切换用户</string>
@@ -108,4 +109,5 @@
     <string name="current_loged_in_user">当前登录账户：</string>
     <string name="loged_in_user_indicator">没有用户</string>
     <string name="sync_data">同步数据</string>
+    <string name="please_login_first">请先登录！</string>
 </resources>

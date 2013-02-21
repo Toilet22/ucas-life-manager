@@ -39,7 +39,7 @@ public class SubTypesActivity extends Activity {
         //String[] selectCol = {DatabaseUtil.KEY_TYPE_NAME, DatabaseUtil.KEY_TYPE_ICON};
         //cursor = dbUtil.fetchAllData(DatabaseUtil.sub_TYPES, selectCol);
         //
-        cursor = dbUtil.rawQuery("SELECT DISTINCT oid as _id,  type_name FROM tb_sub_types where KEY_TYPE_BELONGTO=?" + fatherTypeName +";", null);
+        cursor = dbUtil.rawQuery("SELECT DISTINCT oid as _id,  type_name FROM tb_sub_types where " + DatabaseUtil.KEY_TYPE_BELONGTO + "=?;",new String[] {fatherTypeName});
         
         if(cursor.moveToNext()){
         	Log.i("Toilet","subTypesActivity_fetchAllData: fetch specific data works!");
@@ -49,7 +49,7 @@ public class SubTypesActivity extends Activity {
          
         //获取SimpleCursorAdatper的实例
         String[] fromCol = {DatabaseUtil.KEY_TYPE_NAME};
-        int[] toView = {R.id.layout_primType_name};
+        int[] toView = {R.id.layout_subType_name};
         @SuppressWarnings("deprecation")
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, 
         		R.layout.layout_sub_type, cursor, fromCol, toView);

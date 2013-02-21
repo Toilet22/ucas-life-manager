@@ -169,19 +169,23 @@ public class LoginActivity extends Activity {
 		/*
 		 * 判断记住密码多选框的状态
 		 */
-		if (sp.getBoolean("ISCHECK", false)) {
+		if (sp.getBoolean("ISCHECK", true)) {
 			// 设置默认是记录密码状态
 			btn_remember.setBackgroundResource(R.drawable.switch_on);
 
 			edt_name.setText(sp.getString("USERNAME", ""));
 			edt_password.setText(sp.getString("PASSWORD", ""));
 			// 判断自动登陆多选框状态
-			if (sp.getBoolean("AUTO_ISCHECK", false)) {
+			if (sp.getBoolean("AUTO_ISCHECK", true)) {
 				// 设置默认是自动登录状态
 				btn_autolog.setBackgroundResource(R.drawable.switch_on);
 
 				// 验证用户登录
-				validateUserLogin();
+				if(userDataSync.isSwithingUser) {
+					userDataSync.isSwithingUser = false;
+				} else {
+					validateUserLogin();
+				}
 			}
 		}
 

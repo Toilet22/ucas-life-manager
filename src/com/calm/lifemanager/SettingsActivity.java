@@ -4,16 +4,21 @@ package com.calm.lifemanager;
 import java.util.Calendar;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -63,6 +68,16 @@ public class SettingsActivity extends Activity {
 	// 云同步最近同步时间
 	long defaultLastSyncTime = 0;
 	
+	private Handler mHandler;
+	private Runnable mRunnableShowToast;
+	
+	private ProgressDialog pd;
+	private Bundle logoutBundle = new Bundle();
+
+	private static final int LOGOUT_SUCCESS = 0;
+	private static final int LOGOUT_ERROR = 1;
+	private static final int HTTP_ERROR = -1;
+	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		Log.v("Toilet", "SettingActivity: before setContentView.");
@@ -70,6 +85,41 @@ public class SettingsActivity extends Activity {
 		Log.v("Toilet", "SettingActivity: after setContentView.");
 		
 		Log.v("Toilet", "SettingActivity: before reading the database.");
+		
+		// Handler Implementation
+		mHandler = new Handler() {
+			public void handleMessage(Message msg) {
+				switch (msg.what) {
+				case LOGOUT_SUCCESS:
+					// Redirect User to Login Activity and Switch User
+					userDataSync.isSwithingUser = true;
+					Intent iLogin = new Intent(SettingsActivity.this, LoginActivity.class);
+					startActivity(iLogin);
+					
+					Toast.makeText(SettingsActivity.this,
+							getText(R.string.switch_user),
+							Toast.LENGTH_LONG).show();
+					break;
+				case LOGOUT_ERROR:
+					Bundle errorBundle = (Bundle) msg.obj;
+					int error = errorBundle.getInt("error");
+					String errorMsg = errorBundle.getString("errorMsg");
+					Toast.makeText(SettingsActivity.this,
+							"错误编号：" + error + "\n错误信息：" + errorMsg,
+							Toast.LENGTH_LONG).show();
+					break;
+				case HTTP_ERROR:
+					Toast.makeText(SettingsActivity.this,
+							getText(R.string.login_http_error),
+							Toast.LENGTH_LONG).show();
+					break;
+				default:
+					break;
+				}
+				super.handleMessage(msg);
+			};
+		};
+		
 		/******************************************
 		 * 读取现有preferences。用以完成界面初始化
 		 *****************************************/
@@ -350,56 +400,114 @@ public class SettingsActivity extends Activity {
 				startActivity(iSettings);
 				finish();
 			}
-		});		
+		});
 		
-		
-		// User Data Sync
+		/**
+		 * User Data Sync Section
+		 */
+		// User Name Indicator
 		txtvw_current_loged_in_user = (TextView)findViewById(R.id.act_settings_txtvw_current_loged_user);
 		//txtvw_current_loged_in_user.setText("DayDayUp");
 		txtvw_current_loged_in_user.setText(userDataSync.currentLogedInUser);
 		
+		// Switch User
 		btn_switch_user = (Button)findViewById(R.id.act_settings_btn_switch_user);
 		btn_switch_user.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v){
-				
+						
+						if(null == userDataSync.currentLogedInUser || "".equals(userDataSync.currentLogedInUser)) {
+							Toast.makeText(SettingsActivity.this,
+									getText(R.string.please_login_first),
+									Toast.LENGTH_LONG).show();
+						} else {
+							pd = ProgressDialog.show(SettingsActivity.this, "",
+									getString(R.string.is_logingout));
+							
+							new Thread() {
+								public void run() {
+									
+									Looper.prepare();
+									Message msg = new Message();
+									
+									// Log out current user
+									String retStr = null;
+									String message = null;
+									int status = 100;
+					        		
+					        		try {
+					        			retStr = NetToolUtil.sendGetRequest(NetToolUtil.accountLogoutUrl, null, userDataSync.defaultEncoding);
+										
+					        			// Get info out of the String
+										JSONObject retJson = new JSONObject(retStr);
+										message = retJson.getString("message");
+										status = retJson.getInt("status");
+										
+										if (status == 0) {
+											// Show Toast of Successful Registration
+											msg.what = LOGOUT_SUCCESS;
+										} else {
+											// Pop up a dialog to inform failure status and
+											// message
+											// of registration
+											logoutBundle.putInt("error", status);
+											logoutBundle.putString("errorMsg", message);
+											msg.what = LOGOUT_ERROR;
+										}
+										msg.obj = logoutBundle;
+										mHandler.sendMessage(msg);
+										
+									} catch (Exception e) {
+										// TODO Auto-generated catch block
+										msg.what = HTTP_ERROR;
+										mHandler.sendMessage(msg);
+										e.printStackTrace();
+									}  finally {
+										pd.dismiss();
+										Looper.loop();
+									}
+								}
+							}.start();
+					
+						}
 			}
 		});
 		
+		// Sync User Data
 		btn_sync_data = (Button)findViewById(R.id.act_settings_btn_sync_data);
-		btn_switch_user.setOnClickListener(new Button.OnClickListener() {
+		btn_sync_data.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v){
-				// Sync User Data as a background service
-				new Thread() {
-					public void run() {
+				
 						// Make sure user is connected to network & is online
-						if(NetToolUtil.isConnnected(SettingsActivity.this)) {
+						if(!NetToolUtil.isConnnected(SettingsActivity.this)) {
 							Toast.makeText(SettingsActivity.this,
 									getText(R.string.login_http_error),
 									Toast.LENGTH_LONG).show();
 						} else if(null == userDataSync.currentLogedInUser || "".equals(userDataSync.currentLogedInUser)) {
 							Toast.makeText(SettingsActivity.this,
-									getText(R.string.login_http_error),
+									getText(R.string.please_login_first),
 									Toast.LENGTH_LONG).show();
 						} else {
-							// Sync User Data Table by Table
-							DatabaseUtil dbUtil = new DatabaseUtil(SettingsActivity.this);
-							dbUtil.open();
+							// Sync User Data as a background service
+							new Thread() {
+								public void run() {
+									// Sync User Data Table by Table
+									DatabaseUtil dbUtil = new DatabaseUtil(SettingsActivity.this);
+									dbUtil.open();
+									
+									try {
+										userDataSync.currentSyncDataTable = DatabaseUtil.USER_PROFILE;
+										userDataSync.doUserDataSync(NetToolUtil.userProfilePullUrl, userDataSync.PULL, DatabaseUtil.USER_PROFILE, dbUtil, userDataSync.lastSyncTime);
+										userDataSync.doUserDataSync(NetToolUtil.userProfilePushUrl, userDataSync.PUSH, DatabaseUtil.USER_PROFILE, dbUtil, userDataSync.lastSyncTime);
+										
+									} catch (JSONException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
+							}.start();
 							
-							
-							try {
-								userDataSync.currentSyncDataTable = DatabaseUtil.USER_PROFILE;
-								userDataSync.doUserDataSync(NetToolUtil.userProfilePullUrl, userDataSync.PULL, DatabaseUtil.USER_PROFILE, dbUtil, userDataSync.lastSyncTime);
-								userDataSync.doUserDataSync(NetToolUtil.userProfilePushUrl, userDataSync.PUSH, DatabaseUtil.USER_PROFILE, dbUtil, userDataSync.lastSyncTime);
-								
-							} catch (JSONException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
 							
 						}
-						
-					}
-				}.start();
 			}
 		});
 	}

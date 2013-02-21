@@ -10,6 +10,8 @@ import android.database.Cursor;
 
 public class userDataSync {
 	public static String currentLogedInUser = "";
+	public static boolean isSwithingUser = false;
+	
 	public static long lastSyncTime = 0;
 	public static String currentSyncDataTable = "";
 	

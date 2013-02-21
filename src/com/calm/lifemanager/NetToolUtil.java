@@ -707,12 +707,12 @@ public class NetToolUtil {
     public static boolean isConnnected(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);  
         if (null != connectivityManager) {  
-            NetworkInfo networkInfo[] = connectivityManager.getAllNetworkInfo();  
+            NetworkInfo networkInfo[] = connectivityManager.getAllNetworkInfo();
   
-            if (null != networkInfo) {  
+            if (null != networkInfo) {
                 for (NetworkInfo info : networkInfo) {  
                     if (info.getState() == NetworkInfo.State.CONNECTED) {  
-                        Log.i(TAG, "Network is OK");  
+                        Log.i(TAG, "Network is OK");
                         return true;  
                     }  
                 }  

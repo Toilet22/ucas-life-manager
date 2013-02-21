@@ -38,6 +38,8 @@ public class SettingsActivity extends Activity {
 	//返回保存
 	Button btn_save;
 	Button btn_back;
+	//自定义类别
+	Button btn_types;
 	
 	//选择时间间隔
 	//Button btn_setInterval;
@@ -289,6 +291,20 @@ public class SettingsActivity extends Activity {
 			}
 		});
         
+
+		/**************************************
+		 * 开启和关闭定时记录功能
+		 **************************************/
+		btn_types = (Button)findViewById(R.id.act_settings_btn_setTypes);
+		btn_types.setOnClickListener(new Button.OnClickListener(){
+			public void onClick(View v) {
+				// back to main
+		        Log.v("Toilet", "btn_types pushed");
+				Intent intent = new Intent(SettingsActivity.this, PrimTypesActivity.class);
+				startActivity(intent);
+			}
+		});
+		
         /*******************************************
          * 返回
          ********************************************/

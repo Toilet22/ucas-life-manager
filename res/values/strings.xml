@@ -87,5 +87,11 @@
     <string name="context_generic">This is a context!</string>
     <string name="act_tomorrow_plan_tomorrow_event">明日事项</string>
     <string name="act_tomorrow_plan_todo_event">待办事项</string>
+    <string name="act_prim_types_title">自定义类别</string>
+    <string name="act_prim_types_add">添加</string>
+    <string name="act_prim_types_back">返回</string>
+    <string name="act_sub_types_title">子类别</string>
+    <string name="act_sub_types_add">添加</string>
+    <string name="act_sub_types_back">返回</string>
     
 </resources>

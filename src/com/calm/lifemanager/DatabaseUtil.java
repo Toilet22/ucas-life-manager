@@ -379,8 +379,8 @@ public class DatabaseUtil{
 	
 	public DatabaseUtil(Context ctx, String dbName, int dbVersion) {
 		this.mCtx = ctx;
-		DatabaseUtil.dbName = dbName;
-		DatabaseUtil.dbVersion = dbVersion;
+		DatabaseUtil.dbName = dbName; 
+		DatabaseUtil.dbVersion = dbVersion; 
 	}
 	
 	/**
@@ -491,10 +491,20 @@ public class DatabaseUtil{
 	 * This method is a generic interface used to fetch all records from the specified table.
 	 * @param tb
 	 * @param selectColumns
-	 * @return
+	 * @return Cursor
 	 */
 	public Cursor fetchAllData(String tb,String[] selectColumns) {
 		return mDb.query(tb, selectColumns, null, null, null, null, null);
+	}
+	
+	/**
+	 * This method is an interface for handling raw SQL queries.
+	 * @param queryClause
+	 * @param selectionArgs
+	 * @return Cursor
+	 */
+	public Cursor rawQuery(String queryClause, String[] selectionArgs) {
+		return mDb.rawQuery(queryClause, selectionArgs);
 	}
 	
 	

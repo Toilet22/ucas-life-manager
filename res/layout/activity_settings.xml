@@ -8,6 +8,7 @@
     android:orientation="vertical" >
 
     <LinearLayout
+        android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -36,213 +37,208 @@
                     android:textAppearance="?android:attr/textAppearanceLarge" />
             </LinearLayout>
 
-          <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:orientation="vertical"
-            	android:layout_marginLeft="30dp"
-            	android:layout_marginRight="30dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-		        <LinearLayout
-            		android:layout_width="match_parent"
-            		android:layout_height="wrap_content"
-            		android:orientation="vertical" 
-            		android:layout_weight="1"
-            		android:gravity="center_horizontal">		
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:orientation="vertical" >
 
-                	<TextView
-                	    android:id="@+id/TextView01"
-                	    android:layout_width="wrap_content"
-                	    android:layout_height="wrap_content"
-                	    android:text="@string/act_settings_txtvw_started"
-                	    android:textAppearance="?android:attr/textAppearanceMedium" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" >
 
-            	</LinearLayout>
-            	
-		        <LinearLayout
-            		android:layout_width="match_parent"
-            		android:layout_height="wrap_content"
-            		android:orientation="vertical" 
-            		android:layout_weight="1"
-            		android:gravity="center_horizontal">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical" >
 
-                	<Button
-                	    android:id="@+id/act_settings_btn_startRglRcd"
-                	    android:layout_width="40dp"
-                	    android:layout_height="20dp"
-                	    android:background="@drawable/switch_on" />
+                        <TextView
+                            android:id="@+id/TextView01"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/act_settings_txtvw_started"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                    </LinearLayout>
 
-            	</LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical" >
+
+                        <Button
+                            android:id="@+id/act_settings_btn_startRglRcd"
+                            android:layout_width="40dp"
+                            android:layout_height="20dp"
+                            android:background="@drawable/switch_on" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/TextView02"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/act_settings_txtvw_interval"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical" >
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal" >
+
+                            <TextView
+                                android:id="@+id/act_settings_txtvw_interval"
+                                android:layout_width="30dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/act_settings_txtvw_initInterval"
+                                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                            <TextView
+                                android:id="@+id/act_settings_txtvw_interval"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/act_settings_txtvw_time"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
-            
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-		        <LinearLayout
-            		android:layout_width="match_parent"
-            		android:layout_height="wrap_content"
-            		android:orientation="vertical" 
-            		android:layout_weight="1"
-            		android:gravity="center_horizontal">		
-                	<TextView
-                    	android:id="@+id/TextView02"
-                    	android:layout_width="wrap_content"
-                    	android:layout_height="wrap_content"
-                    	android:text="@string/act_settings_txtvw_interval"
-                    	android:textAppearance="?android:attr/textAppearanceMedium" />
-            	</LinearLayout>
-            	
-		        <LinearLayout
-            		android:layout_width="match_parent"
-            		android:layout_height="wrap_content"
-            		android:orientation="vertical" 
-            		android:layout_weight="1"
-            		android:gravity="center_horizontal">
-
-					<LinearLayout
-            			android:layout_width="wrap_content"
-            			android:layout_height="wrap_content"
-            			android:orientation="horizontal" >
-
-						<TextView
-						    android:id="@+id/act_settings_txtvw_interval"
-						    android:layout_width="30dp"
-						    android:layout_height="wrap_content"
-						    android:text="@string/act_settings_txtvw_initInterval"
-						    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-		            	<TextView
-		            	    android:id="@+id/act_settings_txtvw_interval"
-		            	    android:layout_width="wrap_content"
-		            	    android:layout_height="wrap_content"
-		            	    android:text="@string/act_settings_txtvw_time"
-		            	    android:textAppearance="?android:attr/textAppearanceSmall" />
-
-		            </LinearLayout>
-
-            	</LinearLayout>
-            </LinearLayout>
-          </LinearLayout>
-            
         </LinearLayout>
-        
-        
-        
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:orientation="horizontal" >
 
-            	<TextView
-            	    android:id="@+id/TextView01"
-            	    android:layout_width="wrap_content"
-            	    android:layout_height="wrap_content"
-            	    android:layout_marginBottom="10dp"
-            	    android:layout_marginLeft="10dp"
-            	    android:layout_marginTop="21dp"
-            	    android:text="@string/act_settings_txtvw_rcdAlarm"
-            	    android:textAppearance="?android:attr/textAppearanceLarge" />
-
+                <TextView
+                    android:id="@+id/TextView01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="21dp"
+                    android:text="@string/act_settings_txtvw_rcdAlarm"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
             </LinearLayout>
 
-          <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:orientation="vertical"
-            	android:layout_marginLeft="30dp"
-            	android:layout_marginRight="30dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-		        <LinearLayout
-            		android:layout_width="match_parent"
-            		android:layout_height="wrap_content"
-            		android:orientation="vertical" 
-            		android:layout_weight="1"
-            		android:gravity="center_horizontal">		
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:orientation="vertical" >
 
-                	<TextView
-                	    android:id="@+id/TextView03"
-                	    android:layout_width="wrap_content"
-                	    android:layout_height="wrap_content"
-                	    android:text="@string/act_settings_txtvw_ringtone"
-                	    android:textAppearance="?android:attr/textAppearanceMedium" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" >
 
-            	</LinearLayout>
-            	
-		        <LinearLayout
-            		android:layout_width="match_parent"
-            		android:layout_height="wrap_content"
-            		android:orientation="vertical" 
-            		android:layout_weight="1"
-            		android:gravity="center_horizontal">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical" >
 
-                	<Button
-                	    android:id="@+id/act_settings_btn_ring"
-                	    android:layout_width="40dp"
-                	    android:layout_height="20dp"
-                	    android:background="@drawable/switch_on" />
+                        <TextView
+                            android:id="@+id/TextView03"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/act_settings_txtvw_ringtone"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                    </LinearLayout>
 
-            	</LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical" >
+
+                        <Button
+                            android:id="@+id/act_settings_btn_ring"
+                            android:layout_width="40dp"
+                            android:layout_height="20dp"
+                            android:background="@drawable/switch_on" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/TextView02"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/act_settings_txtvw_vibration"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical" >
+
+                        <Button
+                            android:id="@+id/act_settings_btn_vabrate"
+                            android:layout_width="40dp"
+                            android:layout_height="20dp"
+                            android:background="@drawable/switch_on" />
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
-            
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-		        <LinearLayout
-            		android:layout_width="match_parent"
-            		android:layout_height="wrap_content"
-            		android:orientation="vertical" 
-            		android:layout_weight="1"
-            		android:gravity="center_horizontal">		
-
-                	<TextView
-                	    android:id="@+id/TextView02"
-                	    android:layout_width="wrap_content"
-                	    android:layout_height="wrap_content"
-                	    android:text="@string/act_settings_txtvw_vibration"
-                	    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            	</LinearLayout>
-            	
-		        <LinearLayout
-            		android:layout_width="match_parent"
-            		android:layout_height="wrap_content"
-            		android:orientation="vertical" 
-            		android:layout_weight="1"
-            		android:gravity="center_horizontal">
-
-		            <Button
-		                android:id="@+id/act_settings_btn_vabrate"
-		                android:layout_width="40dp"
-		                android:layout_height="20dp"
-		                android:background="@drawable/switch_on" />
-
-            	</LinearLayout>
-            </LinearLayout>
-          </LinearLayout>
-            
         </LinearLayout>
     </LinearLayout>
 
@@ -254,5 +250,15 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="26dp"
         android:background="@drawable/current_back" />
+
+    <Button
+        android:id="@+id/act_settings_btn_setTypes"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="42dp"
+        android:text="设置类别列表" />
 
 </RelativeLayout>

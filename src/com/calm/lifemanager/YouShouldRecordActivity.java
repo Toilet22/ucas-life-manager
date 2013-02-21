@@ -3,14 +3,10 @@ package com.calm.lifemanager;
 import java.util.Calendar;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.Dialog;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -63,7 +59,6 @@ public class YouShouldRecordActivity extends Activity {
 	SharedPreferences sharedPref;
 	Boolean isRingOn;
 	Boolean isVibrationOn;
-	int interval;
 	
 	private void setAllBtnUnpushed(){
 		btn_excited.setBackgroundResource(R.drawable.excited);
@@ -94,8 +89,7 @@ public class YouShouldRecordActivity extends Activity {
 				Context.MODE_PRIVATE);
 		isRingOn = sharedPref.getBoolean("isRingOn", true);
 		isVibrationOn = sharedPref.getBoolean("isVibrationOn", true);
-		interval = sharedPref.getInt("interval", 30);
-
+		
 		/***************************************
 		 * 铃声和振动
 		 **************************************/
@@ -112,8 +106,11 @@ public class YouShouldRecordActivity extends Activity {
 		 **************************************/
 		Log.v("Toilet","YouRecord: before get Bundle.");
 		Bundle mBundle = YouShouldRecordActivity.this.getIntent().getExtras();
-		startHour = mBundle.getInt("Hour");
-		startMin = mBundle.getInt("Minute");
+		long startTimeInMillis = mBundle.getLong("StartTimeInMillis", 0);
+		Calendar startTime = Calendar.getInstance();
+		startTime.setTimeInMillis(startTimeInMillis);
+		startHour = startTime.get(Calendar.HOUR_OF_DAY);
+		startMin = startTime.get(Calendar.MINUTE);
 		Log.v("Toilet","YouRecord: the startHour is" + Integer.toString(startHour) +".");
 		Log.v("Toilet","YouRecord: the startMin is" + Integer.toString(startMin) +".");
 		
@@ -122,9 +119,9 @@ public class YouShouldRecordActivity extends Activity {
 		 **************************************/
 		//get current time
 		Log.v("Toilet","YouRecord: before use timePicker.");
-		Calendar c = Calendar.getInstance();
-		endHour = c.get(Calendar.HOUR_OF_DAY);
-		endMin = c.get(Calendar.MINUTE);
+		Calendar currTime = Calendar.getInstance();
+		endHour = currTime.get(Calendar.HOUR_OF_DAY);
+		endMin = currTime.get(Calendar.MINUTE);
 		// init the time;
 		txt_startTime = (TextView)findViewById(R.id.act_youRcd_txt_startTime);
 		txt_startTime.setText(Integer.toString(startHour) + ":"+Integer.toString(startMin));
@@ -273,15 +270,6 @@ public class YouShouldRecordActivity extends Activity {
 	 */
 	public void onPause(){
 		super.onPause();
-		
-	}
-	
-	/*
-	 * 在此开启下一次记录的计时
-	 */
-	public void onStop(){
-		super.onStop();
-
 		// 获取记录数据
 		rt_effc = rtBar_effc.getRating();
 		//rt_mood = rtBar_mood.getRating();
@@ -300,29 +288,35 @@ public class YouShouldRecordActivity extends Activity {
 		/********************************************
 		//开启下一次计数
 		 ********************************************/
-		//获得系统时间
-		Calendar c=Calendar.getInstance();
-        int currHour = c.get(Calendar.HOUR_OF_DAY);
-        int currMin = c.get(Calendar.MINUTE);
-        c.setTimeInMillis(System.currentTimeMillis()); 
-        Log.v("Toilet", "SettingsActivity: test currHour: the Hour is "+ Integer.toString(currHour)+".");
-		//指定定时记录的Activity
-		Intent intent = new Intent(YouShouldRecordActivity.this, TimeToRecordBroadcastReceiver.class);
-		//向intent中添加起始时间数据
-        Bundle mBundle = new Bundle();
-        mBundle.putInt("Hour", currHour);
-        mBundle.putInt("Minute", currMin);
-        intent.putExtras(mBundle);
-        Log.v("Toilet", "SettingsActivity: test Bundle: the Hour is "+ Integer.toString(mBundle.getInt("Hour"))+".");
-		//指定PendingIntent
-		PendingIntent sender = PendingIntent.getBroadcast(YouShouldRecordActivity.this, 0, intent, 0);
-		//获得AlarmManager对象
-		AlarmManager am; 
-        am = (AlarmManager)getSystemService(ALARM_SERVICE);
-        //获得系统时间
-        c.setTimeInMillis(System.currentTimeMillis()); 
-        //开启定时服务
-		am.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis() + interval*3000, sender); 
+		TimeLoggerHelper timeLoggerHelper = new TimeLoggerHelper(YouShouldRecordActivity.this);
+		timeLoggerHelper.launchTimeLogger();
 	}
 	
+	/*
+	 * 在此开启下一次记录的计时
+	 */
+	public void onStop(){
+		super.onStop();
+		// 获取记录数据
+				rt_effc = rtBar_effc.getRating();
+				//rt_mood = rtBar_mood.getRating();
+				type = fatherType[whl_fatherType.getCurrentItem()] + "_"
+						+ subType[whl_fatherType.getCurrentItem()][whl_subType.getCurrentItem()];
+				Toast.makeText(getApplicationContext(), type, 
+						Toast.LENGTH_SHORT).show();	
+				
+				/************************************
+				 * ?????????????????????????????????
+				 * 存入数据库： 效率，心情，类别
+				 *??????????????????????????????????
+				 ***********************************/
+				
+				
+				/********************************************
+				//开启下一次计数
+				 ********************************************/
+				TimeLoggerHelper timeLoggerHelper = new TimeLoggerHelper(YouShouldRecordActivity.this);
+				timeLoggerHelper.stopTimeLogger();
+				timeLoggerHelper.launchTimeLogger();
+	}
 }

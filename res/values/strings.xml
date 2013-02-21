@@ -45,8 +45,15 @@
     <string name="act_youRcrd_txtvw_effc">效率指数</string>
     <string name="act_youRcrd_txtvw_type">类别选择</string>
     <string name="act_current_btn_adjustMood">让我开心一下</string>
-    <string name="act_current_btn_startToDo">干活儿倒计时</string>
-    <string name="act_current_btn_iWantToRcd">我要记录时间</string>
+    <string name="act_current_txtvw_logStarted">下次记录时间：</string>
+    <string name="act_current_txtvw_logStopped">定时记录已关闭</string>
+    <string name="act_current_txtvw_nextLogTime">00：00</string>
+    <string name="act_current_btn_logStart">开启定时记录</string>
+    <string name="act_current_btn_logStop">关闭定时记录</string>
+    <string name="act_current_btn_startToDo">开始做事，帮我记录</string>
+    <string name="act_current_btn_iWantToRcd">现在就记一笔</string>
+    <string name="act_current_btn_history">查看历史记录</string>
+    <string name="act_current_btn_future">规划未来时间</string>
     <string name="act_current_btn_back">返回</string>
     <string name="act_curr_txtvw_title">现在的我</string>
     <string name="act_iRcd_txtview_title">我要记录时间</string>

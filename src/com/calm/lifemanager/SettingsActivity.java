@@ -396,12 +396,10 @@ public class SettingsActivity extends Activity {
 										status = retJson.getInt("status");
 										
 										if (status == 0) {
-											// Show Toast of Successful Registration
+											// Show Toast of Successful Logout
 											msg.what = LOGOUT_SUCCESS;
 										} else {
-											// Pop up a dialog to inform failure status and
-											// message
-											// of registration
+											// Logout Error
 											logoutBundle.putInt("error", status);
 											logoutBundle.putString("errorMsg", message);
 											msg.what = LOGOUT_ERROR;

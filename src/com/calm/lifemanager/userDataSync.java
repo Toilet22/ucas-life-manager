@@ -117,6 +117,8 @@ public class userDataSync {
 		dataBase.open();
 		retCursor = dataBase.fetchDataWithWhere(dataSrc, whereClause);
 		if (retCursor != null) {
+			retCursor.moveToFirst();
+			
 			JSONObject dataJson = new JSONObject();
 			int columnCount = retCursor.getColumnCount();
 			String[] columnNames = retCursor.getColumnNames();

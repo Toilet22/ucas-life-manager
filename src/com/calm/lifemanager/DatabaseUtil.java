@@ -945,27 +945,113 @@ public class DatabaseUtil{
 	}
 	
 	/**
-	 * This method will delete Prime Types.
-	 * @param username
-	 * @return boolean
+	 * Check whether a prime type existed. 
+	 * @param typeName
+	 * @return
 	 */
-	public boolean deletePrimeTypes(int id) {
-		return mDb.delete(PRIM_TYPES, KEY_ID + "='" + id + "'", null) > 0;
+	public boolean isPrimeTypeExisted(String typeName) {
+		Cursor mCursor = mDb.query(true, PRIM_TYPES, null, KEY_TYPE_NAME + "='"
+				+ typeName + "'", null, null, null, null, null);
+		if (mCursor == null) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 	
 	/**
-	 * This method will update Prime Types with selected columns.
-	 * @param username
+	 * Used to create a new Prime Type and remember to check duplicatation.
+	 * @param typeName
+	 * @param typeIcon
+	 * @param ctime
+	 * @param mtime
+	 * @param stime
+	 * @return long
+	 */
+	public long newPrimeType(String typeName, String typeIcon, long ctime, long mtime, long stime) {
+		if(!isPrimeTypeExisted(typeName)) {
+			ContentValues initialValues = new ContentValues();
+			initialValues.put(KEY_TYPE_NAME, typeName);
+			initialValues.put(KEY_TYPE_ICON, typeIcon);
+			initialValues.put(KEY_CTIME, ctime);
+			initialValues.put(KEY_MTIME, mtime);
+			initialValues.put(KEY_STIME, stime);
+			return mDb.insert(PRIM_TYPES, null, initialValues);
+		} else {
+			// Prime Type Already Existed, Return -1
+			return -1;
+		}
+	}
+	
+	/**
+	 * 
+	 * @param typeName
+	 * @return boolean
+	 */
+	public boolean deletePrimeType(String typeName) {
+		// Delete Prime Type
+		if(mDb.delete(PRIM_TYPES, KEY_TYPE_NAME + "='" + typeName + "'", null) > 0) {
+			// Delete Sub Type Belong to It
+			if(!deleteSubTypeBelongTo(typeName)) {
+				return false;
+			}
+//			Cursor subTypeCursor = fetchSubTypesBelongTo(typeName, null);
+//			if(subTypeCursor != null) {
+//				while(subTypeCursor.moveToNext()) {
+//					if(!deleteSubType(subTypeCursor.getColumnName(subTypeCursor.getColumnIndex(KEY_TYPE_NAME)))) {
+//						return false;
+//					}
+//				}
+//			}
+		} else {
+			// Delete Prime Type Error
+			return false;
+		}
+		return true;
+		
+	}
+	
+	/**
+	 * Used to update a prime type.
+	 * @param typeName
 	 * @param updateValues
 	 * @return boolean
 	 */
-	public boolean updatePrimeTypes(int id, ContentValues updateValues) {
-		return mDb.update(PRIM_TYPES, updateValues, KEY_ID + "='" + id + "'", null) > 0;
+	public boolean updatePrimeType(String typeName, ContentValues updateValues) {
+		// Update Prime Type
+		if(mDb.update(PRIM_TYPES, updateValues, KEY_TYPE_NAME + "='" + typeName + "'", null) > 0) {
+			// Update Sub Type Belong to It
+			String newTypeName = updateValues.getAsString(KEY_TYPE_NAME);
+			ContentValues subTypeUpdateValues = new ContentValues();
+			subTypeUpdateValues.put(KEY_TYPE_NAME, newTypeName);
+			if(!updateSubTypeBelongTo(typeName, subTypeUpdateValues)) {
+				return false;
+			}
+//			Cursor subTypeCursor = fetchSubTypesBelongTo(typeName, null);
+//			if(subTypeCursor != null) {
+//				while(subTypeCursor.moveToNext()) {
+//					if(!updateSubType(subTypeCursor.getColumnName(subTypeCursor.getColumnIndex(KEY_TYPE_NAME)), subTypeUpdateValues)) {
+//						return false;
+//					}
+//				}
+//			}
+		} else {
+			// Update Prime Type Error
+			return false;
+		}
+		return true;
 	}
 	
-	public Cursor fetchPrimeTypes(int id, String[] selectColumns) throws SQLException {
+	/**
+	 * Used to fetch Prime Types according to type name.
+	 * @param typeName
+	 * @param selectColumns
+	 * @return Cursor
+	 * @throws SQLException
+	 */
+	public Cursor fetchPrimeTypes(String typeName, String[] selectColumns) throws SQLException {
 		Cursor mCursor = 
-				mDb.query(true, PRIM_TYPES, selectColumns, KEY_ID + "='" + id + "'", null, null, null, null, null);
+				mDb.query(true, PRIM_TYPES, selectColumns, KEY_TYPE_NAME + "='" + typeName + "'", null, null, null, null, null);
 		if (mCursor != null)
 			mCursor.moveToFirst();
 		return mCursor;
@@ -1038,7 +1124,6 @@ public class DatabaseUtil{
 	
 	/**
 	 * This method is used to create/insert new Prime Types.
-	 * @param username
 	 * @param typeName
 	 * @param typeIcon
 	 * @param typeBelongTo
@@ -1059,27 +1144,91 @@ public class DatabaseUtil{
 	}
 	
 	/**
-	 * This method will delete Sub Types.
-	 * @param username
+	 * Check whether a prime type existed. 
+	 * @param typeName
+	 * @return
+	 */
+	public boolean isSubTypeExisted(String typeName) {
+		Cursor mCursor = mDb.query(true, SUB_TYPES, null, KEY_TYPE_NAME + "='"
+				+ typeName + "'", null, null, null, null, null);
+		if (mCursor == null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public long newSubType(String typeName, String typeIcon, long ctime, long mtime, long stime) {
+		if(!isSubTypeExisted(typeName)) {
+			ContentValues initialValues = new ContentValues();
+			initialValues.put(KEY_TYPE_NAME, typeName);
+			initialValues.put(KEY_TYPE_ICON, typeIcon);
+			initialValues.put(KEY_CTIME, ctime);
+			initialValues.put(KEY_MTIME, mtime);
+			initialValues.put(KEY_STIME, stime);
+			return mDb.insert(SUB_TYPES, null, initialValues);
+		} else {
+			// Prime Type Already Existed, Return -1
+			return -1;
+		}
+	}
+	
+	/**
+	 * This method will delete Sub Type.
+	 * @param typeName
 	 * @return boolean
 	 */
-	public boolean deleteSubTypes(int id) {
-		return mDb.delete(SUB_TYPES, KEY_ID + "='" + id + "'", null) > 0;
+	public boolean deleteSubType(String typeName) {
+		return mDb.delete(SUB_TYPES, KEY_TYPE_NAME + "='" + typeName + "'", null) > 0;
+	}
+	
+	/**
+	 * Used to delete sub types belong to specified prime type.
+	 * @param primeName
+	 * @return boolean
+	 */
+	public boolean deleteSubTypeBelongTo(String primeName) {
+		return mDb.delete(SUB_TYPES, KEY_TYPE_BELONGTO + "='" + primeName + "'", null) > 0;
 	}
 	
 	/**
 	 * This method will update Sub Types with selected columns.
-	 * @param username
+	 * @param typeName
 	 * @param updateValues
 	 * @return boolean
 	 */
-	public boolean updateSubTypes(int id, ContentValues updateValues) {
-		return mDb.update(SUB_TYPES, updateValues, KEY_ID + "='" + id + "'", null) > 0;
+	public boolean updateSubType(String typeName, ContentValues updateValues) {
+		return mDb.update(SUB_TYPES, updateValues, KEY_TYPE_NAME + "='" + typeName + "'", null) > 0;
 	}
 	
-	public Cursor fetchSubTypes(int id, String[] selectColumns) throws SQLException {
+	/**
+	 *  Used to update sub types belong to specified prime type.
+	 * @param primeName
+	 * @param updateValues
+	 * @return boolean
+	 */
+	public boolean updateSubTypeBelongTo(String primeName, ContentValues updateValues) {
+		return mDb.update(SUB_TYPES, updateValues, KEY_TYPE_BELONGTO + "='" + primeName + "'", null) > 0;
+	}
+	
+	/**
+	 * Used to fetch Sub Types.
+	 * @param typeName
+	 * @param selectColumns
+	 * @return Cursor
+	 * @throws SQLException
+	 */
+	public Cursor fetchSubTypes(String typeName, String[] selectColumns) throws SQLException {
 		Cursor mCursor = 
-				mDb.query(true, SUB_TYPES, selectColumns, KEY_ID + "='" + id + "'", null, null, null, null, null);
+				mDb.query(true, SUB_TYPES, selectColumns, KEY_TYPE_NAME + "='" + typeName + "'", null, null, null, null, null);
+		if (mCursor != null)
+			mCursor.moveToFirst();
+		return mCursor;
+	}
+	
+	public Cursor fetchSubTypesBelongTo(String primeName, String[] selectColumns) throws SQLException {
+		Cursor mCursor = 
+				mDb.query(true, SUB_TYPES, selectColumns, KEY_TYPE_BELONGTO + "='" + primeName + "'", null, null, null, null, null);
 		if (mCursor != null)
 			mCursor.moveToFirst();
 		return mCursor;

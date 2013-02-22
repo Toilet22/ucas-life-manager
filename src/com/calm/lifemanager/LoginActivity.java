@@ -69,8 +69,20 @@ public class LoginActivity extends Activity {
 					// Bundle User Database
 					DatabaseUtil.dbName = userNameValue + ".db";
 					DatabaseUtil dbUtil = new DatabaseUtil(LoginActivity.this);
-					dbUtil.open();
-					dbUtil.close();
+					
+					if(dbUtil.exist(DatabaseUtil.dbName)) {
+						
+					} else {
+						// Existed User Login, Need to create database
+						dbUtil.open();
+						
+						// Initial Assigned Types
+						dbUtil.initPrimeTypes();
+						dbUtil.initSubTypes();
+						
+						dbUtil.close();
+					}
+					
 					
 					// Bundle User Name to Data Sync Service
 					userDataSync.currentLogedInUser = userNameValue;

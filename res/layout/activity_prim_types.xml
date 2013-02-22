@@ -19,7 +19,7 @@
             android:layout_gravity="center_vertical">
 
             <Button
-                android:id="@+id/Button01"
+                android:id="@+id/act_primTypes_btn_back"
                 android:layout_width="60dp"
                 android:layout_height="40dp"
                 android:layout_gravity="left|center_vertical"
@@ -28,7 +28,7 @@
                 android:textColor="@color/white" />
 
             <Button
-                android:id="@+id/button1"
+                android:id="@+id/act_primTypes_btn_newType"
                 android:layout_width="60dp"
                 android:layout_height="40dp"
                 android:layout_gravity="right|center_vertical"

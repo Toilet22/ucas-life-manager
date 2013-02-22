@@ -188,54 +188,7 @@ public class SettingsActivity extends Activity {
 					Toast.makeText(getApplicationContext(), R.string.act_settings_toast_rglRcdOn, 
 							Toast.LENGTH_SHORT).show();
 				}
-	           /*/获得系统时间
-				Calendar c=Calendar.getInstance();
-		        int currHour = c.get(Calendar.HOUR_OF_DAY);
-		        int currMin = c.get(Calendar.MINUTE);
-	            c.setTimeInMillis(System.currentTimeMillis()); 
-		        Log.v("Toilet", "SettingsActivity: test currHour: the Hour is "+ Integer.toString(currHour)+".");
-				//指定定时记录的Activity
-				Intent intent = new Intent(SettingsActivity.this, TimeToRecordBroadcastReceiver.class);
-				//向intent中添加起始时间数据
-	            Bundle mBundle = new Bundle();
-	            mBundle.putInt("Hour", currHour);
-	            mBundle.putInt("Minute", currMin);
-	            intent.putExtras(mBundle);
-	            Log.v("Toilet", "SettingsActivity: test Bundle: the Hour is "+ Integer.toString(mBundle.getInt("Hour"))+".");
-				//指定PendingIntent
-				PendingIntent sender = PendingIntent.getBroadcast(SettingsActivity.this, 0, intent, 0);
-				//获得AlarmManager对象
-				AlarmManager am; 
-	            am = (AlarmManager)getSystemService(ALARM_SERVICE);
-	            
-				//判断是开启还是关闭
-				if(isLogStarted){
-					Log.v("Toilet", "SettingsActivity: before closeLog.");
-					isLogStarted = false;
-					btn_logSwitch.setBackgroundResource(R.drawable.switch_off);
-					//关闭定时服务
-					am.cancel(sender);
-					Toast.makeText(getApplicationContext(), R.string.act_settings_toast_rglRcdOff, 
-							Toast.LENGTH_SHORT).show();
-					
-				}else
-				{
-					Log.v("Toilet", "SettingsActivity: before startLog.");
-					isLogStarted = true;
-					btn_logSwitch.setBackgroundResource(R.drawable.switch_on);
-					//开启定时服务
-					am.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis() + interval*60000, sender); 
-					//将下次弹出时间写入preference
-					SharedPreferences.Editor editor = sharedPref.edit();
-					editor.putInt("NextLogTime_Hour", currHour + interval/60);
-					editor.putInt("NextLogTime_Min", currMin + interval % 60);
-					editor.commit();
-					Log.v("Toilet", "SettingsActivity: test the NextLogTime_Hour:" +Integer.toString(currHour + interval/60)+".");
-					Log.v("Toilet", "SettingsActivity: test the NextLogTime_Min:" +Integer.toString(currHour + interval%60)+".");
-					Toast.makeText(getApplicationContext(), R.string.act_settings_toast_rglRcdOn, 
-							Toast.LENGTH_SHORT).show();
-				}
-				*/
+	         
 			}
 		});
 		

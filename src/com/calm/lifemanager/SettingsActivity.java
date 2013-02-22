@@ -377,7 +377,7 @@ public class SettingsActivity extends Activity {
         
 
 		/**************************************
-		 * 开启和关闭定时记录功能
+		 * 设置自定义类别
 		 **************************************/
 		btn_types = (Button)findViewById(R.id.act_settings_btn_setTypes);
 		btn_types.setOnClickListener(new Button.OnClickListener(){

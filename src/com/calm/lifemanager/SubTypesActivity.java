@@ -46,9 +46,6 @@ public class SubTypesActivity extends Activity {
         dbUtil.open();
 
         //获得指向数据的游标
-        //String[] selectCol = {DatabaseUtil.KEY_TYPE_NAME, DatabaseUtil.KEY_TYPE_ICON};
-        //cursor = dbUtil.fetchAllData(DatabaseUtil.sub_TYPES, selectCol);
-        //
         cursor = dbUtil.rawQuery("SELECT DISTINCT oid as _id,  type_name FROM tb_sub_types where " + DatabaseUtil.KEY_TYPE_BELONGTO + "=?;",new String[] {fatherTypeName});
         
         if(cursor.moveToNext()){
@@ -69,14 +66,9 @@ public class SubTypesActivity extends Activity {
         
         /*
         lstvw_subTypes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
-				// TODO Auto-generated method stub
-				
-				
 			}
-        	
 		});
         */
         /***********************************
@@ -96,7 +88,7 @@ public class SubTypesActivity extends Activity {
 				newTypeName = (dialog_newType_edttxt_Typename.getText().toString());
 				//写入数据库操作	
 				Log.i("dialog newType", newTypeName);
-				if(dbUtil.newSubType(newTypeName, null) == -1){
+				if(dbUtil.newSubType(newTypeName, null, fatherTypeName) == -1){
 					Toast.makeText(getApplicationContext(), R.string.act_sub_types_alreadyExist, 
 							Toast.LENGTH_SHORT).show();
 				}

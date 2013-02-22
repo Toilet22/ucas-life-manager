@@ -47,8 +47,13 @@ public class MainActivity extends Activity {
 		Log.v("Toilet", "NewCurrAct: before sharedPref.");
 		//preferences记录
 		SharedPreferences sharedPref;
+		if(null == userDataSync.currentLogedInUser || "".equals(userDataSync.currentLogedInUser)) {
+			userDataSync.currentLogedInUser = userDataSync.anonymousUser;
+		} else {
+			;
+		}
 		sharedPref = getSharedPreferences(
-		        getString(R.string.curr_usr_name), Context.MODE_PRIVATE);
+				userDataSync.currentLogedInUser, Context.MODE_PRIVATE);
 		if(sharedPref.contains("isLogStarted")){
 			isLogStarted = sharedPref.getBoolean("isLogStarted", false);
 			intervalInMillis = sharedPref.getLong("IntervalInMillis", defaultIntervalInMillis);
@@ -114,7 +119,7 @@ public class MainActivity extends Activity {
 					//preferences记录
 					SharedPreferences sharedPref;
 					sharedPref = getSharedPreferences(
-					        getString(R.string.curr_usr_name), Context.MODE_PRIVATE);
+							userDataSync.currentLogedInUser, Context.MODE_PRIVATE);
 					nextTimeInMillis = sharedPref.getLong("NextLogTimeInMillis", 30*60000);
 					nextLogTime.setTimeInMillis(nextTimeInMillis);
 					nextTime_Hour = nextLogTime.get(Calendar.HOUR_OF_DAY);
@@ -249,7 +254,7 @@ public class MainActivity extends Activity {
 		//preferences记录
 		SharedPreferences sharedPref;
 		sharedPref = getSharedPreferences(
-		        getString(R.string.curr_usr_name), MODE_PRIVATE);
+				userDataSync.currentLogedInUser, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = sharedPref.edit();
 		editor.putBoolean("isLogStarted", isLogStarted);
 		editor.commit();
@@ -264,9 +269,7 @@ public class MainActivity extends Activity {
 		//preferences记录
 		SharedPreferences sharedPref;
 		sharedPref = getSharedPreferences(
-		        getString(R.string.curr_usr_name), Context.MODE_PRIVATE);
-		sharedPref = getSharedPreferences(
-		        getString(R.string.curr_usr_name), Context.MODE_PRIVATE);
+				userDataSync.currentLogedInUser, Context.MODE_PRIVATE);
 		if(isLogStarted){
 			Log.v("Toilet", "MainActivity onStart(): reinit the UIs.");
 			txtvw_logState.setText(R.string.act_current_txtvw_logStarted);

@@ -1,6 +1,7 @@
 package com.calm.lifemanager;
 
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.Activity;
@@ -9,6 +10,7 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -41,20 +43,60 @@ public class IWantToRecordActivity extends Activity {
 	float rt_effc;
 	float rt_mood;
 	String type;
-    String fatherType[] = new String[] {"学习", "工作", "社交", "娱乐", "思考", "运动"};
-    String subType[][] = new String[][] {
-    		new String[] {"上课", "预习", "做作业", "复习", "非专业知识", "其他"},
-    		new String[] {"上班", "写代码", "处理文档", "联系客户", "总结工作", "规划工作", "跑腿儿", "其他"},
-    		new String[] {"朋友聚餐", "电话联系", "网络交流", "外出游玩", "其他"},
-    		new String[] {"看电影", "玩游戏", "听音乐", "上网", "外出旅行", "逛街", "棋牌乐", "其他"},
-    		new String[] {"人生愿景", "长期规划", "短期目标", "一会儿干啥", "工作难题", "灵光乍现！", "人情世故", "心中的他/她", "其他"},
-    		new String[] {"散步", "跑步", "球类运动", "田径项目", "极限运动", "其他"}
-    		};
+    String fatherType[];
+    String subType[]; 
 	int startHour;
 	int startMin;
 	int endHour;
 	int endMin;
+	DatabaseUtil dbUtil;
 
+	/*************************************** 
+	 * 获得父类别的String[]
+	 **************************************/
+	private String[] getFatherTypeNameInStringArray(){
+        //获得游标
+		Cursor cursor = dbUtil.rawQuery("SELECT DISTINCT oid as _id, type_name FROM tb_prim_types", null);
+        //测试游标
+        if(cursor.moveToNext()){
+        	Log.i("iRcd_FatherTypeNameInStringArray","PrimTypesActivity_fetchAllData: fetch specific data works!");
+        }else{
+        	Log.i("iRcd_FatherTypeNameInStringArray","PrimTypesActivity_fetchAllData: fetch specific data failed!");        	
+        }        
+		ArrayList<String> arrayFatherTypes = new ArrayList<String>();
+		for(cursor.moveToFirst(); cursor.moveToNext(); cursor.isAfterLast()){
+			Log.i("iRcd_FatherTypeNameInStringArray",cursor.getString(1));
+			arrayFatherTypes.add(cursor.getString(1));
+		}
+		String[] retVal = (String[])arrayFatherTypes.toArray(new String[arrayFatherTypes.size()]);
+		Log.i("iRcd_getFatherTypeNameInStringArray","after change type.");
+		Log.i("iRcd_getFatherTypeNameInStringArray",retVal[1]);
+		return retVal;
+	}
+	
+	/*************************************** 
+	 * 获得子类别的String[]
+	 **************************************/
+	private String[] getSubTypeNameInStringArray(String fatherTypeName){
+        //获得游标
+        Cursor cursor = dbUtil.rawQuery("SELECT DISTINCT oid as _id,  type_name FROM tb_sub_types where " + DatabaseUtil.KEY_TYPE_BELONGTO + "=?;",new String[] {fatherTypeName});
+        //测试游标
+        if(cursor.moveToNext()){
+        	Log.i("iRcd_getSubTypeNameInStringArray","SubTypesActivity_fetchAllData: fetch specific data works!");
+        }else{
+        	Log.i("iRcd_getSubTypeNameInStringArray","SubTypesActivity_fetchAllData: fetch specific data failed!");        	
+        }        
+		ArrayList<String> arrayFatherTypes = new ArrayList<String>();
+		for(cursor.moveToFirst(); cursor.moveToNext(); cursor.isAfterLast()){
+			Log.i("iRcd_SubTypeNameInStringArray",cursor.getString(1));
+			arrayFatherTypes.add(cursor.getString(1));
+		}
+		String[] retVal = (String[])arrayFatherTypes.toArray(new String[arrayFatherTypes.size()]);
+		Log.i("iRcd_getSubTypeNameInStringArray","after change type.");
+		Log.i("iRcd_getSubTypeNameInStringArray",retVal[1]);
+		return retVal;
+	}
+	
 	private void setAllBtnUnpushed(){
 		btn_excited.setBackgroundResource(R.drawable.excited);
 		btn_happy.setBackgroundResource(R.drawable.happy);
@@ -65,13 +107,19 @@ public class IWantToRecordActivity extends Activity {
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		Log.v("Toilet","iRecord: before setContentView.");
+		Log.v("iRcd","iRecord: before setContentView.");
 		setContentView(R.layout.activity_iwanttorecord);
 
-		Log.v("Toilet","iRecord: before find RatingBar.");
+		Log.v("iRcd","iRecord: before find RatingBar.");
 		rtBar_effc = (RatingBar)findViewById(R.id.act_iRcrd_rtBar_effc);
-		//rtBar_mood = (RatingBar)findViewById(R.id.act_iRcrd_rtBar_mood);
 		btn_save = (Button)findViewById(R.id.act_iRcd_btn_save);
+		
+		/***************************************
+         * 获取数据库操作单元
+         **************************************/
+        dbUtil = new DatabaseUtil(this);
+        Log.i("PrimTypesActivity","Open DB");
+        dbUtil.open();
 		
 		/***************************************
 		 * timePicker起止时间设置
@@ -120,10 +168,17 @@ public class IWantToRecordActivity extends Activity {
 			}
 		});
 		
+
+		/*************************************** 
+		 * 获得父类别的String[]
+		 **************************************/
+		Log.i("iRcd","before getFatherTypeNameInStringArray()");
+        fatherType = getFatherTypeNameInStringArray();
+		
 		/***************************************
 		 * 心情相关
 		 **************************************/
-		Log.v("Toilet", "iShouldRcd: before get buttons about moods");
+		Log.v("iRcd", "iShouldRcd: before get buttons about moods");
 		btn_excited = (Button)findViewById(R.id.act_iRcd_btn_excited);
 		btn_happy = (Button)findViewById(R.id.act_iRcd_btn_happy);
 		btn_ok = (Button)findViewById(R.id.act_iRcd_btn_ok);
@@ -180,23 +235,23 @@ public class IWantToRecordActivity extends Activity {
 		/***************************************
 		 * 以下是选择类别相关代码
 		 **************************************/
-		Log.v("Toilet","iRecord: before findWheelView.");
+		Log.v("iRcd","iRecord: before findWheelView.");
 		whl_fatherType = (WheelView) findViewById(R.id.act_iRcd_wheel_fatherType);
         whl_fatherType.setAdapter(new ArrayWheelAdapter<String>(fatherType));
         whl_fatherType.setVisibleItems(5);
-        whl_fatherType.setCurrentItem(2);
         whl_fatherType.setCurrentItem(1);
-
         
         whl_subType = (WheelView) findViewById(R.id.act_iRcd_wheel_subType);
         whl_subType.setVisibleItems(5);
-		whl_subType.setAdapter(new ArrayWheelAdapter<String>(subType[1]));
+		subType = getSubTypeNameInStringArray(fatherType[1]);
+		whl_subType.setAdapter(new ArrayWheelAdapter<String>(subType));
 		whl_subType.setCurrentItem(1);
 
         whl_fatherType.addChangingListener(new OnWheelChangedListener() {
 			public void onChanged(WheelView wheel, int oldValue, int newValue) {
-				whl_subType.setAdapter(new ArrayWheelAdapter<String>(subType[newValue]));
-				whl_subType.setCurrentItem(subType[newValue].length / 2);
+				subType = getSubTypeNameInStringArray(fatherType[newValue]);
+				whl_subType.setAdapter(new ArrayWheelAdapter<String>(subType));
+				whl_subType.setCurrentItem(1);
 			}
 		});
         
@@ -225,7 +280,7 @@ public class IWantToRecordActivity extends Activity {
 			
 			//类别
 			type = fatherType[whl_fatherType.getCurrentItem()] + "_"
-					+ subType[whl_fatherType.getCurrentItem()][whl_subType.getCurrentItem()];
+					+ subType[whl_subType.getCurrentItem()];
 			Toast.makeText(getApplicationContext(), type, 
 					Toast.LENGTH_SHORT).show();	
 		/************************************

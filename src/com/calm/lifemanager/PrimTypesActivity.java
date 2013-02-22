@@ -2,6 +2,7 @@ package com.calm.lifemanager;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -20,6 +21,7 @@ public class PrimTypesActivity extends Activity {
 	DatabaseUtil dbUtil;
 	ListView lstvw_primTypes;
 	String newTypeName;
+	String selectedTypeName;
 	Button btn_newType;
 	Button btn_back;
 	
@@ -100,6 +102,7 @@ public class PrimTypesActivity extends Activity {
 					Toast.makeText(getApplicationContext(), R.string.act_prim_types_alreadyExist, 
 							Toast.LENGTH_SHORT).show();
 				}
+				cursor.requery();
 			}
 		};
 		
@@ -132,7 +135,10 @@ public class PrimTypesActivity extends Activity {
 				newTypeName = (dialog_editType_edttxt_Typename.getText().toString());
 				//写入数据库操作	
 				Log.i("dialog editType", "editListener");
-				
+				ContentValues newVal = new ContentValues();
+				newVal.put(DatabaseUtil.KEY_TYPE_NAME, newTypeName);
+				dbUtil.updatePrimeType(selectedTypeName, newVal);
+				cursor.requery();
 			}
 		};
 		
@@ -153,7 +159,8 @@ public class PrimTypesActivity extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				//数据库删除操作	
 				Log.i("dialog removeType", "removeListener");
-				
+				dbUtil.deletePrimeType(selectedTypeName);
+				cursor.requery();
 			}
 		};
 		
@@ -175,7 +182,6 @@ public class PrimTypesActivity extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				//弹出编辑Dialog	
 				dlg_editType.show();
-				
 			}
 		};       	
 		
@@ -199,6 +205,9 @@ public class PrimTypesActivity extends Activity {
         lstvw_primTypes.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position,
 					long id) {
+				cursor.moveToPosition(position);
+				selectedTypeName = cursor.getString(1);
+				Log.i("PrimTypesAcitivty_longClicked",selectedTypeName);
 				dlg_whatToDo.show();
 				return true;
 			}  	

@@ -139,20 +139,25 @@ public class userDataSync {
 			ContentValues tmpContentValues = new ContentValues();
 			
 			do {
-				long ctimeColumn = retCursor
+				int ctimeColumn = retCursor
 						.getColumnIndex(DatabaseUtil.KEY_CTIME);
-				long mtimeColumn = retCursor
+				long ctimeData = retCursor.getLong(ctimeColumn);
+				
+				int mtimeColumn = retCursor
 						.getColumnIndex(DatabaseUtil.KEY_MTIME);
-				long stimeColumn = retCursor
+				long mtimeData = retCursor.getLong(mtimeColumn);
+				
+				int stimeColumn = retCursor
 						.getColumnIndex(DatabaseUtil.KEY_STIME);
+				long stimeData = retCursor.getLong(stimeColumn);
 				
 				// Push data which MT> LT && MT > ST
-				if ((mtimeColumn > lastSyncTime && mtimeColumn > stimeColumn) || stimeColumn == defaultSyncTime) {
+				if ((mtimeData > lastSyncTime && mtimeData > stimeData) || stimeColumn == defaultSyncTime) {
 					// Data should push, add to JSON
 					Log.i("CloudSync", "Client has data to push to server...");
 					// Update ST to current time
 					tmpContentValues.put(DatabaseUtil.KEY_STIME, System.currentTimeMillis());
-					dataBase.updateData(dataSrc, DatabaseUtil.KEY_CTIME, String.valueOf(ctimeColumn), tmpContentValues);
+					dataBase.updateData(dataSrc, DatabaseUtil.KEY_CTIME, String.valueOf(ctimeData), tmpContentValues);
 					
 					dataJson = doDataConvertToJson(columnCount, columnNames, retCursor);
 					dataSection.put(dataJson);

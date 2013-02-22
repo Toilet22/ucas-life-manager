@@ -31,6 +31,15 @@ public class DatabaseUtil{
 	// User Data Sync Variables
 	public static long defaultSyncTime = 0;
 	
+	// Database Operation Return Values
+	public static int SUCCESS = 0;
+	public static int TYPE_NAME_ALREADY_EXISTS = 1;
+	public static int DATABASE_ERROR = -1;
+	public static int DELETE_PRIM_TYPE_ERROR = -2;
+	public static int DELETE_SUB_TYPE_ERROR = -3;
+	public static int UPDATE_PRIM_TYPE_ERROR = -4;
+	public static int UPDATE_SUB_TYPE_ERROR = -5;
+	
 	// Table columns
 	public static final String KEY_ID = "_id";
 		
@@ -265,6 +274,7 @@ public class DatabaseUtil{
 		+ KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 		+ KEY_TYPE_NAME + " VARCHAR(30) not null, "
 		+ KEY_TYPE_ICON + " text, "
+		+ KEY_STATUS + " SMALLINT, "
 		+ KEY_CTIME + " INTEGER not null, "
 		+ KEY_MTIME + " INTEGER not null, "
 		+ KEY_STIME + " INTEGER not null);";
@@ -285,6 +295,7 @@ public class DatabaseUtil{
 		+ KEY_TYPE_NAME + " VARCHAR(30) not null, "
 		+ KEY_TYPE_ICON + " text, "
 		+ KEY_TYPE_BELONGTO + " VARCHAR(30) not null, "
+		+ KEY_STATUS + " SMALLINT, "
 		+ KEY_CTIME + " INTEGER not null, "
 		+ KEY_MTIME + " INTEGER not null, "
 		+ KEY_STIME + " INTEGER not null);";
@@ -971,11 +982,15 @@ public class DatabaseUtil{
 			initialValues.put(KEY_TYPE_NAME, typeName);
 			initialValues.put(KEY_TYPE_ICON, typeIcon);
 			updateRecordTime(initialValues);
-			return mDb.insert(PRIM_TYPES, null, initialValues);
+			if(mDb.insert(PRIM_TYPES, null, initialValues) == -1) {
+				return DATABASE_ERROR;
+			} else {
+				return SUCCESS;
+			}
 		} else {
 			// Prime Type Already Existed, Return -1
 			Log.w("DatabaseUtil.newPrimeType","Already exists!");
-			return -1;
+			return TYPE_NAME_ALREADY_EXISTS;
 		}
 	}
 	
@@ -984,12 +999,12 @@ public class DatabaseUtil{
 	 * @param typeName
 	 * @return boolean
 	 */
-	public boolean deletePrimeType(String typeName) {
+	public int deletePrimeType(String typeName) {
 		// Delete Prime Type
 		if(mDb.delete(PRIM_TYPES, KEY_TYPE_NAME + "='" + typeName + "'", null) > 0) {
 			// Delete Sub Type Belong to It
 			if(!deleteSubTypeBelongTo(typeName)) {
-				return false;
+				return DELETE_SUB_TYPE_ERROR;
 			}
 //			Cursor subTypeCursor = fetchSubTypesBelongTo(typeName, null);
 //			if(subTypeCursor != null) {
@@ -1001,10 +1016,9 @@ public class DatabaseUtil{
 //			}
 		} else {
 			// Delete Prime Type Error
-			return false;
+			return DELETE_PRIM_TYPE_ERROR;
 		}
-		return true;
-		
+		return SUCCESS;
 	}
 	
 	/**
@@ -1013,7 +1027,7 @@ public class DatabaseUtil{
 	 * @param updateValues
 	 * @return boolean
 	 */
-	public boolean updatePrimeType(String typeName, ContentValues updateValues) {
+	public int updatePrimeType(String typeName, ContentValues updateValues) {
 		String updateTypeName = updateValues.getAsString(KEY_TYPE_NAME);
 		
 		// Check whether the new type name existed
@@ -1029,7 +1043,7 @@ public class DatabaseUtil{
 				subTypeUpdateValues.put(KEY_MTIME, System.currentTimeMillis());
 				
 				if(!updateSubTypeBelongTo(typeName, subTypeUpdateValues)) {
-					return false;
+					return UPDATE_SUB_TYPE_ERROR;
 				}
 //				Cursor subTypeCursor = fetchSubTypesBelongTo(typeName, null);
 //				if(subTypeCursor != null) {
@@ -1041,12 +1055,12 @@ public class DatabaseUtil{
 //				}
 			} else {
 				// Update Prime Type Error
-				return false;
+				return UPDATE_PRIM_TYPE_ERROR;
 			}
-			return true;
+			return SUCCESS;
 		} else {
 			// Prime Type Already Existed, Return false
-			return false;
+			return TYPE_NAME_ALREADY_EXISTS;
 		}
 	}
 	
@@ -1147,13 +1161,14 @@ public class DatabaseUtil{
 	}
 	
 	/**
-	 * Check whether a prime type existed. 
+	 * Check whether a sub type existed in a specified prime type. 
 	 * @param typeName
 	 * @return
 	 */
-	public boolean isSubTypeExisted(String typeName) {
+	public boolean isSubTypeExisted(String  subTypeName, String primeTypeName) {
 		Cursor mCursor = mDb.query(true, SUB_TYPES, null, KEY_TYPE_NAME + "='"
-				+ typeName + "'", null, null, null, null, null);
+				+ subTypeName + "'" + " AND " + KEY_TYPE_BELONGTO + "='"
+				+ primeTypeName, null, null, null, null, null);
 		if (mCursor.moveToNext()) {
 			return true;
 		} else {
@@ -1161,16 +1176,20 @@ public class DatabaseUtil{
 		}
 	}
 	
-	public long newSubType(String typeName, String typeIcon) {
-		if(!isSubTypeExisted(typeName)) {
+	public long newSubType(String subTypeName, String subTypeIcon, String primeTypeName) {
+		if(!isSubTypeExisted(subTypeName, primeTypeName)) {
 			ContentValues initialValues = new ContentValues();
-			initialValues.put(KEY_TYPE_NAME, typeName);
-			initialValues.put(KEY_TYPE_ICON, typeIcon);
+			initialValues.put(KEY_TYPE_NAME, subTypeName);
+			initialValues.put(KEY_TYPE_ICON, subTypeIcon);
 			updateRecordTime(initialValues);
-			return mDb.insert(SUB_TYPES, null, initialValues);
+			if(mDb.insert(SUB_TYPES, null, initialValues) == -1) {
+				return DATABASE_ERROR;
+			} else {
+				return SUCCESS;
+			}
 		} else {
-			// Prime Type Already Existed, Return -1
-			return -1;
+			// Sub Type Already Existed, Return -1
+			return TYPE_NAME_ALREADY_EXISTS;
 		}
 	}
 	
@@ -1198,14 +1217,19 @@ public class DatabaseUtil{
 	 * @param updateValues
 	 * @return boolean
 	 */
-	public boolean updateSubType(String typeName, ContentValues updateValues) {
+	public int updateSubType(String typeName, ContentValues updateValues) {
 		String updateTypeName = updateValues.getAsString(KEY_TYPE_NAME);
+		String primeTypeName = updateValues.getAsString(KEY_TYPE_BELONGTO);
 		
-		if(!isSubTypeExisted(updateTypeName)) {
-			return mDb.update(SUB_TYPES, updateValues, KEY_TYPE_NAME + "='" + typeName + "'", null) > 0;
+		if(!isSubTypeExisted(updateTypeName, primeTypeName)) {
+			 if(mDb.update(SUB_TYPES, updateValues, KEY_TYPE_NAME + "='" + typeName + "'", null) > 0) {
+				 return SUCCESS;
+			 } else {
+				 return UPDATE_SUB_TYPE_ERROR;
+			 }
 		} else {
 			// Sub Type Already Existed, Return false
-			return false;
+			return TYPE_NAME_ALREADY_EXISTS;
 		}
 	}
 	

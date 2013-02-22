@@ -80,11 +80,7 @@ public class SettingsActivity extends Activity {
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		Log.v("Toilet", "SettingActivity: before setContentView.");
 		setContentView(R.layout.activity_settings);
-		Log.v("Toilet", "SettingActivity: after setContentView.");
-		
-		Log.v("Toilet", "SettingActivity: before reading the database.");
 		
 		// Handler Implementation
 		mHandler = new Handler() {
@@ -123,8 +119,14 @@ public class SettingsActivity extends Activity {
 		/******************************************
 		 * 读取现有preferences。用以完成界面初始化
 		 *****************************************/
+		if(null == userDataSync.currentLogedInUser || "".equals(userDataSync.currentLogedInUser)) {
+			userDataSync.currentLogedInUser = userDataSync.anonymousUser;
+		} else {
+			;
+		}
 		sharedPref = getSharedPreferences(
-		        getString(R.string.curr_usr_name), Context.MODE_PRIVATE);
+				userDataSync.currentLogedInUser, Context.MODE_PRIVATE);
+		
 		if(sharedPref.contains("IntervalInMillis")){
 			isLogStarted = sharedPref.getBoolean("isLogStarted", false);
 			intervalInMillis = sharedPref.getLong("IntervalInMillis", defaultIntervalInMillis);
@@ -441,10 +443,12 @@ public class SettingsActivity extends Activity {
 							// Sync User Data as a background service
 							new Thread() {
 								public void run() {
-									// Sync User Data Table by Table
 									DatabaseUtil dbUtil = new DatabaseUtil(SettingsActivity.this);
 									
-									try {							
+									try {				
+										// Sync User Data Table by Table
+										Log.i("CloudSync","Start User Data Syncing...");
+										
 										// User Profile
 										userDataSync.currentSyncDataTable = DatabaseUtil.USER_PROFILE;
 										Log.i("CloudSync","Now Syncing: " + userDataSync.currentSyncDataTable);
@@ -480,6 +484,24 @@ public class SettingsActivity extends Activity {
 										userDataSync.doUserDataSync(NetToolUtil.recordPullUrl, userDataSync.PULL, DatabaseUtil.RECORD, dbUtil, userDataSync.lastSyncTime);
 										userDataSync.doUserDataSync(NetToolUtil.recordPushUrl, userDataSync.PUSH, DatabaseUtil.RECORD, dbUtil, userDataSync.lastSyncTime);
 										
+										// Prime Types
+										userDataSync.currentSyncDataTable = DatabaseUtil.PRIM_TYPES;
+										Log.i("CloudSync","Now Syncing: " + userDataSync.currentSyncDataTable);
+										userDataSync.doUserDataSync(NetToolUtil.primeTypesPullUrl, userDataSync.PULL, DatabaseUtil.PRIM_TYPES, dbUtil, userDataSync.lastSyncTime);
+										userDataSync.doUserDataSync(NetToolUtil.primeTypesPushUrl, userDataSync.PUSH, DatabaseUtil.PRIM_TYPES, dbUtil, userDataSync.lastSyncTime);
+										
+										// Sub Types
+										userDataSync.currentSyncDataTable = DatabaseUtil.SUB_TYPES;
+										Log.i("CloudSync","Now Syncing: " + userDataSync.currentSyncDataTable);
+										userDataSync.doUserDataSync(NetToolUtil.subTypesPullUrl, userDataSync.PULL, DatabaseUtil.SUB_TYPES, dbUtil, userDataSync.lastSyncTime);
+										userDataSync.doUserDataSync(NetToolUtil.subTypesPushUrl, userDataSync.PUSH, DatabaseUtil.SUB_TYPES, dbUtil, userDataSync.lastSyncTime);
+										
+										// Update Last Sync Time
+										userDataSync.lastSyncTime = System.currentTimeMillis();
+										
+										Log.i("CloudSync","User Data Syncing Done!");
+										Log.i("CloudSync","Last Sync Time is: " + userDataSync.lastSyncTime);
+										
 									} catch (JSONException e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
@@ -504,6 +526,7 @@ public class SettingsActivity extends Activity {
 		editor.putBoolean("isLogStarted", isLogStarted);
 		editor.putBoolean("isRingOn", isRingOn);
 		editor.putBoolean("isVibrationOn", isVibrationOn);
+		editor.putLong("lastSyncTime", userDataSync.lastSyncTime);
 		editor.commit();
 	}
 }

@@ -83,6 +83,12 @@ public class NetToolUtil {
     public static final String recordPullUrl = serverUrl + "/userdata/record/pull";
     public static final String recordPushUrl = serverUrl + "/userdata/record/push";
 
+    public static final String primeTypesPullUrl = serverUrl + "/userdata/primetype/pull";
+    public static final String primeTypesPushUrl = serverUrl + "/userdata/primetype/push";
+    
+    public static final String subTypesPullUrl = serverUrl + "/userdata/subtype/pull";
+    public static final String subTypesPushUrl = serverUrl + "/userdata/subtype/push";
+    
     public static final String PUSH = "push";
     public static final String PULL = "pull"; 
     

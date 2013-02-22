@@ -952,10 +952,10 @@ public class DatabaseUtil{
 	public boolean isPrimeTypeExisted(String typeName) {
 		Cursor mCursor = mDb.query(true, PRIM_TYPES, null, KEY_TYPE_NAME + "='"
 				+ typeName + "'", null, null, null, null, null);
-		if (mCursor == null) {
-			return false;
-		} else {
+		if (mCursor.moveToNext()) {
 			return true;
+		} else {
+			return false;
 		}
 	}
 	
@@ -974,6 +974,7 @@ public class DatabaseUtil{
 			return mDb.insert(PRIM_TYPES, null, initialValues);
 		} else {
 			// Prime Type Already Existed, Return -1
+			Log.w("DatabaseUtil.newPrimeType","Already exists!");
 			return -1;
 		}
 	}

@@ -1142,10 +1142,10 @@ public class DatabaseUtil{
 	public boolean isSubTypeExisted(String typeName) {
 		Cursor mCursor = mDb.query(true, SUB_TYPES, null, KEY_TYPE_NAME + "='"
 				+ typeName + "'", null, null, null, null, null);
-		if (mCursor == null) {
-			return false;
-		} else {
+		if (mCursor.moveToNext()) {
 			return true;
+		} else {
+			return false;
 		}
 	}
 	

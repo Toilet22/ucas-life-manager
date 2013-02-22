@@ -15,6 +15,8 @@ public class userDataSync {
 	public static boolean isSwithingUser = false;
 	
 	public static long lastSyncTime = 0;
+	public static long defaultSyncTime = 0;
+	
 	public static String currentSyncDataTable = "";
 	
 	public static String defaultEncoding = "utf-8";
@@ -133,12 +135,24 @@ public class userDataSync {
 			JSONObject dataJson = new JSONObject();
 			int columnCount = retCursor.getColumnCount();
 			String[] columnNames = retCursor.getColumnNames();
+			
+			ContentValues tmpContentValues = new ContentValues();
+			
 			do {
+				long ctimeColumn = retCursor
+						.getColumnIndex(DatabaseUtil.KEY_CTIME);
 				long mtimeColumn = retCursor
 						.getColumnIndex(DatabaseUtil.KEY_MTIME);
-				if (mtimeColumn > lastSyncTime) {
+				long stimeColumn = retCursor
+						.getColumnIndex(DatabaseUtil.KEY_STIME);
+				
+				// Push data which MT> LT && MT > ST
+				if ((mtimeColumn > lastSyncTime && mtimeColumn > stimeColumn) || stimeColumn == defaultSyncTime) {
 					// Data should push, add to JSON
 					Log.i("CloudSync", "Client has data to push to server...");
+					// Update ST to current time
+					tmpContentValues.put(DatabaseUtil.KEY_STIME, System.currentTimeMillis());
+					dataBase.updateData(dataSrc, DatabaseUtil.KEY_CTIME, String.valueOf(ctimeColumn), tmpContentValues);
 					
 					dataJson = doDataConvertToJson(columnCount, columnNames, retCursor);
 					dataSection.put(dataJson);
@@ -303,7 +317,7 @@ public class userDataSync {
 				tmpRawQuerySql = rawQuerySql + " WHERE ctime = " + tmpContentValues.getAsLong(DatabaseUtil.KEY_CTIME);
 				retCursor = dataBase.rawQuery(tmpRawQuerySql, null);
 				
-				if(retCursor.getCount() > 0) {
+				if(retCursor != null && retCursor.getCount() > 0) {
 					// Has a record with same c_time, update the record
 					Log.i("CloudSync", "Now Updating Records...");
 					while(retCursor.moveToNext()) {
@@ -316,16 +330,16 @@ public class userDataSync {
 							;
 						}
 					}
-					
-					if(retCursor != null) {
-						retCursor.close();
-					}
 				} else {
 					// Has no record, insert the record and update its s_time
 					Log.i("CloudSync", "Now Inserting New Records...");
 					
 					tmpContentValues.put(DatabaseUtil.KEY_STIME, System.currentTimeMillis());
 					dataBase.insertData(currentSyncDataTable, tmpContentValues);
+				}
+				
+				if(retCursor != null) {
+					retCursor.close();
 				}
 			}
 			

@@ -24,6 +24,7 @@ public class PrimTypesActivity extends Activity {
 	String selectedTypeName;
 	Button btn_newType;
 	Button btn_back;
+	SimpleCursorAdapter adapter;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);	
@@ -55,9 +56,8 @@ public class PrimTypesActivity extends Activity {
         //获取SimpleCursorAdatper的实例
         String[] fromCol = {DatabaseUtil.KEY_TYPE_NAME};
         int[] toView = {R.id.layout_primType_name};
-        @SuppressWarnings("deprecation")
-		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, 
-        		R.layout.layout_prim_type, cursor, fromCol, toView);
+        adapter = new SimpleCursorAdapter(this, 
+        		R.layout.layout_prim_type, cursor, fromCol, toView);//, SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         //绑定adapter
         Log.i("PrimTypesActivity", "before setAdatper");
         lstvw_primTypes.setAdapter(adapter);
@@ -225,5 +225,9 @@ public class PrimTypesActivity extends Activity {
         });
 
 	}
+	
+	/*public void onStop(){
+		adapter.unregisterDataSetObserver(null);
+	}*/
 
 }

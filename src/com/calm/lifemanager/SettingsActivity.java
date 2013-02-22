@@ -58,12 +58,8 @@ public class SettingsActivity extends Activity {
 	TextView txtvw_current_loged_in_user;
 	
 	//选择时间间隔
-	//Button btn_setInterval;
 	TextView txtvw_interval;
-	//Spinner spnr_logInterval;
 	long intervalInMillis = defaultIntervalInMillis;
-	//static final String[] intervals = { "0.5小时", "1小时", "1.5小时", "2小时", "2.5小时", "3小时","3.5小时", "4小时"};  
-    //ArrayAdapter <String> arrayAdapter = null;  
 	
 	// 云同步最近同步时间
 	long defaultLastSyncTime = 0;

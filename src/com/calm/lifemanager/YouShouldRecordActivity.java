@@ -1,5 +1,6 @@
 package com.calm.lifemanager;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.Activity;
@@ -8,6 +9,7 @@ import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
@@ -46,19 +48,36 @@ public class YouShouldRecordActivity extends Activity {
 	int endHour;
 	int endMin;
 	String type;
-    String fatherType[] = new String[] {"学习", "工作", "社交", "娱乐", "思考", "运动"};
-    String subType[][] = new String[][] {
-    		new String[] {"上课", "预习", "做作业", "复习", "非专业知识", "其他"},
-    		new String[] {"上班", "写代码", "处理文档", "联系客户", "总结工作", "规划工作", "跑腿儿", "其他"},
-    		new String[] {"朋友聚餐", "电话联系", "网络交流", "外出游玩", "其他"},
-    		new String[] {"看电影", "玩游戏", "听音乐", "上网", "外出旅行", "逛街", "棋牌乐", "其他"},
-    		new String[] {"人生愿景", "长期规划", "短期目标", "一会儿干啥", "工作难题", "灵光乍现！", "人情世故", "心中的他/她", "其他"},
-    		new String[] {"散步", "跑步", "球类运动", "田径项目", "极限运动", "其他"}
-    		};
+    String fatherType[];
+    String subType[][];
 	//preferences记录
 	SharedPreferences sharedPref;
 	Boolean isRingOn;
 	Boolean isVibrationOn;
+	DatabaseUtil dbUtil;
+	
+
+	/*************************************** 
+	 * 获得父类别的String[]
+	 **************************************/
+	private String[] getFatherTypeNameInStringArray(){
+        dbUtil.open();
+        //获得游标
+		Cursor cursor = dbUtil.rawQuery("SELECT DISTINCT oid as _id, type_name FROM tb_prim_types", null);
+        //测试游标
+        if(cursor.moveToNext()){
+        	Log.i("Toilet","PrimTypesActivity_fetchAllData: fetch specific data works!");
+        }else{
+        	Log.i("Toilet","PrimTypesActivity_fetchAllData: fetch specific data failed!");        	
+        }        
+		ArrayList<String> arrayFatherTypes = new ArrayList<String>();
+		for(cursor.moveToFirst(); cursor.moveToNext(); ){
+			arrayFatherTypes.add(cursor.getString(1));
+		}
+		String[] retVal = (String[])arrayFatherTypes.toArray();
+		Log.i("YouRcd_getFatherTypeNameInStringArray",retVal[1]);
+		return retVal;
+	}
 	
 	private void setAllBtnUnpushed(){
 		btn_excited.setBackgroundResource(R.drawable.excited);
@@ -101,6 +120,13 @@ public class YouShouldRecordActivity extends Activity {
 			vib.vibrate(pattern, -1); 
 		}
 		
+
+        /***************************************
+         * 获取数据库操作单元
+         **************************************/
+        dbUtil = new DatabaseUtil(this);
+        Log.i("PrimTypesActivity","Open DB");
+		
 		/***************************************
 		 * 读取开始时间并设置
 		 **************************************/
@@ -113,6 +139,7 @@ public class YouShouldRecordActivity extends Activity {
 		startMin = startTime.get(Calendar.MINUTE);
 		Log.v("Toilet","YouRecord: the startHour is" + Integer.toString(startHour) +".");
 		Log.v("Toilet","YouRecord: the startMin is" + Integer.toString(startMin) +".");
+		
 		
 		/***************************************
 		 * timePicker起止时间设置
@@ -159,8 +186,12 @@ public class YouShouldRecordActivity extends Activity {
 				}, endHour, endMin, true).show();
 			}
 		});
-		
-		
+
+		/*************************************** 
+		 * 获得父类别的String[]
+		 **************************************/
+        fatherType = getFatherTypeNameInStringArray();
+        
 		/***************************************
 		 * 效率
 		 **************************************/
@@ -291,6 +322,8 @@ public class YouShouldRecordActivity extends Activity {
 		TimeLoggerHelper timeLoggerHelper = new TimeLoggerHelper(YouShouldRecordActivity.this);
 		timeLoggerHelper.launchTimeLogger();
 	}
+	
+	
 	
 	/*
 	 * 在此开启下一次记录的计时

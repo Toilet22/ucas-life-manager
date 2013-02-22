@@ -111,7 +111,7 @@
     <string name="act_sub_types_remove">是否确定删除？</string>
     <string name="act_sub_types_btn_remove">删除</string>
     <string name="act_sub_types_btn_edit">编辑</string>
-    <string name="act_prim_types_btn_movoto">移到</string>
+    <string name="act_sub_types_btn_moveto">移到</string>
     <string name="act_sub_types_alreadyExist">该类别名称已存在，请重新输入</string>
     <string name="is_logining_in">正在登录</string>
     <string name="is_registering">正在注册</string>

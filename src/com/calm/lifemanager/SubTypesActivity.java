@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.View;
@@ -164,6 +165,38 @@ public class SubTypesActivity extends Activity {
 			.setNegativeButton(R.string.act_settings_dlg_negBtn, null)
 			.create();	
         
+		
+		/***********************************
+		 * 删除初级类别，
+		 * 弹出Dialog以供确认
+		 **********************************/	
+		final Cursor fatherCursor;
+        fatherCursor = dbUtil.rawQuery("SELECT DISTINCT oid as _id, type_name FROM tb_prim_types", null); 
+        if(!fatherCursor.moveToNext()){
+        	Log.e("fatherCursor", "No data!");
+        }
+        //获取SimpleCursorAdatper的实例
+        String[] from = {DatabaseUtil.KEY_TYPE_NAME};
+        int[] to = {R.id.layout_primType_name};
+		CursorAdapter fatherAdapter = new SimpleCursorAdapter(this, 
+		        		R.layout.layout_prim_type, fatherCursor, from, to);;
+		//以下是Dialog的按钮监听
+		final DialogInterface.OnClickListener movetoListener = new DialogInterface.OnClickListener() {		
+			public void onClick(DialogInterface dialog, int which) {
+				//数据库更新操作	
+				Log.i("dialog removeType", fatherCursor.getString(which));
+				
+			}
+		};
+		
+		//需要的Dialog
+		final AlertDialog dlg_movetoType = new AlertDialog.Builder(SubTypesActivity.this)
+			.setTitle(R.string.act_sub_types_remove)
+			.setAdapter(fatherAdapter, movetoListener)
+			.setPositiveButton(R.string.act_settings_dlg_posBtn, removeListener)
+			.setNegativeButton(R.string.act_settings_dlg_negBtn, null)
+			.create();	
+		
         /***********************************
 		 * 长按初级类别列表的某个条目，
 		 * 弹出Dialog，提示需要进行的操作选项：
@@ -178,7 +211,7 @@ public class SubTypesActivity extends Activity {
 				
 			}
 		};       	
-		
+
 		//以下是Dialog的删除按钮监听
 		final DialogInterface.OnClickListener dlg_removeListener = new DialogInterface.OnClickListener() {		
 			public void onClick(DialogInterface dialog, int which) {
@@ -188,11 +221,20 @@ public class SubTypesActivity extends Activity {
 			}
 		};
 		
+		//以下是Dialog的移到按钮监听
+		final DialogInterface.OnClickListener dlg_movetoListener = new DialogInterface.OnClickListener() {		
+			public void onClick(DialogInterface dialog, int which) {
+				//弹出删除Dialog	
+				dlg_movetoType.show();
+			}
+		};
+		
 		//需要的Dialog
 		final AlertDialog dlg_whatToDo = new AlertDialog.Builder(SubTypesActivity.this)
 			.setTitle(R.string.act_sub_types_whatToDo)
 			.setPositiveButton(R.string.act_sub_types_btn_edit, dlg_editListener)
 			.setNegativeButton(R.string.act_sub_types_btn_remove, dlg_removeListener)
+			.setNeutralButton(R.string.act_sub_types_btn_moveto, dlg_movetoListener)
 			.create();		
 		
 		//添加对条目的长按监听

@@ -11,6 +11,7 @@ import android.util.Log;
 
 public class userDataSync {
 	public static String currentLogedInUser = "";
+	public static String anonymousUser = "anonymous_user";
 	public static boolean isSwithingUser = false;
 	
 	public static long lastSyncTime = 0;
@@ -84,6 +85,8 @@ public class userDataSync {
 	 * @return JSONObject
 	 */
 	public static JSONObject doPreparePullParam() {
+		Log.i("CloudSync", "Preparing pull operation params...");
+		
 		JSONObject retJson = new JSONObject();
 		try {
 			retJson.put("username", currentLogedInUser);
@@ -107,6 +110,8 @@ public class userDataSync {
 	 */
 	public static JSONObject doPreparePushParam(String dataSrc,
 			DatabaseUtil dataBase, long lastSyncTime) throws JSONException {
+		Log.i("CloudSync", "Preparing push operation params...");
+		
 		Cursor retCursor = null;
 		JSONObject retJson = new JSONObject();
 		JSONArray dataSection = new JSONArray();
@@ -133,10 +138,16 @@ public class userDataSync {
 						.getColumnIndex(DatabaseUtil.KEY_MTIME);
 				if (mtimeColumn > lastSyncTime) {
 					// Data should push, add to JSON
+					Log.i("CloudSync", "Client has data to push to server...");
+					
 					dataJson = doDataConvertToJson(columnCount, columnNames, retCursor);
 					dataSection.put(dataJson);
 				}
 			} while (retCursor.moveToNext());
+			
+			if(retCursor != null) {
+				retCursor.close();
+			}
 		}
 		
 		if(retCursor != null) {
@@ -244,6 +255,15 @@ public class userDataSync {
 			} else if (columnNames[columnIndex].equals(DatabaseUtil.KEY_MOOD)) {
 				dataJson.put(DatabaseUtil.KEY_MOOD,
 						retCursor.getInt(columnIndex));
+			} else if (columnNames[columnIndex].equals(DatabaseUtil.KEY_TYPE_NAME)) {
+				dataJson.put(DatabaseUtil.KEY_TYPE_NAME,
+						retCursor.getString(columnIndex));
+			} else if (columnNames[columnIndex].equals(DatabaseUtil.KEY_TYPE_ICON)) {
+				dataJson.put(DatabaseUtil.KEY_TYPE_ICON,
+						retCursor.getString(columnIndex));
+			} else if (columnNames[columnIndex].equals(DatabaseUtil.KEY_TYPE_BELONGTO)) {
+				dataJson.put(DatabaseUtil.KEY_TYPE_BELONGTO,
+						retCursor.getString(columnIndex));
 			} else {
 				;
 			}
@@ -261,6 +281,7 @@ public class userDataSync {
 	 */
 	public static void doUserDataSyncHook(JSONObject retJson, DatabaseUtil dataBase, long lastSyncTime) throws JSONException {
 		// Parse Data Retrieved From Server	
+		Log.i("CloudSync", "Processing data retrieved from server...");
 		
 		retStatus = retJson.getInt(STATUS);
 		if(retStatus == 20) {
@@ -284,6 +305,7 @@ public class userDataSync {
 				
 				if(retCursor.getCount() > 0) {
 					// Has a record with same c_time, update the record
+					Log.i("CloudSync", "Now Updating Records...");
 					while(retCursor.moveToNext()) {
 						// If retrieved server data is newer, then update the record
 						if(retCursor.getLong(retCursor.getColumnIndex(DatabaseUtil.KEY_MTIME)) < tmpContentValues.getAsLong(DatabaseUtil.KEY_MTIME)) {
@@ -294,8 +316,14 @@ public class userDataSync {
 							;
 						}
 					}
+					
+					if(retCursor != null) {
+						retCursor.close();
+					}
 				} else {
 					// Has no record, insert the record and update its s_time
+					Log.i("CloudSync", "Now Inserting New Records...");
+					
 					tmpContentValues.put(DatabaseUtil.KEY_STIME, System.currentTimeMillis());
 					dataBase.insertData(currentSyncDataTable, tmpContentValues);
 				}
@@ -311,6 +339,8 @@ public class userDataSync {
 		} else {
 			retMessage = retJson.getString(MESSAGE);
 		}
+		
+		Log.i("CloudSync", "Processing Done!");
 	}
 	
 	// 用户数据同步专用接口，把服务器返回的JSON数据转换成数据库支持的数据
@@ -441,6 +471,21 @@ public class userDataSync {
 		if (retJson.has(DatabaseUtil.KEY_MOOD)) {
 			retContentValues.put(DatabaseUtil.KEY_MOOD,
 					retJson.getInt(DatabaseUtil.KEY_MOOD));
+		}
+		
+		if (retJson.has(DatabaseUtil.KEY_TYPE_NAME)) {
+			retContentValues.put(DatabaseUtil.KEY_TYPE_NAME,
+					retJson.getInt(DatabaseUtil.KEY_TYPE_NAME));
+		}
+		
+		if (retJson.has(DatabaseUtil.KEY_TYPE_ICON)) {
+			retContentValues.put(DatabaseUtil.KEY_TYPE_ICON,
+					retJson.getInt(DatabaseUtil.KEY_TYPE_ICON));
+		}
+		
+		if (retJson.has(DatabaseUtil.KEY_TYPE_BELONGTO)) {
+			retContentValues.put(DatabaseUtil.KEY_TYPE_BELONGTO,
+					retJson.getInt(DatabaseUtil.KEY_TYPE_BELONGTO));
 		}
 		
 		return retContentValues;

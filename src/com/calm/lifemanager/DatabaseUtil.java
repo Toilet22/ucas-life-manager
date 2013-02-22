@@ -1014,12 +1014,17 @@ public class DatabaseUtil{
 	 * @return boolean
 	 */
 	public boolean updatePrimeType(String typeName, ContentValues updateValues) {
-		// Update Prime Type
+		
+		updateValues.put(KEY_MTIME, System.currentTimeMillis());
+		
 		if(mDb.update(PRIM_TYPES, updateValues, KEY_TYPE_NAME + "='" + typeName + "'", null) > 0) {
 			// Update Sub Type Belong to It
 			String newTypeName = updateValues.getAsString(KEY_TYPE_NAME);
+			
 			ContentValues subTypeUpdateValues = new ContentValues();
-			subTypeUpdateValues.put(KEY_TYPE_NAME, newTypeName);
+			subTypeUpdateValues.put(KEY_TYPE_BELONGTO, newTypeName);
+			subTypeUpdateValues.put(KEY_MTIME, System.currentTimeMillis());
+			
 			if(!updateSubTypeBelongTo(typeName, subTypeUpdateValues)) {
 				return false;
 			}

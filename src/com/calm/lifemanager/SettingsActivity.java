@@ -443,16 +443,48 @@ public class SettingsActivity extends Activity {
 								public void run() {
 									// Sync User Data Table by Table
 									DatabaseUtil dbUtil = new DatabaseUtil(SettingsActivity.this);
-									dbUtil.open();
 									
-									try {
+									try {							
+										// User Profile
 										userDataSync.currentSyncDataTable = DatabaseUtil.USER_PROFILE;
+										Log.i("CloudSync","Now Syncing: " + userDataSync.currentSyncDataTable);
 										userDataSync.doUserDataSync(NetToolUtil.userProfilePullUrl, userDataSync.PULL, DatabaseUtil.USER_PROFILE, dbUtil, userDataSync.lastSyncTime);
 										userDataSync.doUserDataSync(NetToolUtil.userProfilePushUrl, userDataSync.PUSH, DatabaseUtil.USER_PROFILE, dbUtil, userDataSync.lastSyncTime);
+										
+										// User Settings
+										userDataSync.currentSyncDataTable = DatabaseUtil.USER_SETTINGS;
+										Log.i("CloudSync","Now Syncing: " + userDataSync.currentSyncDataTable);
+										userDataSync.doUserDataSync(NetToolUtil.userSettingsPullUrl, userDataSync.PULL, DatabaseUtil.USER_SETTINGS, dbUtil, userDataSync.lastSyncTime);
+										userDataSync.doUserDataSync(NetToolUtil.userSettingsPushUrl, userDataSync.PUSH, DatabaseUtil.USER_SETTINGS, dbUtil, userDataSync.lastSyncTime);
+										
+										// TodoList
+										userDataSync.currentSyncDataTable = DatabaseUtil.TODOLIST;
+										Log.i("CloudSync","Now Syncing: " + userDataSync.currentSyncDataTable);
+										userDataSync.doUserDataSync(NetToolUtil.todolistPullUrl, userDataSync.PULL, DatabaseUtil.TODOLIST, dbUtil, userDataSync.lastSyncTime);
+										userDataSync.doUserDataSync(NetToolUtil.todolistPushUrl, userDataSync.PUSH, DatabaseUtil.TODOLIST, dbUtil, userDataSync.lastSyncTime);
+										
+										// WishList
+										userDataSync.currentSyncDataTable = DatabaseUtil.WISHLIST;
+										userDataSync.doUserDataSync(NetToolUtil.wishlistPullUrl, userDataSync.PULL, DatabaseUtil.WISHLIST, dbUtil, userDataSync.lastSyncTime);
+										userDataSync.doUserDataSync(NetToolUtil.wishlistPushUrl, userDataSync.PUSH, DatabaseUtil.WISHLIST, dbUtil, userDataSync.lastSyncTime);
+										
+										// Collector
+										userDataSync.currentSyncDataTable = DatabaseUtil.COLLECTOR;
+										Log.i("CloudSync","Now Syncing: " + userDataSync.currentSyncDataTable);
+										userDataSync.doUserDataSync(NetToolUtil.collectorPullUrl, userDataSync.PULL, DatabaseUtil.COLLECTOR, dbUtil, userDataSync.lastSyncTime);
+										userDataSync.doUserDataSync(NetToolUtil.collectorPushUrl, userDataSync.PUSH, DatabaseUtil.COLLECTOR, dbUtil, userDataSync.lastSyncTime);
+										
+										// Record
+										userDataSync.currentSyncDataTable = DatabaseUtil.RECORD;
+										Log.i("CloudSync","Now Syncing: " + userDataSync.currentSyncDataTable);
+										userDataSync.doUserDataSync(NetToolUtil.recordPullUrl, userDataSync.PULL, DatabaseUtil.RECORD, dbUtil, userDataSync.lastSyncTime);
+										userDataSync.doUserDataSync(NetToolUtil.recordPushUrl, userDataSync.PUSH, DatabaseUtil.RECORD, dbUtil, userDataSync.lastSyncTime);
 										
 									} catch (JSONException e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
+									} finally {
+										
 									}
 								}
 							}.start();

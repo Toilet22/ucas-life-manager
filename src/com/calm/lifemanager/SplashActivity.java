@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 public class SplashActivity extends Activity {
-	private final int SPLASH_DISPLAY_LENGHT = 3000; // —”≥Ÿ»˝√Î
+	private final int SPLASH_DISPLAY_LENGHT = 0; // —”≥Ÿ»˝√Î
 	boolean isFirstUse;
 	
 	@Override
@@ -37,6 +37,9 @@ public class SplashActivity extends Activity {
 				}
 				else {
 					nextIntent.setClass(SplashActivity.this, MainActivity.class);
+					
+					// Test Cloud Sync
+					//nextIntent.setClass(SplashActivity.this, CloudSyncTestActivity.class);
 				}
 				SplashActivity.this.startActivity(nextIntent);
 				SplashActivity.this.finish();

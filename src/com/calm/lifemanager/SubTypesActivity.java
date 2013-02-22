@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class SubTypesActivity extends Activity {
 	DatabaseUtil dbUtil;
@@ -21,6 +22,7 @@ public class SubTypesActivity extends Activity {
 	Button btn_newType;
 	Button btn_back;
 	String newTypeName;
+	Cursor cursor;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);	
@@ -43,7 +45,6 @@ public class SubTypesActivity extends Activity {
         dbUtil.open();
 
         //获得指向数据的游标
-        Cursor cursor;
         //String[] selectCol = {DatabaseUtil.KEY_TYPE_NAME, DatabaseUtil.KEY_TYPE_ICON};
         //cursor = dbUtil.fetchAllData(DatabaseUtil.sub_TYPES, selectCol);
         //
@@ -93,8 +94,12 @@ public class SubTypesActivity extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				newTypeName = (dialog_newType_edttxt_Typename.getText().toString());
 				//写入数据库操作	
-				Log.i("dialog newType", "newListener");
-				
+				Log.i("dialog newType", newTypeName);
+				if(dbUtil.newSubType(newTypeName, null) == -1){
+					Toast.makeText(getApplicationContext(), R.string.act_sub_types_alreadyExist, 
+							Toast.LENGTH_SHORT).show();
+				}
+				cursor.requery();
 			}
 		};
 		

@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class PrimTypesActivity extends Activity {
 	DatabaseUtil dbUtil;
@@ -94,8 +95,11 @@ public class PrimTypesActivity extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				newTypeName = (dialog_newType_edttxt_Typename.getText().toString());
 				//写入数据库操作	
-				Log.i("dialog newType", "newListener");
-				
+				Log.i("dialog newType", newTypeName);
+				if(dbUtil.newPrimeType(newTypeName, null) == -1){
+					Toast.makeText(getApplicationContext(), R.string.act_prim_types_alreadyExist, 
+							Toast.LENGTH_SHORT).show();
+				}
 			}
 		};
 		
@@ -198,7 +202,18 @@ public class PrimTypesActivity extends Activity {
 				dlg_whatToDo.show();
 				return true;
 			}  	
-		});		
+		});	
+        
+        /***************************************
+         * 返回按钮
+         **************************************/
+        Log.i("SubTypesActivity","before btn_back");
+        btn_back = (Button)findViewById(R.id.act_primTypes_btn_back);
+        btn_back.setOnClickListener(new Button.OnClickListener(){
+			public void onClick(View v) {
+				finish();
+			}
+        });
 
 	}
 

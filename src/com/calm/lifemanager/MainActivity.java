@@ -222,7 +222,6 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				Intent iSettings = new Intent(MainActivity.this, SettingsActivity.class);
 				startActivity(iSettings);	
-				finish();
 			}		
 		});
 		

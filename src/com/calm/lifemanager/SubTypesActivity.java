@@ -199,7 +199,16 @@ public class SubTypesActivity extends Activity {
 			}  	
 		});		
 
-        
+        /***************************************
+         * ·µ»Ø°´Å¥
+         **************************************/
+        Log.i("SubTypesActivity","before btn_back");
+        btn_back = (Button)findViewById(R.id.act_subTypes_btn_back);
+        btn_back.setOnClickListener(new Button.OnClickListener(){
+			public void onClick(View v) {
+				finish();
+			}
+        });
 
 	}
 

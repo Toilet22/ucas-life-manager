@@ -60,6 +60,7 @@
         <activity android:name=".UserTourActivity"></activity>
         <activity android:name=".PrimTypesActivity"></activity>
         <activity android:name=".SubTypesActivity"></activity>
+        <activity android:name=".CloudSyncTestActivity"></activity>
         
     </application>
 

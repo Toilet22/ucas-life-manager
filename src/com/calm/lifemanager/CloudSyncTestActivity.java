@@ -105,7 +105,7 @@ public class CloudSyncTestActivity extends Activity {
 		        	    Log.i("Cloud", "Start Testing User Login...");
 		        	    
 		        	    Map<String, String> loginUser = new HashMap<String, String>();
-		        	    loginUser.put("username", "created-by-android-client");
+		        	    loginUser.put("username", "test-android-official");
 		        	    loginUser.put("password", "daydayup");
 		        	    loginUser.put("visit_type", "android");
 		        	    
@@ -217,7 +217,7 @@ public class CloudSyncTestActivity extends Activity {
 				        
 				        JSONObject todolistToPush = new JSONObject();
 				        try {
-							todolistToPush.put("username","created-by-android-client");
+							todolistToPush.put("username","test-android-official");
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -236,12 +236,12 @@ public class CloudSyncTestActivity extends Activity {
 				        	todolistData.put("reminder", 1);
 				        	todolistData.put("priority", 1);
 				        	todolistData.put("status", 0);
-							//todolistData.put("ctime", System.currentTimeMillis());
-							//todolistData.put("mtime", System.currentTimeMillis());
-							//todolistData.put("stime", System.currentTimeMillis());
-							todolistData.put("ctime", 2);
-							todolistData.put("mtime", 2);
-							todolistData.put("stime", 3);
+							todolistData.put("ctime", System.currentTimeMillis());
+							todolistData.put("mtime", System.currentTimeMillis());
+							todolistData.put("stime", System.currentTimeMillis());
+							//todolistData.put("ctime", 2);
+							//todolistData.put("mtime", 2);
+							//todolistData.put("stime", 3);
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -307,7 +307,7 @@ public class CloudSyncTestActivity extends Activity {
 		        		Log.i("Cloud", "Start Testing Todolist Pull...");
 		        		
 		        		  Map<String, String> todolistRet = new HashMap<String, String>();
-		        		  todolistRet.put("username", "created-by-android-client");
+		        		  todolistRet.put("username", "test-android-official");
 		        		  //todolistRet.put("last_time", System.currentTimeMillis());
 		        		  todolistRet.put("last_time", "0");
 		        		  todolistRet.put("visit_type", "android");

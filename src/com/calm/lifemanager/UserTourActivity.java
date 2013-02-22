@@ -50,6 +50,7 @@ public class UserTourActivity extends Activity implements OnClickListener,
 			iv.setImageResource(pics[i]);
 			views.add(iv);
 		}
+		
 		viewPager = (ViewPager) findViewById(R.id.viewpager);
 		viewPagerAdapter = new ViewPagerAdapter(views);
 		viewPager.setOnTouchListener(this);

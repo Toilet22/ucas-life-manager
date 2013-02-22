@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 public class userDataSync {
 	public static String currentLogedInUser = "";
@@ -31,11 +32,13 @@ public class userDataSync {
 	public static boolean doUserDataSync(String url, String type, String dataSrc, DatabaseUtil dataBase, long lastSyncTime) throws JSONException {
 		JSONObject retJson = new JSONObject();
 		if(type.equals(PULL)) {
+			Log.i("CloudSync","Pulling Data from " + url);
 			retJson = doUserDataSyncPost(url, doPreparePullParam());
 			if(retJson == null) {
 				return false;
 			}
 		} else {
+			Log.i("CloudSync","Pushing Data to " + url);
 			retJson = doUserDataSyncPost(url, doPreparePushParam(dataSrc, dataBase, lastSyncTime));
 			if(retJson == null) {
 				return false;
@@ -64,6 +67,7 @@ public class userDataSync {
 			try {
 				retStr = NetToolUtil.sendPostRequestJson(url, param,
 						defaultEncoding);
+				Log.i("CloudSync","Return Data from " + url + " :" + retStr);
 				retJson = new JSONObject(retStr);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -84,6 +88,7 @@ public class userDataSync {
 		try {
 			retJson.put("username", currentLogedInUser);
 			retJson.put("last_time", lastSyncTime);
+			retJson.put("visit_type", "android");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -116,7 +121,8 @@ public class userDataSync {
 
 		dataBase.open();
 		retCursor = dataBase.fetchDataWithWhere(dataSrc, whereClause);
-		if (retCursor != null) {
+		
+		if (retCursor != null && retCursor.getCount() > 0) {
 			retCursor.moveToFirst();
 			
 			JSONObject dataJson = new JSONObject();
@@ -132,9 +138,17 @@ public class userDataSync {
 				}
 			} while (retCursor.moveToNext());
 		}
-		dataBase.close();
+		
+		if(retCursor != null) {
+			retCursor.close();
+		}
+		if(dataBase != null) {
+			dataBase.close();
+		}
 		
 		retJson.put("data",dataSection);
+		retJson.put("visit_type", "android");
+		
 		return retJson;
 	}
 	
@@ -255,7 +269,8 @@ public class userDataSync {
 			dataSection = retJson.getJSONArray(DATA);
 			//String whereClause = null;
 			Cursor retCursor = null;
-			String rawQuerySql = "SELECT DISTINCT oid as _id, ctime, mtime, stime FROM" + currentSyncDataTable;
+			String rawQuerySql = "SELECT DISTINCT oid as _id, ctime, mtime, stime FROM " + currentSyncDataTable;
+			String tmpRawQuerySql = null;
 			
 			dataBase.open();
 			//retCursor = dataBase.fetchDataWithWhere(currentSyncDataTable, whereClause);
@@ -264,13 +279,15 @@ public class userDataSync {
 				JSONObject tmpJson = (JSONObject)dataSection.opt(dataIndex);
 				// Get data from JSON and update database
 				tmpContentValues = doDataConvertToDatabase(tmpJson);
-				rawQuerySql = rawQuerySql + "WHERE ctime =" + tmpContentValues.getAsLong(DatabaseUtil.KEY_CTIME);
-				retCursor = dataBase.rawQuery(rawQuerySql, null);
+				tmpRawQuerySql = rawQuerySql + " WHERE ctime = " + tmpContentValues.getAsLong(DatabaseUtil.KEY_CTIME);
+				retCursor = dataBase.rawQuery(tmpRawQuerySql, null);
+				
 				if(retCursor.getCount() > 0) {
 					// Has a record with same c_time, update the record
 					while(retCursor.moveToNext()) {
 						// If retrieved server data is newer, then update the record
 						if(retCursor.getLong(retCursor.getColumnIndex(DatabaseUtil.KEY_MTIME)) < tmpContentValues.getAsLong(DatabaseUtil.KEY_MTIME)) {
+							tmpContentValues.put(DatabaseUtil.KEY_STIME, System.currentTimeMillis());
 							dataBase.updateData(currentSyncDataTable, DatabaseUtil.KEY_CTIME, tmpContentValues.getAsLong(DatabaseUtil.KEY_CTIME).toString(), tmpContentValues);
 						} else {
 							// Just ignore the retrieved data, do nothing
@@ -283,6 +300,14 @@ public class userDataSync {
 					dataBase.insertData(currentSyncDataTable, tmpContentValues);
 				}
 			}
+			
+			if(retCursor != null) {
+				retCursor.close();
+			}
+			if(dataBase != null) {
+				dataBase.close();
+			}
+			
 		} else {
 			retMessage = retJson.getString(MESSAGE);
 		}
@@ -298,128 +323,126 @@ public class userDataSync {
 	public static ContentValues doDataConvertToDatabase(JSONObject retJson) throws JSONException {
 		ContentValues retContentValues = new ContentValues();
 		
-		if (retJson.getString(DatabaseUtil.KEY_NICKNAME) != null) {
+		if (retJson.has(DatabaseUtil.KEY_NICKNAME)) {
 			retContentValues.put(DatabaseUtil.KEY_NICKNAME,
 					retJson.getString(DatabaseUtil.KEY_NICKNAME));
 		} 
 		
-		if (retJson.getString(DatabaseUtil.KEY_EMAIL) != null) {
+		if (retJson.has(DatabaseUtil.KEY_EMAIL)) {
 			retContentValues.put(DatabaseUtil.KEY_EMAIL,
 					retJson.getString(DatabaseUtil.KEY_EMAIL));
 		} 
 		
-		if (retJson.getString(DatabaseUtil.KEY_SEX) != null) {
+		if (retJson.has(DatabaseUtil.KEY_SEX)) {
 			retContentValues.put(DatabaseUtil.KEY_SEX,
 					retJson.getInt(DatabaseUtil.KEY_SEX));
 		} 
 		
-		if (retJson.getString(DatabaseUtil.KEY_AGE) != null) {
+		if (retJson.has(DatabaseUtil.KEY_AGE)) {
 			retContentValues.put(DatabaseUtil.KEY_AGE,
 					retJson.getInt(DatabaseUtil.KEY_AGE));
 		} 
 		
-		if (retJson.getString(DatabaseUtil.KEY_JOB) != null) {
+		if (retJson.has(DatabaseUtil.KEY_JOB)) {
 			retContentValues.put(DatabaseUtil.KEY_JOB,
 					retJson.getInt(DatabaseUtil.KEY_JOB));
 		} 
 		
-		if (retJson.getString(DatabaseUtil.KEY_CTIME) != null) {
+		if (retJson.has(DatabaseUtil.KEY_CTIME)) {
 			retContentValues.put(DatabaseUtil.KEY_CTIME,
 					retJson.getLong(DatabaseUtil.KEY_CTIME));
 		} 
 		
-		if (retJson.getString(DatabaseUtil.KEY_MTIME) != null) {
+		if (retJson.has(DatabaseUtil.KEY_MTIME)) {
 			retContentValues.put(DatabaseUtil.KEY_MTIME,
 					retJson.getLong(DatabaseUtil.KEY_MTIME));
 		} 
 		
-		if (retJson.getString(DatabaseUtil.KEY_STIME) != null) {
+		if (retJson.has(DatabaseUtil.KEY_STIME)) {
 			retContentValues.put(DatabaseUtil.KEY_STIME,
 					retJson.getLong(DatabaseUtil.KEY_STIME));
 		} 
 		
-		if (retJson.getString(DatabaseUtil.KEY_MODE) != null) {
+		if (retJson.has(DatabaseUtil.KEY_MODE)) {
 			retContentValues.put(DatabaseUtil.KEY_MODE,
 					retJson.getInt(DatabaseUtil.KEY_MODE));
 		} 
 		
-		if (retJson.getString(DatabaseUtil.KEY_RINGLEVEL) != null) {
+		if (retJson.has(DatabaseUtil.KEY_RINGLEVEL)) {
 			retContentValues.put(DatabaseUtil.KEY_RINGLEVEL,
 					retJson.getInt(DatabaseUtil.KEY_RINGLEVEL));
 		} 
 		
-		if (retJson.getString(DatabaseUtil.KEY_ALARMTYPE) != null) {
+		if (retJson.has(DatabaseUtil.KEY_ALARMTYPE)) {
 			retContentValues.put(DatabaseUtil.KEY_ALARMTYPE,
 					retJson.getInt(DatabaseUtil.KEY_ALARMTYPE));
 		} 
 		
-		if (retJson.getString(DatabaseUtil.KEY_TITLE) != null) {
+		if (retJson.has(DatabaseUtil.KEY_TITLE)) {
 			retContentValues.put(DatabaseUtil.KEY_TITLE,
-					retJson.getString(DatabaseUtil.KEY_TITLE));
+					retJson.has(DatabaseUtil.KEY_TITLE));
 		} 
 		
-		if (retJson.getString(DatabaseUtil.KEY_START) != null) {
+		if (retJson.has(DatabaseUtil.KEY_START)) {
 			retContentValues.put(DatabaseUtil.KEY_START,
 					retJson.getLong(DatabaseUtil.KEY_START));
 		} 
 		
-		if (retJson.getString(DatabaseUtil.KEY_END) != null) {
+		if (retJson.has(DatabaseUtil.KEY_END)) {
 			retContentValues.put(DatabaseUtil.KEY_END,
 					retJson.getLong(DatabaseUtil.KEY_END));
 		} 
 		
-		if (retJson.getString(DatabaseUtil.KEY_DESC) != null) {
+		if (retJson.has(DatabaseUtil.KEY_DESC)) {
 			retContentValues.put(DatabaseUtil.KEY_DESC,
-					retJson.getString(DatabaseUtil.KEY_DESC));
+					retJson.has(DatabaseUtil.KEY_DESC));
 		} 
 		
-		if (retJson.getString(DatabaseUtil.KEY_WHERE) != null) {
+		if (retJson.has(DatabaseUtil.KEY_WHERE)) {
 			retContentValues.put(DatabaseUtil.KEY_WHERE,
-					retJson.getString(DatabaseUtil.KEY_WHERE));
+					retJson.has(DatabaseUtil.KEY_WHERE));
 		} 
 		
-		if (retJson.getString(DatabaseUtil.KEY_KIND) != null) {
+		if (retJson.has(DatabaseUtil.KEY_KIND)) {
 			retContentValues.put(DatabaseUtil.KEY_KIND,
 					retJson.getInt(DatabaseUtil.KEY_KIND));
 		} 
 		
-		if (retJson.getString(DatabaseUtil.KEY_REPETITION) != null) {
+		if (retJson.has(DatabaseUtil.KEY_REPETITION)) {
 			retContentValues.put(DatabaseUtil.KEY_REPETITION,
 					retJson.getInt(DatabaseUtil.KEY_REPETITION));
 		} 
 		
-		if (retJson.getString(DatabaseUtil.KEY_REMINDER) != null) {
+		if (retJson.has(DatabaseUtil.KEY_REMINDER)) {
 			retContentValues.put(DatabaseUtil.KEY_REMINDER,
 					retJson.getInt(DatabaseUtil.KEY_REMINDER));
 		} 
 		
-		if (retJson.getString(DatabaseUtil.KEY_PRIORITY) != null) {
+		if (retJson.has(DatabaseUtil.KEY_PRIORITY)) {
 			retContentValues.put(DatabaseUtil.KEY_PRIORITY,
 					retJson.getInt(DatabaseUtil.KEY_PRIORITY));
 		} 
 		
-		if (retJson.getString(DatabaseUtil.KEY_STATUS) != null) {
+		if (retJson.has(DatabaseUtil.KEY_STATUS)) {
 			retContentValues.put(DatabaseUtil.KEY_STATUS,
 					retJson.getInt(DatabaseUtil.KEY_STATUS));
 		} 
 		
-		if (retJson.getString(DatabaseUtil.KEY_TYPE) != null) {
+		if (retJson.has(DatabaseUtil.KEY_TYPE)) {
 			retContentValues.put(DatabaseUtil.KEY_TYPE,
 					retJson.getInt(DatabaseUtil.KEY_TYPE));
 		} 
 		
-		if (retJson.getString(DatabaseUtil.KEY_RATING) != null) {
+		if (retJson.has(DatabaseUtil.KEY_RATING)) {
 			retContentValues.put(DatabaseUtil.KEY_RATING,
 					retJson.getInt(DatabaseUtil.KEY_RATING));
 		} 
 		
-		if (retJson.getString(DatabaseUtil.KEY_MOOD) != null) {
+		if (retJson.has(DatabaseUtil.KEY_MOOD)) {
 			retContentValues.put(DatabaseUtil.KEY_MOOD,
 					retJson.getInt(DatabaseUtil.KEY_MOOD));
 		}
 		
 		return retContentValues;
 	}
-	
-	
 }

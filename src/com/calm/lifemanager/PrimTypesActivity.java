@@ -95,6 +95,7 @@ public class PrimTypesActivity extends Activity {
 				newTypeName = (dialog_newType_edttxt_Typename.getText().toString());
 				//写入数据库操作	
 				Log.i("dialog newType", "newListener");
+				
 			}
 		};
 		
@@ -116,9 +117,7 @@ public class PrimTypesActivity extends Activity {
         /***********************************
 		 * 编辑初级类别，
 		 * 弹出Dialog输入新的类别名
-		 **********************************/
-        btn_newType = (Button)findViewById(R.id.act_primTypes_btn_newType);
-        
+		 **********************************/        
 		//以下是Dialog的输入框
 		final EditText dialog_editType_edttxt_Typename = new EditText(PrimTypesActivity.this);
 		dialog_newType_edttxt_Typename.setMaxEms(20);

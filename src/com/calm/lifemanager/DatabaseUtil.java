@@ -1013,33 +1013,40 @@ public class DatabaseUtil{
 	 * @return boolean
 	 */
 	public boolean updatePrimeType(String typeName, ContentValues updateValues) {
+		String updateTypeName = updateValues.getAsString(KEY_TYPE_NAME);
 		
-		updateValues.put(KEY_MTIME, System.currentTimeMillis());
-		
-		if(mDb.update(PRIM_TYPES, updateValues, KEY_TYPE_NAME + "='" + typeName + "'", null) > 0) {
-			// Update Sub Type Belong to It
-			String newTypeName = updateValues.getAsString(KEY_TYPE_NAME);
+		// Check whether the new type name existed
+		if(!isPrimeTypeExisted(updateTypeName)) {
+			updateValues.put(KEY_MTIME, System.currentTimeMillis());
 			
-			ContentValues subTypeUpdateValues = new ContentValues();
-			subTypeUpdateValues.put(KEY_TYPE_BELONGTO, newTypeName);
-			subTypeUpdateValues.put(KEY_MTIME, System.currentTimeMillis());
-			
-			if(!updateSubTypeBelongTo(typeName, subTypeUpdateValues)) {
-				return false;
-			}
-//			Cursor subTypeCursor = fetchSubTypesBelongTo(typeName, null);
-//			if(subTypeCursor != null) {
-//				while(subTypeCursor.moveToNext()) {
-//					if(!updateSubType(subTypeCursor.getColumnName(subTypeCursor.getColumnIndex(KEY_TYPE_NAME)), subTypeUpdateValues)) {
-//						return false;
+			if(mDb.update(PRIM_TYPES, updateValues, KEY_TYPE_NAME + "='" + typeName + "'", null) > 0) {
+				// Update Sub Type Belong to It
+				String newTypeName = updateValues.getAsString(KEY_TYPE_NAME);
+				
+				ContentValues subTypeUpdateValues = new ContentValues();
+				subTypeUpdateValues.put(KEY_TYPE_BELONGTO, newTypeName);
+				subTypeUpdateValues.put(KEY_MTIME, System.currentTimeMillis());
+				
+				if(!updateSubTypeBelongTo(typeName, subTypeUpdateValues)) {
+					return false;
+				}
+//				Cursor subTypeCursor = fetchSubTypesBelongTo(typeName, null);
+//				if(subTypeCursor != null) {
+//					while(subTypeCursor.moveToNext()) {
+//						if(!updateSubType(subTypeCursor.getColumnName(subTypeCursor.getColumnIndex(KEY_TYPE_NAME)), subTypeUpdateValues)) {
+//							return false;
+//						}
 //					}
 //				}
-//			}
+			} else {
+				// Update Prime Type Error
+				return false;
+			}
+			return true;
 		} else {
-			// Update Prime Type Error
+			// Prime Type Already Existed, Return false
 			return false;
 		}
-		return true;
 	}
 	
 	/**
@@ -1191,7 +1198,14 @@ public class DatabaseUtil{
 	 * @return boolean
 	 */
 	public boolean updateSubType(String typeName, ContentValues updateValues) {
-		return mDb.update(SUB_TYPES, updateValues, KEY_TYPE_NAME + "='" + typeName + "'", null) > 0;
+		String updateTypeName = updateValues.getAsString(KEY_TYPE_NAME);
+		
+		if(!isSubTypeExisted(updateTypeName)) {
+			return mDb.update(SUB_TYPES, updateValues, KEY_TYPE_NAME + "='" + typeName + "'", null) > 0;
+		} else {
+			// Sub Type Already Existed, Return false
+			return false;
+		}
 	}
 	
 	/**

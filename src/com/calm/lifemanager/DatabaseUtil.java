@@ -31,6 +31,11 @@ public class DatabaseUtil{
 	// User Data Sync Variables
 	public static long defaultSyncTime = 0;
 	
+	// Database Operation Return Values
+	public static int SUCCESS = 0;
+	public static int TYPE_NAME_ALREADY_EXISTS = 1;
+	public static int DATABASE_ERROR = 1;
+	
 	// Table columns
 	public static final String KEY_ID = "_id";
 		
@@ -1147,13 +1152,14 @@ public class DatabaseUtil{
 	}
 	
 	/**
-	 * Check whether a prime type existed. 
+	 * Check whether a sub type existed in a specified prime type. 
 	 * @param typeName
 	 * @return
 	 */
-	public boolean isSubTypeExisted(String typeName) {
+	public boolean isSubTypeExisted(String  subTypeName, String primeTypeName) {
 		Cursor mCursor = mDb.query(true, SUB_TYPES, null, KEY_TYPE_NAME + "='"
-				+ typeName + "'", null, null, null, null, null);
+				+ subTypeName + "'" + " AND " + KEY_TYPE_BELONGTO + "='"
+				+ primeTypeName, null, null, null, null, null);
 		if (mCursor.moveToNext()) {
 			return true;
 		} else {
@@ -1161,11 +1167,11 @@ public class DatabaseUtil{
 		}
 	}
 	
-	public long newSubType(String typeName, String typeIcon) {
-		if(!isSubTypeExisted(typeName)) {
+	public long newSubType(String subTypeName, String subTypeIcon, String primeTypeName) {
+		if(!isSubTypeExisted(subTypeName, primeTypeName)) {
 			ContentValues initialValues = new ContentValues();
-			initialValues.put(KEY_TYPE_NAME, typeName);
-			initialValues.put(KEY_TYPE_ICON, typeIcon);
+			initialValues.put(KEY_TYPE_NAME, subTypeName);
+			initialValues.put(KEY_TYPE_ICON, subTypeIcon);
 			updateRecordTime(initialValues);
 			return mDb.insert(SUB_TYPES, null, initialValues);
 		} else {
@@ -1200,8 +1206,9 @@ public class DatabaseUtil{
 	 */
 	public boolean updateSubType(String typeName, ContentValues updateValues) {
 		String updateTypeName = updateValues.getAsString(KEY_TYPE_NAME);
+		String primeTypeName = updateValues.getAsString(KEY_TYPE_BELONGTO);
 		
-		if(!isSubTypeExisted(updateTypeName)) {
+		if(!isSubTypeExisted(updateTypeName, primeTypeName)) {
 			return mDb.update(SUB_TYPES, updateValues, KEY_TYPE_NAME + "='" + typeName + "'", null) > 0;
 		} else {
 			// Sub Type Already Existed, Return false

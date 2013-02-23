@@ -130,9 +130,10 @@ public class SubTypesActivity extends Activity {
 				ContentValues newVal = new ContentValues();
 				newVal.put(DatabaseUtil.KEY_TYPE_NAME, newTypeName);
 				if(dbUtil.updateSubType(selectedTypeName, newVal)==DatabaseUtil.TYPE_NAME_ALREADY_EXISTS){
-					Toast.makeText(getApplicationContext(), R.string.act_prim_types_alreadyExist, 
+					Toast.makeText(getApplicationContext(), R.string.act_sub_types_alreadyExist, 
 							Toast.LENGTH_SHORT).show();
 				}
+				cursor.requery();
 			}
 		};
 		
@@ -153,12 +154,13 @@ public class SubTypesActivity extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				//数据库删除操作	
 				Log.i("dialog removeType", "removeListener");
-				dbUtil.deletePrimeType(selectedTypeName);
+				dbUtil.deleteSubType(selectedTypeName);
 				cursor.requery();
-				if(!cursor.moveToFirst()){
+				if(!cursor.moveToNext()){
 					dbUtil.newSubType("其他", null, fatherTypeName);
-					Toast.makeText(getApplicationContext(), R.string.act_prim_types_tableEmpty, 
+					Toast.makeText(getApplicationContext(), R.string.act_sub_types_tableEmpty, 
 							Toast.LENGTH_SHORT).show();
+					cursor.requery();
 				}
 				
 			}
@@ -183,9 +185,9 @@ public class SubTypesActivity extends Activity {
         }
         //获取SimpleCursorAdatper的实例
         String[] from = {DatabaseUtil.KEY_TYPE_NAME};
-        int[] to = {R.id.layout_primType_name};
+        int[] to = {R.id.layout_subType_name};
 		CursorAdapter fatherAdapter = new SimpleCursorAdapter(this, 
-		        		R.layout.layout_prim_type, fatherCursor, from, to);;
+		        		R.layout.layout_sub_type, fatherCursor, from, to);;
 		//以下是Dialog的按钮监听
 		final DialogInterface.OnClickListener movetoListener = new DialogInterface.OnClickListener() {		
 			public void onClick(DialogInterface dialog, int which) {
@@ -197,7 +199,7 @@ public class SubTypesActivity extends Activity {
 		
 		//需要的Dialog
 		final AlertDialog dlg_movetoType = new AlertDialog.Builder(SubTypesActivity.this)
-			.setTitle(R.string.act_sub_types_remove)
+			.setTitle(R.string.act_sub_types_moveTo)
 			.setAdapter(fatherAdapter, movetoListener)
 			.setPositiveButton(R.string.act_settings_dlg_posBtn, removeListener)
 			.setNegativeButton(R.string.act_settings_dlg_negBtn, null)
@@ -249,7 +251,7 @@ public class SubTypesActivity extends Activity {
 					long id) {
 				//获取按下的条目
 				selectedTypeName = cursor.getString(1);
-				Log.i("PrimTypesAcitivty_longClicked",selectedTypeName);
+				Log.i("SubTypesAcitivty_longClicked",selectedTypeName);
 				dlg_whatToDo.show();
 				return true;
 			}  	

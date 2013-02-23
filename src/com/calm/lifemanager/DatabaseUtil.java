@@ -985,8 +985,22 @@ public class DatabaseUtil{
 			if(mDb.insert(PRIM_TYPES, null, initialValues) == -1) {
 				return DATABASE_ERROR;
 			} else {
+<<<<<<< HEAD
 				
-				return SUCCESS;
+				// New a sub type automatically
+				if(newSubType(mCtx.getString(R.string.subtype_others_cn), null, typeName) == -1) {
+					return DATABASE_ERROR;
+				} else {
+					return SUCCESS;
+				}
+=======
+				// New a sub type automatically
+				if(newSubType(mCtx.getString(R.string.subtype_others_cn), null, typeName) == -1) {
+					return DATABASE_ERROR;
+				} else {
+					return SUCCESS;
+				}
+>>>>>>> 4f7b95f3d838ec80d86fb8e31807c571d7f487fd
 			}
 		} else {
 			// Prime Type Already Existed, Return -1
@@ -1181,6 +1195,7 @@ public class DatabaseUtil{
 			ContentValues initialValues = new ContentValues();
 			initialValues.put(KEY_TYPE_NAME, subTypeName);
 			initialValues.put(KEY_TYPE_ICON, subTypeIcon);
+			initialValues.put(KEY_TYPE_BELONGTO, primeTypeName);
 			updateRecordTime(initialValues);
 			if(mDb.insert(SUB_TYPES, null, initialValues) == -1) {
 				return DATABASE_ERROR;

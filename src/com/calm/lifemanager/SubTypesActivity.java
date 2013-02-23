@@ -129,7 +129,7 @@ public class SubTypesActivity extends Activity {
 				Log.i("dialog editType", "editListener");
 				ContentValues newVal = new ContentValues();
 				newVal.put(DatabaseUtil.KEY_TYPE_NAME, newTypeName);
-				if(dbUtil.updateSubType(selectedTypeName, newVal)==DatabaseUtil.TYPE_NAME_ALREADY_EXISTS){
+				if(dbUtil.updateSubType(selectedTypeName, fatherTypeName,  newVal)==DatabaseUtil.TYPE_NAME_ALREADY_EXISTS){
 					Toast.makeText(getApplicationContext(), R.string.act_sub_types_alreadyExist, 
 							Toast.LENGTH_SHORT).show();
 				}
@@ -154,9 +154,9 @@ public class SubTypesActivity extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				//数据库删除操作	
 				Log.i("dialog removeType", "removeListener");
-				dbUtil.deleteSubType(selectedTypeName);
+				dbUtil.deleteSubType(selectedTypeName, fatherTypeName);
 				cursor.requery();
-				if(!cursor.moveToNext()){
+				if(!cursor.moveToFirst()){
 					dbUtil.newSubType("其他", null, fatherTypeName);
 					Toast.makeText(getApplicationContext(), R.string.act_sub_types_tableEmpty, 
 							Toast.LENGTH_SHORT).show();
@@ -192,7 +192,20 @@ public class SubTypesActivity extends Activity {
 		final DialogInterface.OnClickListener movetoListener = new DialogInterface.OnClickListener() {		
 			public void onClick(DialogInterface dialog, int which) {
 				//数据库更新操作	
-				Log.i("dialog removeType", fatherCursor.getString(which));
+				fatherCursor.moveToFirst();
+				fatherCursor.move(which);
+				String selectedFatherType = fatherCursor.getString(1);
+				Log.i("dialog moveTo", selectedFatherType);
+
+				//移动subType数据库操作	
+				Log.i("dialog editType", "editListener");
+				ContentValues newVal = new ContentValues();
+				newVal.put(DatabaseUtil.KEY_TYPE_BELONGTO , selectedFatherType);
+				if(dbUtil.updateSubType(selectedTypeName, fatherTypeName, newVal)==DatabaseUtil.TYPE_NAME_ALREADY_EXISTS){
+					Toast.makeText(getApplicationContext(), R.string.act_sub_types_alreadyExist, 
+							Toast.LENGTH_SHORT).show();
+				}
+				cursor.requery();
 				
 			}
 		};

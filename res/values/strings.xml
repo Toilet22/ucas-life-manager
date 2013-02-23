@@ -126,5 +126,5 @@
     <string name="loged_in_user_indicator">没有用户</string>
     <string name="sync_data">同步数据</string>
     <string name="please_login_first">请先登录！
-    </string><string name="subtype_others_cn">其他！</string>
+    </string><string name="subtype_others_cn">其他</string>
 </resources>

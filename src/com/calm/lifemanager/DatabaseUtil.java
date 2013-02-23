@@ -1182,7 +1182,7 @@ public class DatabaseUtil{
 	public boolean isSubTypeExisted(String  subTypeName, String primeTypeName) {
 		Cursor mCursor = mDb.query(true, SUB_TYPES, null, KEY_TYPE_NAME + "='"
 				+ subTypeName + "'" + " AND " + KEY_TYPE_BELONGTO + "='"
-				+ primeTypeName, null, null, null, null, null);
+				+ primeTypeName + "'", null, null, null, null, null);
 		if (mCursor.moveToNext()) {
 			return true;
 		} else {

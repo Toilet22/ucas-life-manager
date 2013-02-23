@@ -96,11 +96,11 @@ public class SubTypesActivity extends Activity {
 				newTypeName = (dialog_newType_edttxt_Typename.getText().toString());
 				//写入数据库操作	
 				Log.i("dialog newType", newTypeName);
-				if(dbUtil.newSubType(newTypeName, null) == -1){
-					Toast.makeText(getApplicationContext(), R.string.act_sub_types_alreadyExist, 
-							Toast.LENGTH_SHORT).show();
-				}
-				cursor.requery();
+//				if(dbUtil.newSubType(newTypeName, null) == -1){
+//					Toast.makeText(getApplicationContext(), R.string.act_sub_types_alreadyExist, 
+//							Toast.LENGTH_SHORT).show();
+//				}
+//				cursor.requery();
 			}
 		};
 		

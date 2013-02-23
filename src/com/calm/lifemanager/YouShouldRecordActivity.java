@@ -42,11 +42,12 @@ public class YouShouldRecordActivity extends Activity {
 	WheelView whl_fatherType;
 	WheelView whl_subType;
 	float rt_effc;
-	float rt_mood;
+	String rt_mood;
 	int startHour;
 	int startMin;
 	int endHour;
 	int endMin;
+	int width_btnMood, height_btnMood;
 	String type;
     String fatherType[];
     String subType[];
@@ -65,18 +66,18 @@ public class YouShouldRecordActivity extends Activity {
 		Cursor cursor = dbUtil.rawQuery("SELECT DISTINCT oid as _id, type_name FROM tb_prim_types", null);
         //测试游标
         if(cursor.moveToNext()){
-        	Log.i("iRcd_FatherTypeNameInStringArray","PrimTypesActivity_fetchAllData: fetch specific data works!");
+        	Log.i("youRcd_FatherTypeNameInStringArray","PrimTypesActivity_fetchAllData: fetch specific data works!");
         }else{
-        	Log.i("iRcd_FatherTypeNameInStringArray","PrimTypesActivity_fetchAllData: fetch specific data failed!");        	
+        	Log.i("youRcd_FatherTypeNameInStringArray","PrimTypesActivity_fetchAllData: fetch specific data failed!");        	
         }        
 		ArrayList<String> arrayFatherTypes = new ArrayList<String>();
 		for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
-			Log.i("iRcd_FatherTypeNameInStringArray",cursor.getString(1));
+			Log.i("youRcd_FatherTypeNameInStringArray",cursor.getString(1));
 			arrayFatherTypes.add(cursor.getString(1));
 		}
 		String[] retVal = (String[])arrayFatherTypes.toArray(new String[arrayFatherTypes.size()]);
-		Log.i("iRcd_getFatherTypeNameInStringArray","after change type.");
-		Log.i("iRcd_getFatherTypeNameInStringArray",retVal[1]);
+		Log.i("youRcd_getFatherTypeNameInStringArray","after change type.");
+		Log.i("youRcd_getFatherTypeNameInStringArray",retVal[1]);
 		return retVal;
 	}
 	
@@ -88,27 +89,47 @@ public class YouShouldRecordActivity extends Activity {
         Cursor cursor = dbUtil.rawQuery("SELECT DISTINCT oid as _id,  type_name FROM tb_sub_types where " + DatabaseUtil.KEY_TYPE_BELONGTO + "=?;",new String[] {fatherTypeName});
         //测试游标
         if(cursor.moveToNext()){
-        	Log.i("iRcd_getSubTypeNameInStringArray","SubTypesActivity_fetchAllData: fetch specific data works!");
+        	Log.i("youRcd_getSubTypeNameInStringArray","SubTypesActivity_fetchAllData: fetch specific data works!");
         }else{
-        	Log.i("iRcd_getSubTypeNameInStringArray","SubTypesActivity_fetchAllData: fetch specific data failed!");        	
+        	Log.i("youRcd_getSubTypeNameInStringArray","SubTypesActivity_fetchAllData: fetch specific data failed!");        	
         }        
 		ArrayList<String> arrayFatherTypes = new ArrayList<String>();
 		for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
-			Log.i("iRcd_SubTypeNameInStringArray",cursor.getString(1));
+			Log.i("youRcd_SubTypeNameInStringArray",cursor.getString(1));
 			arrayFatherTypes.add(cursor.getString(1));
 		}
 		String[] retVal = (String[])arrayFatherTypes.toArray(new String[arrayFatherTypes.size()]);
-		Log.i("iRcd_getSubTypeNameInStringArray","after change type.");
-		Log.i("iRcd_getSubTypeNameInStringArray",retVal[1]);
+		Log.i("youRcd_getSubTypeNameInStringArray","after change type.");
+		Log.i("youRcd_getSubTypeNameInStringArray",retVal[0]);
 		return retVal;
 	}
-	
-	private void setAllBtnUnpushed(){
+
+	/********************************
+	 * 让所有的心情按钮背景回复初始状态
+	 *******************************/
+	private void setAllBtnUnpushedByPic(){
 		btn_excited.setBackgroundResource(R.drawable.excited);
 		btn_happy.setBackgroundResource(R.drawable.happy);
 		btn_ok.setBackgroundResource(R.drawable.ok);
 		btn_sad.setBackgroundResource(R.drawable.sad);
 		btn_angry.setBackgroundResource(R.drawable.angry);
+	}
+
+	/********************************
+	 * 让所有的心情按钮大小回复初始状态
+	 *******************************/
+	private void setAllBtnUnpushedBySize(){
+		btn_excited.setWidth(width_btnMood);
+		btn_happy.setWidth(width_btnMood);
+		btn_ok.setWidth(width_btnMood);
+		btn_sad.setWidth(width_btnMood);
+		btn_angry.setWidth(width_btnMood);
+		
+		btn_excited.setHeight(height_btnMood);
+		btn_happy.setHeight(height_btnMood);
+		btn_ok.setHeight(height_btnMood);
+		btn_sad.setHeight(height_btnMood);
+		btn_angry.setHeight(height_btnMood);
 	}
 	
 	public void onCreate(Bundle savedInstanceState){
@@ -121,8 +142,12 @@ public class YouShouldRecordActivity extends Activity {
 				//| WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
 				//| WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
 				| WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+		
+		/*************************************
+		 * 界面初始化
+		 ************************************/
 		Log.v("YouRcd","YouRecord: before setContentView.");
-		setContentView(R.layout.activity_youshouldrecord);	
+		setContentView(R.layout.activity_youshouldrecord);
 		
 		/************************************
 		 * 读取preferences
@@ -242,50 +267,68 @@ public class YouShouldRecordActivity extends Activity {
 		btn_ok = (Button)findViewById(R.id.act_youRcd_btn_ok);
 		btn_sad = (Button)findViewById(R.id.act_youRcd_btn_sad);
 		btn_angry = (Button)findViewById(R.id.act_youRcd_btn_angry);
-
+		//获得初始尺寸
+		width_btnMood = btn_excited.getWidth();
+		height_btnMood = btn_excited.getHeight();
+		Log.i("YouRcd_SetView", "width_btnMood = "+Integer.toString(width_btnMood));
 		//excited
 		btn_excited.setOnClickListener(new Button.OnClickListener(){
 			//按钮按下时，改变心情变量，改变按钮背景
 			public void onClick(View v) {
-				setAllBtnUnpushed();
+				//setAllBtnUnpushedBySize();
+				setAllBtnUnpushedByPic();
+				//btn_excited.setWidth(width_btnMood + 10);
+				//btn_excited.setHeight(height_btnMood + 10);
 				btn_excited.setBackgroundResource(R.drawable.excited_pushed);	
-				rt_mood = 1;
+				rt_mood = "excited";
 			}			
 		});
 		//happy
 		btn_happy.setOnClickListener(new Button.OnClickListener(){
 			//按钮按下时，改变心情变量，改变按钮背景
 			public void onClick(View v) {
-				setAllBtnUnpushed();
+				//setAllBtnUnpushedBySize();
+				setAllBtnUnpushedByPic();
+				//btn_happy.setWidth(width_btnMood + 10);
+				//btn_happy.setHeight(height_btnMood + 10);
 				btn_happy.setBackgroundResource(R.drawable.happy_pushed);				
-				rt_mood = 2;	
+				rt_mood = "happy";	
 			}			
 		});
 		//ok
 		btn_ok.setOnClickListener(new Button.OnClickListener(){
 			//按钮按下时，改变心情变量，改变按钮背景
 			public void onClick(View v) {
-				setAllBtnUnpushed();
+				//setAllBtnUnpushedBySize();
+				setAllBtnUnpushedByPic();
+				//btn_ok.setWidth(width_btnMood + 10);
+				//btn_ok.setHeight(height_btnMood + 10);
 				btn_ok.setBackgroundResource(R.drawable.ok_pushed);		
-				rt_mood = 3;			
+				rt_mood = "ok";			
 			}			
 		});
 		//sad
 		btn_sad.setOnClickListener(new Button.OnClickListener(){
 			//按钮按下时，改变心情变量，改变按钮背景
 			public void onClick(View v) {
-				setAllBtnUnpushed();
+				//setAllBtnUnpushedBySize();
+				setAllBtnUnpushedByPic();
+				//btn_sad.setWidth(width_btnMood + 10);
+				//btn_sad.setHeight(height_btnMood + 10);
 				btn_sad.setBackgroundResource(R.drawable.sad_pushed);		
-				rt_mood = 4;			
+				rt_mood = "sad";			
 			}			
 		});
 		//angry
 		btn_angry.setOnClickListener(new Button.OnClickListener(){
 			//按钮按下时，改变心情变量，改变按钮背景
 			public void onClick(View v) {
-				setAllBtnUnpushed();
-				btn_angry.setBackgroundResource(R.drawable.angry_pushed);			
-				rt_mood = 5;		
+				//setAllBtnUnpushedBySize();
+				setAllBtnUnpushedByPic();
+				//btn_angry.setWidth(width_btnMood + 10);
+				//btn_angry.setHeight(height_btnMood + 10);
+				//btn_angry.setBackgroundResource(R.drawable.angry_pushed);			
+				rt_mood = "angry";		
 			}			
 		});
 		
@@ -298,19 +341,19 @@ public class YouShouldRecordActivity extends Activity {
 		whl_fatherType = (WheelView) findViewById(R.id.act_youRcd_wheel_fatherType);
         whl_fatherType.setAdapter(new ArrayWheelAdapter<String>(fatherType));
         whl_fatherType.setVisibleItems(5);
-        whl_fatherType.setCurrentItem(1);
+        whl_fatherType.setCurrentItem(0);
 
         whl_subType = (WheelView) findViewById(R.id.act_youRcd_wheel_subType);
         whl_subType.setVisibleItems(5);
-		subType = getSubTypeNameInStringArray(fatherType[1]);
+		subType = getSubTypeNameInStringArray(fatherType[0]);
 		whl_subType.setAdapter(new ArrayWheelAdapter<String>(subType));
-		whl_subType.setCurrentItem(1);
+		whl_subType.setCurrentItem(0);
 
         whl_fatherType.addChangingListener(new OnWheelChangedListener() {
 			public void onChanged(WheelView wheel, int oldValue, int newValue) {
 				subType = getSubTypeNameInStringArray(fatherType[newValue]);
 				whl_subType.setAdapter(new ArrayWheelAdapter<String>(subType));
-				whl_subType.setCurrentItem(1);
+				whl_subType.setCurrentItem(0);
 			}
 		});
         
@@ -337,10 +380,12 @@ public class YouShouldRecordActivity extends Activity {
 		super.onPause();
 		// 获取记录数据
 		rt_effc = rtBar_effc.getRating();
+		//Log.i("YouRcd", "rating of effeciency: " + Float.toString(rt_effc));
+		//Log.i("YouRcd", "mood: " + rt_mood);
 		//rt_mood = rtBar_mood.getRating();
 		type = fatherType[whl_fatherType.getCurrentItem()] + "_"
 				+ subType[whl_subType.getCurrentItem()];
-		Toast.makeText(getApplicationContext(), type, 
+		Toast.makeText(getApplicationContext(), Float.toString(rt_effc) + " " + type + " " +rt_mood, 
 				Toast.LENGTH_SHORT).show();	
 		
 		/************************************

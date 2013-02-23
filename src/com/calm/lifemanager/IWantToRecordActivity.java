@@ -64,7 +64,7 @@ public class IWantToRecordActivity extends Activity {
         	Log.i("iRcd_FatherTypeNameInStringArray","PrimTypesActivity_fetchAllData: fetch specific data failed!");        	
         }        
 		ArrayList<String> arrayFatherTypes = new ArrayList<String>();
-		for(cursor.moveToFirst(); cursor.moveToNext(); cursor.isAfterLast()){
+		for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
 			Log.i("iRcd_FatherTypeNameInStringArray",cursor.getString(1));
 			arrayFatherTypes.add(cursor.getString(1));
 		}
@@ -83,17 +83,18 @@ public class IWantToRecordActivity extends Activity {
         //≤‚ ‘”Œ±Í
         if(cursor.moveToNext()){
         	Log.i("iRcd_getSubTypeNameInStringArray","SubTypesActivity_fetchAllData: fetch specific data works!");
+        	Log.i("iRcd_getSubTypeNameInStringArray","first content: " + cursor.getString(1));
         }else{
         	Log.i("iRcd_getSubTypeNameInStringArray","SubTypesActivity_fetchAllData: fetch specific data failed!");        	
-        }        
+        }     
 		ArrayList<String> arrayFatherTypes = new ArrayList<String>();
-		for(cursor.moveToFirst(); cursor.moveToNext(); cursor.isAfterLast()){
+		for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
 			Log.i("iRcd_SubTypeNameInStringArray",cursor.getString(1));
 			arrayFatherTypes.add(cursor.getString(1));
 		}
 		String[] retVal = (String[])arrayFatherTypes.toArray(new String[arrayFatherTypes.size()]);
 		Log.i("iRcd_getSubTypeNameInStringArray","after change type.");
-		Log.i("iRcd_getSubTypeNameInStringArray",retVal[1]);
+		Log.i("iRcd_getSubTypeNameInStringArray",retVal[0]);
 		return retVal;
 	}
 	

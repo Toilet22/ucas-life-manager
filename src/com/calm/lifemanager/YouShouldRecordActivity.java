@@ -70,7 +70,7 @@ public class YouShouldRecordActivity extends Activity {
         	Log.i("iRcd_FatherTypeNameInStringArray","PrimTypesActivity_fetchAllData: fetch specific data failed!");        	
         }        
 		ArrayList<String> arrayFatherTypes = new ArrayList<String>();
-		for(cursor.moveToFirst(); cursor.moveToNext(); cursor.isAfterLast()){
+		for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
 			Log.i("iRcd_FatherTypeNameInStringArray",cursor.getString(1));
 			arrayFatherTypes.add(cursor.getString(1));
 		}
@@ -93,7 +93,7 @@ public class YouShouldRecordActivity extends Activity {
         	Log.i("iRcd_getSubTypeNameInStringArray","SubTypesActivity_fetchAllData: fetch specific data failed!");        	
         }        
 		ArrayList<String> arrayFatherTypes = new ArrayList<String>();
-		for(cursor.moveToFirst(); cursor.moveToNext(); cursor.isAfterLast()){
+		for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
 			Log.i("iRcd_SubTypeNameInStringArray",cursor.getString(1));
 			arrayFatherTypes.add(cursor.getString(1));
 		}
@@ -162,7 +162,9 @@ public class YouShouldRecordActivity extends Activity {
 		 **************************************/
 		Log.v("YouRcd","YouRecord: before get Bundle.");
 		Bundle mBundle = YouShouldRecordActivity.this.getIntent().getExtras();
-		long startTimeInMillis = mBundle.getLong("StartTimeInMillis", 0);
+		long startTimeInMillis = mBundle.getLong("StartTimeInMillis");
+		//long startTimeInMillis = YouShouldRecordActivity.this.getIntent().getLongExtra("StartTimeInMillis", 0);
+        Log.v("Toilet", "YouRcd_getStartTimeInMillis: test Bundle: the currTimeInMillis is " + Long.toString(startTimeInMillis)+".");
 		Calendar startTime = Calendar.getInstance();
 		startTime.setTimeInMillis(startTimeInMillis);
 		startHour = startTime.get(Calendar.HOUR_OF_DAY);

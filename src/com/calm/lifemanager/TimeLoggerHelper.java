@@ -36,6 +36,8 @@ public class TimeLoggerHelper {
 		SharedPreferences sharedPref = thisActivity.getSharedPreferences(
 				userDataSync.currentLogedInUser, Context.MODE_PRIVATE);
 		long intervalInMillis = sharedPref.getLong("IntervalInMillis", 30 * 60000);
+		//for test only
+		intervalInMillis /= 30;
 		Log.v("Toilet", "TimeLoggerHelper: test IntervalInMillis is "+ Long.toString(intervalInMillis)+".");
         Calendar c=Calendar.getInstance();
         currTimeInMillis = c.getTimeInMillis();
@@ -56,7 +58,8 @@ public class TimeLoggerHelper {
 		Bundle mBundle = new Bundle();
         mBundle.putLong("StartTimeInMillis", currTimeInMillis);
         new_intent.putExtras(mBundle);
-        Log.v("Toilet", "TimeLoggerHelper: test Bundle: the currTimeInMillis is "+ Long.toString(mBundle.getLong("startTimeInMillis"))+".");
+        //new_intent.putExtra("StartTimeInMillis", currTimeInMillis);
+        Log.v("Toilet", "TimeLoggerHelper: test Bundle: the currTimeInMillis is "+ Long.toString(new_intent.getExtras().getLong("StartTimeInMillis"))+".");
         
         /********************************
          * Æô¶¯¶¨Ê±Æ÷ 

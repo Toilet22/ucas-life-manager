@@ -325,39 +325,44 @@ public class DatabaseUtil{
 		@Override
 		public void onCreate(SQLiteDatabase db) {
 			Log.i(TAG, "Creating DataBase: " + dbName);
-			
-			db.execSQL(CREATE_USER_TABLE);
-			Log.i(TAG,"Creating DataBase Table: " + USER);
-			
-			db.execSQL(CREATE_USER_PROFILE_TABLE);
-			Log.i(TAG,"Creating DataBase Table: " + USER_PROFILE);
-			
-			db.execSQL(CREATE_USER_SETTINGS_TABLE);
-			Log.i(TAG,"Creating DataBase Table: " + USER_SETTINGS);
-			
-			db.execSQL(CREATE_TODOLIST_TABLE);
-			Log.i(TAG,"Creating DataBase Table: " + TODOLIST);
-			
-			db.execSQL(CREATE_COLLECTOR_TABLE);
-			Log.i(TAG,"Creating DataBase Table: " + COLLECTOR);
-			
-			db.execSQL(CREATE_WISHLIST_TABLE);
-			Log.i(TAG,"Creating DataBase Table: " + WISHLIST);
-			
-			db.execSQL(CREATE_RECORD_TABLE);
-			Log.i(TAG,"Creating DataBase Table: " + RECORD);
-			
-			db.execSQL(CREATE_TIME_TIPS_TABLE);
-			Log.i(TAG,"Creating DataBase Table: " + TIME_TIPS);
-			
-			db.execSQL(CREATE_MOOD_TIPS_TABLE);
-			Log.i(TAG,"Creating DataBase Table: " + MOOD_TIPS);
+				
+			if(userDataSync.usersInfoDbName.equals(dbName)) {
+				db.execSQL(CREATE_USER_TABLE);
+				Log.i(TAG,"Creating DataBase Table: " + USER);
+			} else {
+				db.execSQL(CREATE_USER_TABLE);
+				Log.i(TAG,"Creating DataBase Table: " + USER);
+				
+				db.execSQL(CREATE_USER_PROFILE_TABLE);
+				Log.i(TAG,"Creating DataBase Table: " + USER_PROFILE);
+				
+				db.execSQL(CREATE_USER_SETTINGS_TABLE);
+				Log.i(TAG,"Creating DataBase Table: " + USER_SETTINGS);
+				
+				db.execSQL(CREATE_TODOLIST_TABLE);
+				Log.i(TAG,"Creating DataBase Table: " + TODOLIST);
+				
+				db.execSQL(CREATE_COLLECTOR_TABLE);
+				Log.i(TAG,"Creating DataBase Table: " + COLLECTOR);
+				
+				db.execSQL(CREATE_WISHLIST_TABLE);
+				Log.i(TAG,"Creating DataBase Table: " + WISHLIST);
+				
+				db.execSQL(CREATE_RECORD_TABLE);
+				Log.i(TAG,"Creating DataBase Table: " + RECORD);
+				
+				db.execSQL(CREATE_TIME_TIPS_TABLE);
+				Log.i(TAG,"Creating DataBase Table: " + TIME_TIPS);
+				
+				db.execSQL(CREATE_MOOD_TIPS_TABLE);
+				Log.i(TAG,"Creating DataBase Table: " + MOOD_TIPS);
 
-			db.execSQL(CREATE_PRIM_TYPES_TABLE);
-			Log.i(TAG, "Creating DataBase Table: " + PRIM_TYPES);
-			
-			db.execSQL(CREATE_SUB_TYPES_TABLE);
-			Log.i(TAG, "Creating DataBase Table: " + SUB_TYPES);
+				db.execSQL(CREATE_PRIM_TYPES_TABLE);
+				Log.i(TAG, "Creating DataBase Table: " + PRIM_TYPES);
+				
+				db.execSQL(CREATE_SUB_TYPES_TABLE);
+				Log.i(TAG, "Creating DataBase Table: " + SUB_TYPES);
+			}
 		}
 		
 		/**
@@ -365,17 +370,23 @@ public class DatabaseUtil{
 		 */
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			db.execSQL("DROP TABLE IF EXISTS tb_user");
-			db.execSQL("DROP TABLE IF EXISTS tb_user_profile");
-			db.execSQL("DROP TABLE IF EXISTS tb_user_settings");
-			db.execSQL("DROP TABLE IF EXISTS tb_todolist");
-			db.execSQL("DROP TABLE IF EXISTS tb_collector");
-			db.execSQL("DROP TABLE IF EXISTS tb_wishlist");
-			db.execSQL("DROP TABLE IF EXISTS tb_record");
-			db.execSQL("DROP TABLE IF EXISTS tb_time_tips");
-			db.execSQL("DROP TABLE IF EXISTS tb_mood_tips");
-			db.execSQL("DROP TABLE IF EXISTS tb_prim_types");
-			db.execSQL("DROP TABLE IF EXISTS tb_sub_types");
+			
+			if (userDataSync.usersInfoDbName.equals(dbName)) {
+				db.execSQL("DROP TABLE IF EXISTS tb_user");
+			} else {
+				db.execSQL("DROP TABLE IF EXISTS tb_user");
+				db.execSQL("DROP TABLE IF EXISTS tb_user_profile");
+				db.execSQL("DROP TABLE IF EXISTS tb_user_settings");
+				db.execSQL("DROP TABLE IF EXISTS tb_todolist");
+				db.execSQL("DROP TABLE IF EXISTS tb_collector");
+				db.execSQL("DROP TABLE IF EXISTS tb_wishlist");
+				db.execSQL("DROP TABLE IF EXISTS tb_record");
+				db.execSQL("DROP TABLE IF EXISTS tb_time_tips");
+				db.execSQL("DROP TABLE IF EXISTS tb_mood_tips");
+				db.execSQL("DROP TABLE IF EXISTS tb_prim_types");
+				db.execSQL("DROP TABLE IF EXISTS tb_sub_types");
+			}
+			
 			onCreate(db);
 			
 			Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
@@ -563,11 +574,11 @@ public class DatabaseUtil{
 	 * @param ctime
 	 * @return long
 	 */
-	public long createUser(String username, String password, long ctime) {
+	public long createUser(String username, String password) {
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(KEY_USERNAME, username);
 		initialValues.put(KEY_PASSWORD, password);
-		initialValues.put(KEY_CTIME, ctime);
+		initialValues.put(KEY_CTIME, System.currentTimeMillis());
 		return mDb.insert(USER, null, initialValues);
 	}
 	
@@ -613,6 +624,26 @@ public class DatabaseUtil{
 	public Cursor fetchAllUsers() {
 		return mDb.query(USER, new String[] {KEY_USERNAME, KEY_PASSWORD,
 				KEY_CTIME}, null, null, null, null, null);
+	}
+	
+	/**
+	 * Check whether a user is validate to log in
+	 * @param username
+	 * @param password
+	 * @return boolean
+	 */
+	public Cursor validateUser(String username, String password) {
+		return mDb.query(true, USER, null, KEY_USERNAME + "='"
+				+ username + "'" + " AND " + KEY_PASSWORD + "='"
+				+ password + "'", null, null, null, null, null);
+		
+//		if (mCursor != null && mCursor.getCount() > 0) {
+//			mCursor.close();
+//
+//			return true;
+//		} else {
+//			return false;
+//		}
 	}
 	
 	//提供的数据操作接口
@@ -1222,7 +1253,7 @@ public class DatabaseUtil{
 	 * This method will update Sub Types with selected columns.
 	 * @param typeName
 	 * @param updateValues
-	 * @return boolean
+	 * @return int
 	 */
 	public int updateSubType(String oldTypeName, String oldTypeBelongTo, ContentValues updateValues) {
 		String updateTypeName = updateValues.getAsString(KEY_TYPE_NAME);

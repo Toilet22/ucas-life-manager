@@ -12,7 +12,11 @@ import android.util.Log;
 public class userDataSync {
 	public static String currentLogedInUser = "";
 	public static String anonymousUser = "anonymous_user";
+	public static String usersInfoDbName = "users.db";
+	
 	public static boolean isSwithingUser = false;
+	
+	public static boolean isWorkingOffline = false;
 	
 	public static long lastSyncTime = 0;
 	public static long defaultSyncTime = 0;

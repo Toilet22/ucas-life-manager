@@ -125,6 +125,8 @@
     <string name="current_loged_in_user">当前登录账户：</string>
     <string name="loged_in_user_indicator">没有用户</string>
     <string name="sync_data">同步数据</string>
-    <string name="please_login_first">请先登录！
-    </string><string name="subtype_others_cn">其他</string>
+    <string name="please_login_first">请先登录</string>
+    <string name="subtype_others_cn">其他！</string>
+    <string name="success_log_in_with_offline">登陆成功，您处于离线模式！</string>
+    <string name="login_http_error_and_no_user_found">http通信错误，且在本地未发现用户记录，请先联网登录！</string>
 </resources>

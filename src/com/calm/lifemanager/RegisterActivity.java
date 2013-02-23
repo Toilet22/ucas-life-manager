@@ -8,7 +8,9 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -39,6 +41,8 @@ public class RegisterActivity extends Activity {
 	private ProgressDialog pd;
 	private Bundle registrationBundle = new Bundle();
 
+	DatabaseUtil dbUtil;
+	
 	private static final int REGISTER_SUCCESS = 0;
 	private static final int REGISTER_ERROR = 1;
 	private static final int HTTP_ERROR = -1;
@@ -54,7 +58,7 @@ public class RegisterActivity extends Activity {
 					// Check Anonymous User Database, If exist then
 					// rename
 					// it, else create a new one
-					DatabaseUtil dbUtil = new DatabaseUtil(
+					dbUtil = new DatabaseUtil(
 							RegisterActivity.this);
 					if (dbUtil.exist(DatabaseUtil.defaultDbName)) {
 						Log.i("Registraion",
@@ -77,6 +81,26 @@ public class RegisterActivity extends Activity {
 
 						dbUtil.close();
 					}
+					
+					// Update user info
+					dbUtil = new DatabaseUtil(RegisterActivity.this,userDataSync.usersInfoDbName);
+					dbUtil.open();
+					Cursor usersCursor = dbUtil.fetchUser(username, null);
+					if(usersCursor != null && usersCursor.getCount() > 0) {
+						// Existed user, update the related record
+						ContentValues updateValues = new ContentValues();
+						updateValues.put(DatabaseUtil.KEY_PASSWORD, password1);
+						dbUtil.updateUser(username, updateValues);
+					} else {
+						// If user first login, insert a new record
+						dbUtil.createUser(username, password1);
+					}
+					
+					if(usersCursor != null) {
+						usersCursor.close();
+					}
+					
+					dbUtil.close();
 					
 					// User Login
 					Intent iLogin = new Intent(RegisterActivity.this,

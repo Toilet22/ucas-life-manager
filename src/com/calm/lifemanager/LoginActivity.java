@@ -5,13 +5,16 @@ import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xml.sax.DTDHandler;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -45,7 +48,9 @@ public class LoginActivity extends Activity {
 
 	private Handler mHandler;
 	private Runnable mRunnableShowToast;
-
+	
+	DatabaseUtil dbUtil;
+	
 	private static final int LOGIN_SUCCESS = 0;
 	private static final int LOGIN_ERROR = 1;
 	private static final int HTTP_ERROR = -1;
@@ -65,15 +70,35 @@ public class LoginActivity extends Activity {
 							MainActivity.class);
 					startActivity(iMain);
 					LoginActivity.this.finish();
-
+					
+					// Update user info
+					dbUtil = new DatabaseUtil(LoginActivity.this,userDataSync.usersInfoDbName);
+					dbUtil.open();
+					Cursor usersCursor = dbUtil.fetchUser(userNameValue, null);
+					if(usersCursor != null && usersCursor.getCount() > 0) {
+						// Existed user, update the related record
+						ContentValues updateValues = new ContentValues();
+						updateValues.put(DatabaseUtil.KEY_PASSWORD, passwordValue);
+						dbUtil.updateUser(userNameValue, updateValues);
+					} else {
+						// If user first login, insert a new record
+						dbUtil.createUser(userNameValue, passwordValue);
+					}
+					
+					if(usersCursor != null) {
+						usersCursor.close();
+					}
+					
+					dbUtil.close();
+					
 					// Bundle User Database
 					DatabaseUtil.dbName = userNameValue + ".db";
-					DatabaseUtil dbUtil = new DatabaseUtil(LoginActivity.this);
+					dbUtil = new DatabaseUtil(LoginActivity.this);
 					
 					if(dbUtil.exist(DatabaseUtil.dbName)) {
 						
 					} else {
-						// Existed User Login, Need to create database
+						// Existed User First Login, Need to create database
 						dbUtil.open();
 						
 						// Initial Assigned Types
@@ -82,7 +107,6 @@ public class LoginActivity extends Activity {
 						
 						dbUtil.close();
 					}
-					
 					
 					// Bundle User Name to Data Sync Service
 					userDataSync.currentLogedInUser = userNameValue;
@@ -99,9 +123,40 @@ public class LoginActivity extends Activity {
 					break;
 
 				case HTTP_ERROR:
-					Toast.makeText(LoginActivity.this,
-							getText(R.string.login_http_error),
-							Toast.LENGTH_LONG).show();
+					// Have no access to network, trying offline mode
+					dbUtil = new DatabaseUtil(LoginActivity.this,userDataSync.usersInfoDbName);
+					dbUtil.open();
+					Cursor validateUserCursor = dbUtil.validateUser(userNameValue, passwordValue);
+					if(validateUserCursor != null && validateUserCursor.getCount() > 0) {
+						// Success log in and will work in offline mode
+						Toast.makeText(LoginActivity.this,
+								getText(R.string.success_log_in_with_offline),
+								Toast.LENGTH_LONG).show();
+						
+						Intent iOfflineMain = new Intent(LoginActivity.this,
+								MainActivity.class);
+						startActivity(iOfflineMain);
+						LoginActivity.this.finish();
+						
+						// Bundle User Database
+						DatabaseUtil.dbName = userNameValue + ".db";
+						
+						// Bundle User Name to Data Sync Service
+						userDataSync.currentLogedInUser = userNameValue;
+						
+						userDataSync.isWorkingOffline = true;
+					} else {
+						Toast.makeText(LoginActivity.this,
+								getText(R.string.login_http_error_and_no_user_found),
+								Toast.LENGTH_LONG).show();
+					}
+					
+					if(validateUserCursor != null) {
+						validateUserCursor.close();
+					}
+					
+					dbUtil.close();
+					
 					break;
 
 				default:

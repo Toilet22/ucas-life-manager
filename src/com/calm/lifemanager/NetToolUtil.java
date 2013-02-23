@@ -457,7 +457,7 @@ public class NetToolUtil {
         if (conn.getResponseCode() == 200) {  
             // 获得服务器响应的数据  
             BufferedReader in = new BufferedReader(new InputStreamReader(conn  
-                    .getInputStream(), encoding));  
+                    .getInputStream(), encoding), 8*1024);
             // 数据  
             String retData = null;
             String responseData = "";  

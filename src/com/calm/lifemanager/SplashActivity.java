@@ -34,6 +34,11 @@ public class SplashActivity extends Activity {
         	    	dbUtil.initSubTypes();
         	    	
         	    	dbUtil.close();
+        	    	
+        	    	// Create Users Info Database
+        	    	dbUtil = new DatabaseUtil(SplashActivity.this,userDataSync.usersInfoDbName);
+        	    	dbUtil.open();
+        	    	dbUtil.close();
 				}
 				else {
 					nextIntent.setClass(SplashActivity.this, MainActivity.class);

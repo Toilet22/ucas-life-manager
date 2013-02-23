@@ -49,7 +49,7 @@ public class YouShouldRecordActivity extends Activity {
 	int endMin;
 	String type;
     String fatherType[];
-    String subType[][];
+    String subType[];
 	//preferences记录
 	SharedPreferences sharedPref;
 	Boolean isRingOn;
@@ -61,21 +61,45 @@ public class YouShouldRecordActivity extends Activity {
 	 * 获得父类别的String[]
 	 **************************************/
 	private String[] getFatherTypeNameInStringArray(){
-        dbUtil.open();
         //获得游标
 		Cursor cursor = dbUtil.rawQuery("SELECT DISTINCT oid as _id, type_name FROM tb_prim_types", null);
         //测试游标
         if(cursor.moveToNext()){
-        	Log.i("Toilet","PrimTypesActivity_fetchAllData: fetch specific data works!");
+        	Log.i("iRcd_FatherTypeNameInStringArray","PrimTypesActivity_fetchAllData: fetch specific data works!");
         }else{
-        	Log.i("Toilet","PrimTypesActivity_fetchAllData: fetch specific data failed!");        	
+        	Log.i("iRcd_FatherTypeNameInStringArray","PrimTypesActivity_fetchAllData: fetch specific data failed!");        	
         }        
 		ArrayList<String> arrayFatherTypes = new ArrayList<String>();
-		for(cursor.moveToFirst(); cursor.moveToNext(); ){
+		for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
+			Log.i("iRcd_FatherTypeNameInStringArray",cursor.getString(1));
 			arrayFatherTypes.add(cursor.getString(1));
 		}
-		String[] retVal = (String[])arrayFatherTypes.toArray();
-		Log.i("YouRcd_getFatherTypeNameInStringArray",retVal[1]);
+		String[] retVal = (String[])arrayFatherTypes.toArray(new String[arrayFatherTypes.size()]);
+		Log.i("iRcd_getFatherTypeNameInStringArray","after change type.");
+		Log.i("iRcd_getFatherTypeNameInStringArray",retVal[1]);
+		return retVal;
+	}
+	
+	/*************************************** 
+	 * 获得子类别的String[]
+	 **************************************/
+	private String[] getSubTypeNameInStringArray(String fatherTypeName){
+        //获得游标
+        Cursor cursor = dbUtil.rawQuery("SELECT DISTINCT oid as _id,  type_name FROM tb_sub_types where " + DatabaseUtil.KEY_TYPE_BELONGTO + "=?;",new String[] {fatherTypeName});
+        //测试游标
+        if(cursor.moveToNext()){
+        	Log.i("iRcd_getSubTypeNameInStringArray","SubTypesActivity_fetchAllData: fetch specific data works!");
+        }else{
+        	Log.i("iRcd_getSubTypeNameInStringArray","SubTypesActivity_fetchAllData: fetch specific data failed!");        	
+        }        
+		ArrayList<String> arrayFatherTypes = new ArrayList<String>();
+		for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
+			Log.i("iRcd_SubTypeNameInStringArray",cursor.getString(1));
+			arrayFatherTypes.add(cursor.getString(1));
+		}
+		String[] retVal = (String[])arrayFatherTypes.toArray(new String[arrayFatherTypes.size()]);
+		Log.i("iRcd_getSubTypeNameInStringArray","after change type.");
+		Log.i("iRcd_getSubTypeNameInStringArray",retVal[1]);
 		return retVal;
 	}
 	
@@ -97,15 +121,20 @@ public class YouShouldRecordActivity extends Activity {
 				//| WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
 				//| WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
 				| WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-		Log.v("Toilet","YouRecord: before setContentView.");
+		Log.v("YouRcd","YouRecord: before setContentView.");
 		setContentView(R.layout.activity_youshouldrecord);	
 		
 		/************************************
 		 * 读取preferences
 		 ***********************************/
-		Log.v("Toilet","YouRecord: before get preferences.");
-		sharedPref = getSharedPreferences(getString(R.string.curr_usr_name), 
-				Context.MODE_PRIVATE);
+		Log.v("YouRcd","YouRecord: before get preferences.");
+		if(null == userDataSync.currentLogedInUser || "".equals(userDataSync.currentLogedInUser)) {
+			userDataSync.currentLogedInUser = userDataSync.anonymousUser;
+		} else {
+			;
+		}
+		sharedPref = getSharedPreferences(
+				userDataSync.currentLogedInUser, Context.MODE_PRIVATE);
 		isRingOn = sharedPref.getBoolean("isRingOn", true);
 		isVibrationOn = sharedPref.getBoolean("isVibrationOn", true);
 		
@@ -113,7 +142,7 @@ public class YouShouldRecordActivity extends Activity {
 		 * 铃声和振动
 		 **************************************/
 
-		Log.v("Toilet","YouRecord: before set vibration.");
+		Log.v("YouRcd","YouRecord: before set vibration.");
 		if(isVibrationOn){
 			Vibrator vib = (Vibrator) YouShouldRecordActivity.this.getSystemService(Service.VIBRATOR_SERVICE); 
 	        long pattern[] = {20,200,20,200,20,200,100,200,20,200,20,200};
@@ -126,26 +155,29 @@ public class YouShouldRecordActivity extends Activity {
          **************************************/
         dbUtil = new DatabaseUtil(this);
         Log.i("PrimTypesActivity","Open DB");
+        dbUtil.open();
 		
 		/***************************************
 		 * 读取开始时间并设置
 		 **************************************/
-		Log.v("Toilet","YouRecord: before get Bundle.");
+		Log.v("YouRcd","YouRecord: before get Bundle.");
 		Bundle mBundle = YouShouldRecordActivity.this.getIntent().getExtras();
-		long startTimeInMillis = mBundle.getLong("StartTimeInMillis", 0);
+		long startTimeInMillis = mBundle.getLong("StartTimeInMillis");
+		//long startTimeInMillis = YouShouldRecordActivity.this.getIntent().getLongExtra("StartTimeInMillis", 0);
+        Log.v("Toilet", "YouRcd_getStartTimeInMillis: test Bundle: the currTimeInMillis is " + Long.toString(startTimeInMillis)+".");
 		Calendar startTime = Calendar.getInstance();
 		startTime.setTimeInMillis(startTimeInMillis);
 		startHour = startTime.get(Calendar.HOUR_OF_DAY);
 		startMin = startTime.get(Calendar.MINUTE);
-		Log.v("Toilet","YouRecord: the startHour is" + Integer.toString(startHour) +".");
-		Log.v("Toilet","YouRecord: the startMin is" + Integer.toString(startMin) +".");
+		Log.v("YouRcd","YouRecord: the startHour is" + Integer.toString(startHour) +".");
+		Log.v("YouRcd","YouRecord: the startMin is" + Integer.toString(startMin) +".");
 		
 		
 		/***************************************
 		 * timePicker起止时间设置
 		 **************************************/
 		//get current time
-		Log.v("Toilet","YouRecord: before use timePicker.");
+		Log.v("YouRcd","YouRecord: before use timePicker.");
 		Calendar currTime = Calendar.getInstance();
 		endHour = currTime.get(Calendar.HOUR_OF_DAY);
 		endMin = currTime.get(Calendar.MINUTE);
@@ -190,12 +222,13 @@ public class YouShouldRecordActivity extends Activity {
 		/*************************************** 
 		 * 获得父类别的String[]
 		 **************************************/
+		Log.i("YouRcd","before getFatherTypeNameInStringArray()");
         fatherType = getFatherTypeNameInStringArray();
         
 		/***************************************
 		 * 效率
 		 **************************************/
-		Log.v("Toilet","YouRecord: before find RatingBar.");
+		Log.v("YouRcd","YouRecord: before find RatingBar.");
 		rtBar_effc = (RatingBar)findViewById(R.id.act_youRcrd_rtBar_effc);
 		//rtBar_mood = (RatingBar)findViewById(R.id.act_youRcrd_rtBar_mood);
 		btn_save = (Button)findViewById(R.id.act_youRcd_btn_save);
@@ -203,7 +236,7 @@ public class YouShouldRecordActivity extends Activity {
 		/***************************************
 		 * 心情相关
 		 **************************************/
-		Log.v("Toilet", "YouShouldRcd: before get buttons about moods");
+		Log.v("YouRcd", "YouShouldRcd: before get buttons about moods");
 		btn_excited = (Button)findViewById(R.id.act_youRcd_btn_excited);
 		btn_happy = (Button)findViewById(R.id.act_youRcd_btn_happy);
 		btn_ok = (Button)findViewById(R.id.act_youRcd_btn_ok);
@@ -261,22 +294,23 @@ public class YouShouldRecordActivity extends Activity {
 		/***************************************
 		 * 以下是选择类别相关代码
 		 **************************************/
-		Log.v("Toilet","YouRecord: before findWheelView.");
+		Log.v("YouRcd","YouRecord: before findWheelView.");
 		whl_fatherType = (WheelView) findViewById(R.id.act_youRcd_wheel_fatherType);
         whl_fatherType.setAdapter(new ArrayWheelAdapter<String>(fatherType));
         whl_fatherType.setVisibleItems(5);
         whl_fatherType.setCurrentItem(1);
 
-        
         whl_subType = (WheelView) findViewById(R.id.act_youRcd_wheel_subType);
         whl_subType.setVisibleItems(5);
-		whl_subType.setAdapter(new ArrayWheelAdapter<String>(subType[1]));
+		subType = getSubTypeNameInStringArray(fatherType[1]);
+		whl_subType.setAdapter(new ArrayWheelAdapter<String>(subType));
 		whl_subType.setCurrentItem(1);
 
         whl_fatherType.addChangingListener(new OnWheelChangedListener() {
 			public void onChanged(WheelView wheel, int oldValue, int newValue) {
-				whl_subType.setAdapter(new ArrayWheelAdapter<String>(subType[newValue]));
-				whl_subType.setCurrentItem(subType[newValue].length / 2);
+				subType = getSubTypeNameInStringArray(fatherType[newValue]);
+				whl_subType.setAdapter(new ArrayWheelAdapter<String>(subType));
+				whl_subType.setCurrentItem(1);
 			}
 		});
         
@@ -305,7 +339,7 @@ public class YouShouldRecordActivity extends Activity {
 		rt_effc = rtBar_effc.getRating();
 		//rt_mood = rtBar_mood.getRating();
 		type = fatherType[whl_fatherType.getCurrentItem()] + "_"
-				+ subType[whl_fatherType.getCurrentItem()][whl_subType.getCurrentItem()];
+				+ subType[whl_subType.getCurrentItem()];
 		Toast.makeText(getApplicationContext(), type, 
 				Toast.LENGTH_SHORT).show();	
 		
@@ -334,7 +368,7 @@ public class YouShouldRecordActivity extends Activity {
 				rt_effc = rtBar_effc.getRating();
 				//rt_mood = rtBar_mood.getRating();
 				type = fatherType[whl_fatherType.getCurrentItem()] + "_"
-						+ subType[whl_fatherType.getCurrentItem()][whl_subType.getCurrentItem()];
+						+ subType[whl_subType.getCurrentItem()];
 				Toast.makeText(getApplicationContext(), type, 
 						Toast.LENGTH_SHORT).show();	
 				

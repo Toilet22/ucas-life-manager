@@ -98,7 +98,7 @@ public class PrimTypesActivity extends Activity {
 				newTypeName = (dialog_newType_edttxt_Typename.getText().toString());
 				//写入数据库操作	
 				Log.i("dialog newType", newTypeName);
-				if(dbUtil.newPrimeType(newTypeName, null) == -1){
+				if(dbUtil.newPrimeType(newTypeName, null) == DatabaseUtil.TYPE_NAME_ALREADY_EXISTS){
 					Toast.makeText(getApplicationContext(), R.string.act_prim_types_alreadyExist, 
 							Toast.LENGTH_SHORT).show();
 				}
@@ -137,7 +137,10 @@ public class PrimTypesActivity extends Activity {
 				Log.i("dialog editType", "editListener");
 				ContentValues newVal = new ContentValues();
 				newVal.put(DatabaseUtil.KEY_TYPE_NAME, newTypeName);
-				dbUtil.updatePrimeType(selectedTypeName, newVal);
+				if(dbUtil.updatePrimeType(selectedTypeName, newVal)==DatabaseUtil.TYPE_NAME_ALREADY_EXISTS){
+					Toast.makeText(getApplicationContext(), R.string.act_prim_types_alreadyExist, 
+							Toast.LENGTH_SHORT).show();
+				}
 				cursor.requery();
 			}
 		};
@@ -161,6 +164,11 @@ public class PrimTypesActivity extends Activity {
 				Log.i("dialog removeType", "removeListener");
 				dbUtil.deletePrimeType(selectedTypeName);
 				cursor.requery();
+				if(!cursor.moveToFirst()){
+					dbUtil.newPrimeType("其他", null);
+					Toast.makeText(getApplicationContext(), R.string.act_prim_types_tableEmpty, 
+							Toast.LENGTH_SHORT).show();
+				}
 			}
 		};
 		

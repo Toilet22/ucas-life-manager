@@ -28,9 +28,16 @@ public class TimeLoggerHelper {
 		 * 获得系统时间，计算启动时间
 		 * 并将下次弹出时间写入preference
 		 ********************************/
+		if(null == userDataSync.currentLogedInUser || "".equals(userDataSync.currentLogedInUser)) {
+			userDataSync.currentLogedInUser = userDataSync.anonymousUser;
+		} else {
+			;
+		}
 		SharedPreferences sharedPref = thisActivity.getSharedPreferences(
-		        thisActivity.getString(R.string.curr_usr_name), thisActivity.MODE_PRIVATE);
+				userDataSync.currentLogedInUser, Context.MODE_PRIVATE);
 		long intervalInMillis = sharedPref.getLong("IntervalInMillis", 30 * 60000);
+		//for test only
+		intervalInMillis /= 30;
 		Log.v("Toilet", "TimeLoggerHelper: test IntervalInMillis is "+ Long.toString(intervalInMillis)+".");
         Calendar c=Calendar.getInstance();
         currTimeInMillis = c.getTimeInMillis();
@@ -51,7 +58,8 @@ public class TimeLoggerHelper {
 		Bundle mBundle = new Bundle();
         mBundle.putLong("StartTimeInMillis", currTimeInMillis);
         new_intent.putExtras(mBundle);
-        Log.v("Toilet", "TimeLoggerHelper: test Bundle: the currTimeInMillis is "+ Long.toString(mBundle.getLong("startTimeInMillis"))+".");
+        //new_intent.putExtra("StartTimeInMillis", currTimeInMillis);
+        Log.v("Toilet", "TimeLoggerHelper: test Bundle: the currTimeInMillis is "+ Long.toString(new_intent.getExtras().getLong("StartTimeInMillis"))+".");
         
         /********************************
          * 启动定时器 

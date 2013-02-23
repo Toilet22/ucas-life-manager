@@ -926,7 +926,8 @@ public class DatabaseUtil{
 	 */
 	public void initPrimeTypes() {
 		Log.i("DatabaseUtil","Creating Assigned Prime Types...");
-		
+
+		createPrimeTypes("未记录", null);
 		createPrimeTypes("学习", null);
 		createPrimeTypes("工作", null);
 		createPrimeTypes("社交", null);
@@ -935,7 +936,6 @@ public class DatabaseUtil{
 		createPrimeTypes("娱乐", null);
 		createPrimeTypes("购物", null);
 		createPrimeTypes("其它", null);
-		createPrimeTypes("未记录", null);
 		
 		Log.i("DatabaseUtil","Creating Assigned Prime Types Done!");
 	}
@@ -1093,6 +1093,8 @@ public class DatabaseUtil{
 	 */
 	public void initSubTypes() {
 		Log.i("DatabaseUtil","Creating Assigned Sub Types...");
+
+		createSubTypes("未记录", null, "未记录");
 		
 		createSubTypes("专业知识", null, "学习");
 		createSubTypes("人文知识", null, "学习");
@@ -1142,9 +1144,6 @@ public class DatabaseUtil{
 		
 		createSubTypes("交通路途", null, "其他");
 		createSubTypes("其他", null, "其他");
-		
-		
-		createSubTypes("未记录", null, "未记录");
 		
 		Log.i("DatabaseUtil","Creating Assigned Sub Types Done!");
 	}

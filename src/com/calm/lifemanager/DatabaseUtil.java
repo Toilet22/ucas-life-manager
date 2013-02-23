@@ -985,6 +985,7 @@ public class DatabaseUtil{
 			if(mDb.insert(PRIM_TYPES, null, initialValues) == -1) {
 				return DATABASE_ERROR;
 			} else {
+				
 				return SUCCESS;
 			}
 		} else {

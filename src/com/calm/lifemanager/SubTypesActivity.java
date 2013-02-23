@@ -2,6 +2,7 @@ package com.calm.lifemanager;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ public class SubTypesActivity extends Activity {
 	DatabaseUtil dbUtil;
 	ListView lstvw_subTypes;
 	String fatherTypeName;
+	String selectedTypeName;
 	Button btn_newType;
 	Button btn_back;
 	String newTypeName;
@@ -72,7 +74,7 @@ public class SubTypesActivity extends Activity {
 		});
         */
         /***********************************
-		 * 新增初级类别，
+		 * 新增次级类别，
 		 * 弹出Dialog输入类别名
 		 **********************************/
         Log.i("SubTypesActivity","before btn_newType.");
@@ -88,7 +90,7 @@ public class SubTypesActivity extends Activity {
 				newTypeName = (dialog_newType_edttxt_Typename.getText().toString());
 				//写入数据库操作	
 				Log.i("dialog newType", newTypeName);
-				if(dbUtil.newSubType(newTypeName, null, fatherTypeName) == -1){
+				if(dbUtil.newSubType(newTypeName, null, fatherTypeName) == DatabaseUtil.TYPE_NAME_ALREADY_EXISTS){
 					Toast.makeText(getApplicationContext(), R.string.act_sub_types_alreadyExist, 
 							Toast.LENGTH_SHORT).show();
 				}
@@ -112,7 +114,7 @@ public class SubTypesActivity extends Activity {
 		});
         
         /***********************************
-		 * 编辑初级类别，
+		 * 编辑次级类别，
 		 * 弹出Dialog输入新的类别名
 		 **********************************/        
 		//以下是Dialog的输入框
@@ -125,7 +127,12 @@ public class SubTypesActivity extends Activity {
 				newTypeName = (dialog_editType_edttxt_Typename.getText().toString());
 				//写入数据库操作	
 				Log.i("dialog editType", "editListener");
-				
+				ContentValues newVal = new ContentValues();
+				newVal.put(DatabaseUtil.KEY_TYPE_NAME, newTypeName);
+				if(dbUtil.updateSubType(selectedTypeName, newVal)==DatabaseUtil.TYPE_NAME_ALREADY_EXISTS){
+					Toast.makeText(getApplicationContext(), R.string.act_prim_types_alreadyExist, 
+							Toast.LENGTH_SHORT).show();
+				}
 			}
 		};
 		
@@ -138,7 +145,7 @@ public class SubTypesActivity extends Activity {
 			.create();	
         
         /***********************************
-		 * 删除初级类别，
+		 * 删除次级类别，
 		 * 弹出Dialog以供确认
 		 **********************************/		
 		//以下是Dialog的按钮监听
@@ -146,6 +153,13 @@ public class SubTypesActivity extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				//数据库删除操作	
 				Log.i("dialog removeType", "removeListener");
+				dbUtil.deletePrimeType(selectedTypeName);
+				cursor.requery();
+				if(!cursor.moveToFirst()){
+					dbUtil.newSubType("其他", null, fatherTypeName);
+					Toast.makeText(getApplicationContext(), R.string.act_prim_types_tableEmpty, 
+							Toast.LENGTH_SHORT).show();
+				}
 				
 			}
 		};
@@ -159,7 +173,7 @@ public class SubTypesActivity extends Activity {
         
 		
 		/***********************************
-		 * 删除初级类别，
+		 * 移动次级类别，
 		 * 弹出Dialog以供确认
 		 **********************************/	
 		final Cursor fatherCursor;
@@ -190,7 +204,7 @@ public class SubTypesActivity extends Activity {
 			.create();	
 		
         /***********************************
-		 * 长按初级类别列表的某个条目，
+		 * 长按差级类别列表的某个条目，
 		 * 弹出Dialog，提示需要进行的操作选项：
 		 *    编辑
 		 *    删除
@@ -233,6 +247,9 @@ public class SubTypesActivity extends Activity {
         lstvw_subTypes.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position,
 					long id) {
+				//获取按下的条目
+				selectedTypeName = cursor.getString(1);
+				Log.i("PrimTypesAcitivty_longClicked",selectedTypeName);
 				dlg_whatToDo.show();
 				return true;
 			}  	

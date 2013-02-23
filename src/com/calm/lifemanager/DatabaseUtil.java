@@ -1230,12 +1230,14 @@ public class DatabaseUtil{
 	}
 	
 	/**
-	 * This method will delete Sub Type.
+	 * used to delete subType from tb_sub_types
 	 * @param typeName
-	 * @return boolean
+	 * @param typeBelongTo
+	 * @return
 	 */
-	public boolean deleteSubType(String typeName) {
-		return mDb.delete(SUB_TYPES, KEY_TYPE_NAME + "='" + typeName + "'", null) > 0;
+	public boolean deleteSubType(String typeName, String typeBelongTo) {
+		return mDb.delete(SUB_TYPES, KEY_TYPE_NAME + "='" + typeName 
+				+ "' and " + KEY_TYPE_BELONGTO + "= '" + typeBelongTo + "'", null) > 0;
 	}
 	
 	/**
@@ -1243,8 +1245,8 @@ public class DatabaseUtil{
 	 * @param primeName
 	 * @return boolean
 	 */
-	public boolean deleteSubTypeBelongTo(String primeName) {
-		return mDb.delete(SUB_TYPES, KEY_TYPE_BELONGTO + "='" + primeName + "'", null) > 0;
+	public boolean deleteSubTypeBelongTo(String primeTypeName) {
+		return mDb.delete(SUB_TYPES, KEY_TYPE_BELONGTO + "='" + primeTypeName + "'", null) > 0;
 	}
 	
 	/**
@@ -1253,12 +1255,13 @@ public class DatabaseUtil{
 	 * @param updateValues
 	 * @return int
 	 */
-	public int updateSubType(String typeName, ContentValues updateValues) {
+	public int updateSubType(String oldTypeName, String oldTypeBelongTo, ContentValues updateValues) {
 		String updateTypeName = updateValues.getAsString(KEY_TYPE_NAME);
 		String primeTypeName = updateValues.getAsString(KEY_TYPE_BELONGTO);
 		
 		if(!isSubTypeExisted(updateTypeName, primeTypeName)) {
-			 if(mDb.update(SUB_TYPES, updateValues, KEY_TYPE_NAME + "='" + typeName + "'", null) > 0) {
+			 if(mDb.update(SUB_TYPES, updateValues, KEY_TYPE_NAME + "='" + oldTypeName  
+						+ "' and " + KEY_TYPE_BELONGTO + "= '" + oldTypeBelongTo + "'", null) > 0) {
 				 return SUCCESS;
 			 } else {
 				 return UPDATE_SUB_TYPE_ERROR;

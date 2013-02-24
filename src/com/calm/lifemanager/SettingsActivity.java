@@ -386,8 +386,12 @@ public class SettingsActivity extends Activity {
 									int status = 100;
 					        		
 					        		try {
-					        			retStr = NetToolUtil.sendGetRequest(NetToolUtil.accountLogoutUrl, null, userDataSync.defaultEncoding);
+					        			NetToolUtil.serverUrl = NetToolUtil.serverUrlHttps;
+					        			
+					        			//retStr = NetToolUtil.sendGetRequest(NetToolUtil.accountLogoutUrl, null, userDataSync.defaultEncoding);
 										
+					        			retStr = NetToolUtil.sendGetRequestHttps(NetToolUtil.accountLogoutUrl, null, userDataSync.defaultEncoding);
+					        			
 					        			// Get info out of the String
 										JSONObject retJson = new JSONObject(retStr);
 										message = retJson.getString("message");
@@ -440,6 +444,7 @@ public class SettingsActivity extends Activity {
 							new Thread() {
 								public void run() {
 									DatabaseUtil dbUtil = new DatabaseUtil(SettingsActivity.this);
+									Message msg = new Message();
 									
 									try {				
 										// Sync User Data Table by Table
@@ -500,6 +505,8 @@ public class SettingsActivity extends Activity {
 										
 									} catch (JSONException e) {
 										// TODO Auto-generated catch block
+										msg.what = HTTP_ERROR;
+										mHandler.sendMessage(msg);
 										e.printStackTrace();
 									} finally {
 										

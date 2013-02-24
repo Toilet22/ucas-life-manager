@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 public class SplashActivity extends Activity {
-	private final int SPLASH_DISPLAY_LENGHT = 0; // —”≥Ÿ»˝√Î
+	private final int SPLASH_DISPLAY_LENGHT = 1000; // —”≥Ÿ“ª√Î
 	boolean isFirstUse;
 	
 	@Override

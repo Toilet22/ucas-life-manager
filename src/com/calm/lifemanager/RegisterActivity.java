@@ -214,9 +214,16 @@ public class RegisterActivity extends Activity {
 					int status = 100;
 
 					try {
-						retStr = NetToolUtil.sendPostRequest(
+						NetToolUtil.serverUrl = NetToolUtil.serverUrlHttps;
+						
+//						retStr = NetToolUtil.sendPostRequest(
+//								NetToolUtil.accountRegisterUrl, newUser,
+//								"utf-8");
+						
+						retStr = NetToolUtil.sendPostRequestHttps(
 								NetToolUtil.accountRegisterUrl, newUser,
 								"utf-8");
+						
 						if (retStr != null) {
 							Log.i("User Registation", "result:" + retStr);
 						}

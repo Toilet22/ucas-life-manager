@@ -328,9 +328,16 @@ public class LoginActivity extends Activity {
 					int status = 100;
 
 					try {
+						NetToolUtil.serverUrl = NetToolUtil.serverUrlHttps;
+						
+//						retStr = NetToolUtil
+//								.sendPostRequest(NetToolUtil.accountLoginUrl,
+//										loginUser, "utf-8");
+						
 						retStr = NetToolUtil
-								.sendPostRequest(NetToolUtil.accountLoginUrl,
+								.sendPostRequestHttps(NetToolUtil.accountLoginUrl,
 										loginUser, "utf-8");
+						
 						if (retStr != null) {
 							Log.i("User Login", "result:" + retStr);
 						}

@@ -15,9 +15,18 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;  
 import java.net.URL;  
 import java.net.URLEncoder;  
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;  
 import java.util.List;  
 import java.util.Map;  
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
   
 import org.apache.http.HttpEntity;  
 import org.apache.http.HttpResponse;  
@@ -52,7 +61,9 @@ public class NetToolUtil {
     public static CookieStore cookieStore;
     public static String sessionValue;
     
-    public static final String serverUrl = "http://daydayup-timemanager.rhcloud.com";
+    public static String serverUrl = "https://daydayup-timemanager.rhcloud.com";
+    public static final String serverUrlHttp = "http://daydayup-timemanager.rhcloud.com";
+    public static final String serverUrlHttps = "https://daydayup-timemanager.rhcloud.com";
     
     public static final String timeTipUrl = serverUrl + "/tip/time";
     public static final String moodTipUrl = serverUrl + "/tip/mood";
@@ -273,7 +284,7 @@ public class NetToolUtil {
         StringBuffer sb = new StringBuffer();  
         String line = null;  
         BufferedReader buffer = null;  
-        try {  
+        try {
             // 创建一个URL对象  
             URL url = new URL(urlStr);  
             // 创建一个HTTP连接  
@@ -461,7 +472,7 @@ public class NetToolUtil {
             // 数据  
             String retData = null;
             String responseData = "";  
-            while ((retData = in.readLine()) != null) {  
+            while ((retData = in.readLine()) != null) {
                 responseData += retData;  
             }
             in.close();  
@@ -909,4 +920,306 @@ public class NetToolUtil {
     public static String todolistPull(String serverUrl, JSONObject paramData, Context context) {
     	return getResponseForPostJson(serverUrl, paramData, context);
     }
+    
+    /******************************************Add Https Support******************************************/
+    
+	private static class MytmArray implements X509TrustManager {
+		public X509Certificate[] getAcceptedIssuers() {
+			// return null;
+			return new X509Certificate[] {};
+		}
+
+		public void checkClientTrusted(X509Certificate[] chain, String authType)
+				throws CertificateException {
+			// TODO Auto-generated method stub
+
+		}
+
+		public void checkServerTrusted(X509Certificate[] chain, String authType)
+				throws CertificateException {
+			// TODO Auto-generated method stub
+			// System.out.println("cert: " + chain[0].toString() +
+			// ", authType: "
+			// + authType);
+		}
+	};
+
+	/**
+	 * 信任所有主机-对于任何证书都不做检查
+	 */
+	private static void trustAllHosts() {
+		// Create a trust manager that does not validate certificate chains
+		// Android 采用X509的证书信息机制
+		// Install the all-trusting trust manager
+		try {
+			SSLContext sc = SSLContext.getInstance("TLS");
+			sc.init(null, new MytmArray[] { new MytmArray() }, new java.security.SecureRandom());
+			HttpsURLConnection
+					.setDefaultSSLSocketFactory(sc.getSocketFactory());
+			// HttpsURLConnection.setDefaultHostnameVerifier(DO_NOT_VERIFY);//
+			// 不进行主机名确认
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	static HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
+		public boolean verify(String hostname, SSLSession session) {
+			// TODO Auto-generated method stub
+			// System.out.println("Warning: URL Host: " + hostname + " vs. "
+			// + session.getPeerHost());
+			return true;
+		}
+	};
+	
+	/**
+	 * Use Post Method to send request, supporting https
+	 */
+	public static String sendPostRequestHttps(String urlPath,
+			Map<String, String> params, String encoding) throws Exception {
+
+		StringBuilder sb = new StringBuilder();
+		// 如果参数不为空
+		if (params != null && !params.isEmpty()) {
+			for (Map.Entry<String, String> entry : params.entrySet()) {
+				// Post方式提交参数的话，不能省略内容类型与长度
+				sb.append(entry.getKey()).append('=')
+						.append(URLEncoder.encode(entry.getValue(), encoding))
+						.append('&');
+			}
+			sb.deleteCharAt(sb.length() - 1);
+		}
+
+		// 得到实体的二进制数据
+		byte[] entitydata = sb.toString().getBytes();
+
+		HttpURLConnection conn = null;
+		URL url = new URL(urlPath);
+		// 判断是http请求还是https请求
+		if (url.getProtocol().toLowerCase().equals("https")) {
+			Log.i("NetToolUtil", "Starting a Https Request...");
+			trustAllHosts();
+			conn = (HttpsURLConnection) url.openConnection();
+			((HttpsURLConnection) conn).setHostnameVerifier(DO_NOT_VERIFY);// 不进行主机名确认
+
+		} else {
+			conn = (HttpURLConnection) url.openConnection();
+		}
+
+		conn.setRequestMethod("POST");
+		conn.setConnectTimeout(TIMEOUT);
+
+		// 设置Cookie
+		if (sessionValue != null && sessionValue.length() > 0) {
+			conn.setRequestProperty("Cookie", sessionValue);
+		}
+
+		// 如果通过post提交数据，必须设置允许对外输出数据
+		conn.setDoOutput(true);
+		// 设置不使用缓存
+		conn.setUseCaches(false);
+		// 这里只设置内容类型与内容长度的头字段
+		conn.setRequestProperty("Content-Type",
+				"application/x-www-form-urlencoded");
+		// conn.setRequestProperty("Content-Type", "text/xml");
+		conn.setRequestProperty("Charset", encoding);
+		conn.setRequestProperty("Content-Length",
+				String.valueOf(entitydata.length));
+		OutputStream outStream = conn.getOutputStream();
+		// 把实体数据写入是输出流
+		outStream.write(entitydata);
+		// 内存中的数据刷入
+		outStream.flush();
+		outStream.close();
+
+		// 如果请求响应码是200，则表示成功
+		if (conn.getResponseCode() == 200) {
+			// 获得服务器响应的数据
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					conn.getInputStream(), encoding), 8 * 1024);
+			// 数据
+			String retData = null;
+			String responseData = "";
+			while ((retData = in.readLine()) != null) {
+				responseData += retData;
+			}
+			in.close();
+
+			// 获得cookie
+			String cookie = conn.getHeaderField("set-cookie");
+			if (cookie != null && cookie.length() > 0) {
+				sessionValue = cookie;
+			}
+
+			return responseData;
+		} else {
+			Log.i("PostRequest",
+					"Error Code: " + conn.getResponseCode()
+							+ conn.getResponseMessage());
+			return "sendText error!";
+		}
+	}
+	
+	/**
+	 * Use Get Method to send request, supporting https
+	 */
+	public static String sendGetRequestHttps(String urlPath,
+			Map<String, String> params, String encoding) throws Exception {
+
+		// 使用StringBuilder对象
+		StringBuilder sb = new StringBuilder(urlPath);
+		sb.append('?');
+
+		// 迭代Map
+		if (params != null && !params.isEmpty()) {
+			for (Map.Entry<String, String> entry : params.entrySet()) {
+				sb.append(entry.getKey()).append('=')
+						.append(URLEncoder.encode(entry.getValue(), encoding))
+						.append('&');
+			}
+		}
+
+		sb.deleteCharAt(sb.length() - 1);
+
+		// 打开链接
+		HttpURLConnection conn = null;
+		URL url = new URL(sb.toString());
+		
+		// 判断是http请求还是https请求
+		if (url.getProtocol().toLowerCase().equals("https")) {
+			Log.i("NetToolUtil", "Starting a Https Request...");
+			trustAllHosts();
+			conn = (HttpsURLConnection) url.openConnection();
+			((HttpsURLConnection) conn).setHostnameVerifier(DO_NOT_VERIFY);// 不进行主机名确认
+
+		} else {
+			conn = (HttpURLConnection) url.openConnection();
+		}
+
+		conn.setRequestMethod("GET");
+		conn.setRequestProperty("Content-Type", "text/xml");
+		conn.setRequestProperty("Charset", encoding);
+		conn.setConnectTimeout(TIMEOUT);
+
+		// 设置Cookie
+		if (sessionValue != null && sessionValue.length() > 0) {
+			conn.setRequestProperty("Cookie", sessionValue);
+		}
+
+		// 如果请求响应码是200，则表示成功
+		if (conn.getResponseCode() == 200) {
+			// 获得服务器响应的数据
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					conn.getInputStream(), encoding), 8 * 1024);
+			// 数据
+			String retData = null;
+			String responseData = "";
+			while ((retData = in.readLine()) != null) {
+				responseData += retData;
+			}
+			in.close();
+
+			// 获得cookie
+			String cookie = conn.getHeaderField("set-cookie");
+			if (cookie != null && cookie.length() > 0) {
+				sessionValue = cookie;
+			}
+
+			return responseData;
+		} else {
+			Log.i("PostRequest",
+					"Error Code: " + conn.getResponseCode()
+							+ conn.getResponseMessage());
+			return "sendGetRequest error!";
+		}
+
+	}
+	
+	/**
+	 * Use Post Method to send JSON request, supporting https
+	 */
+	public static String sendPostRequestJsonHttps(String urlPath,
+			JSONObject params, String encoding) throws Exception {
+
+		Log.i("PostJson", "Data to Post: " + params.toString());
+
+		// 得到实体的二进制数据
+		// String jsonData = URLEncoder.encode(params.toString(),encoding);
+		// byte[] entitydata = jsonData.getBytes();
+
+		// String jsonData = String.valueOf(params);
+		// byte[] entitydata = jsonData.getBytes();
+
+		byte[] entitydata = params.toString().getBytes();
+
+		HttpURLConnection conn = null;
+		URL url = new URL(urlPath);
+
+		// 判断是http请求还是https请求
+		if (url.getProtocol().toLowerCase().equals("https")) {
+			Log.i("NetToolUtil", "Starting a Https Request...");
+			trustAllHosts();
+			conn = (HttpsURLConnection) url.openConnection();
+			((HttpsURLConnection) conn).setHostnameVerifier(DO_NOT_VERIFY);// 不进行主机名确认
+
+		} else {
+			conn = (HttpURLConnection) url.openConnection();
+		}
+
+		conn.setRequestMethod("POST");
+		conn.setConnectTimeout(TIMEOUT);
+
+		// 设置Cookie
+		if (sessionValue != null && sessionValue.length() > 0) {
+			conn.setRequestProperty("Cookie", sessionValue);
+		}
+
+		// 如果通过post提交数据，必须设置允许对外输出数据
+		conn.setDoOutput(true);
+		// 设置不使用缓存
+		conn.setUseCaches(false);
+
+		// 设置User-Agent: Fiddler
+		// conn.setRequestProperty("ser-Agent", "Fiddler");
+
+		// 这里只设置内容类型与内容长度的头字段
+		conn.setRequestProperty("Content-Type", "application/json");
+		// conn.setRequestProperty("Accept", "application/json");
+		conn.setRequestProperty("Charset", encoding);
+		conn.setRequestProperty("Content-Length",
+				String.valueOf(entitydata.length));
+		OutputStream outStream = conn.getOutputStream();
+		// 把实体数据写入是输出流
+		outStream.write(entitydata);
+		// 内存中的数据刷入
+		outStream.flush();
+		outStream.close();
+
+		// 如果请求响应码是200，则表示成功
+		if (conn.getResponseCode() == 200) {
+			// 获得服务器响应的数据
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					conn.getInputStream(), encoding), 8 * 1024);
+			// 数据
+			String retData = null;
+			String responseData = "";
+			while ((retData = in.readLine()) != null) {
+				responseData += retData;
+			}
+			in.close();
+
+			// 获得cookie
+			String cookie = conn.getHeaderField("set-cookie");
+			if (cookie != null && cookie.length() > 0) {
+				sessionValue = cookie;
+			}
+
+			return responseData;
+		} else {
+			Log.i("PostJson",
+					"Error Code: " + conn.getResponseCode()
+							+ conn.getResponseMessage());
+			return "sendJson error!";
+		}
+	}
 }

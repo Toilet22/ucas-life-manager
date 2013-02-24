@@ -27,8 +27,8 @@ private double[] value = {22,22,22};
     }
     
     public GraphicalView execute(Context context) {
-        int[] colors = new int[] { Color.RED, Color.YELLOW, Color.BLUE }; 
-        DefaultRenderer renderer = buildCategoryRenderer(colors); 
+        int[] colors = new int[] { Color.RED, Color.YELLOW, Color.BLUE };
+        DefaultRenderer renderer = buildCategoryRenderer(colors);
         CategorySeries categorySeries = new CategorySeries("Vehicles Chart"); 
         categorySeries.add("Ñ§Ï° ", value[0]); 
         categorySeries.add("¹¤×÷", value[1]); 

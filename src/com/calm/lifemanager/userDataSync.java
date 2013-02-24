@@ -72,8 +72,14 @@ public class userDataSync {
 			return null;
 		} else {
 			try {
-				retStr = NetToolUtil.sendPostRequestJson(url, param,
+				NetToolUtil.serverUrl = NetToolUtil.serverUrlHttps;
+				
+//				retStr = NetToolUtil.sendPostRequestJson(url, param,
+//						defaultEncoding);
+				
+				retStr = NetToolUtil.sendPostRequestJsonHttps(url, param,
 						defaultEncoding);
+				
 				Log.i("CloudSync","Return Data from " + url + " :" + retStr);
 				retJson = new JSONObject(retStr);
 			} catch (Exception e) {

@@ -128,5 +128,8 @@
     <string name="please_login_first">请先登录</string>
     <string name="subtype_others_cn">其他！</string>
     <string name="success_log_in_with_offline">登陆成功，您处于离线模式！</string>
+    <string name="success_log_out_with_offline">成功从离线模式登出！</string>
     <string name="login_http_error_and_no_user_found">http通信错误，且在本地未发现用户记录，请先联网登录！</string>
+    <string name="back_generic_en">Back</string>
+    <string name="suggestion_generic_en">Suggestion</string>
 </resources>

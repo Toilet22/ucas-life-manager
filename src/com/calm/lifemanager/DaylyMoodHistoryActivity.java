@@ -81,8 +81,8 @@ public class DaylyMoodHistoryActivity extends TabActivity {
         
 		//ListView listViewMoodDetails = (ListView)findViewById(R.id.activity_history_mood_daily_listView_show_details);
         
-        ImageButton imgButtonBack = (ImageButton)findViewById(R.id.actitivity_history_mood_daily_imageButton_back);
-        ImageButton imgButtonSuggestion = (ImageButton)findViewById(R.id.actitivity_history_mood_daily_imageButton_suggestion);
+        Button imgButtonBack = (Button)findViewById(R.id.actitivity_history_mood_daily_imageButton_back);
+        Button imgButtonSuggestion = (Button)findViewById(R.id.actitivity_history_mood_daily_imageButton_suggestion);
         ImageButton imgButtonSwapLeft = (ImageButton)findViewById(R.id.actitivity_history_mood_daily_imageButton_swap_left);
         ImageButton imgButtonSwapRight = (ImageButton)findViewById(R.id.actitivity_history_mood_daily_imageButton_swap_right);
         

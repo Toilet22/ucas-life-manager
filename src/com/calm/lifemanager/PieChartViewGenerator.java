@@ -38,8 +38,9 @@ private double[] value = {22,22,22};
       
     protected DefaultRenderer buildCategoryRenderer(int[] colors) { 
         DefaultRenderer renderer = new DefaultRenderer(); 
-        renderer.setBackgroundColor(Color.GRAY);
+        renderer.setBackgroundColor(Color.WHITE);
         renderer.setApplyBackgroundColor(true);
+        renderer.setClickEnabled(true);
         renderer.setLabelsTextSize(20);
         renderer.setChartTitle("·Ö²¼Í¼");
         renderer.setChartTitleTextSize(30);

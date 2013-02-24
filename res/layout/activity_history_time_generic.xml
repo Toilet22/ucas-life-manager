@@ -16,7 +16,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical" >
-
+
+
+
             <TabWidget
                 android:id="@android:id/tabs"
                 android:layout_width="match_parent"
@@ -37,22 +39,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
 
-                    <ImageButton
+                    <Button
                         android:id="@+id/actitivity_history_time_daily_imageButton_back"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toLeftOf="@drawable/swap_btn_left"
-                        android:background="@drawable/back_btn"
-                        android:src="@drawable/back_btn" />
+                        android:background="@drawable/little_btn_normal"
+                        android:text="@string/back_generic_en" />
 
-                    <ImageButton
+                    <Button
                         android:id="@+id/actitivity_history_time_daily_imageButton_suggestion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
-                        android:background="@drawable/acount_btn"
-                        android:src="@drawable/acount_btn" />
+                        android:background="@drawable/little_btn_normal"
+                        android:text="@string/suggestion_generic_en" />
 
                     <ImageButton
                         android:id="@+id/actitivity_history_time_daily_imageButton_swap_left"
@@ -71,7 +73,8 @@
                         android:layout_alignTop="@+id/actitivity_history_time_daily_imageButton_swap_left"
                         android:background="@drawable/swap_btn_right"
                         android:src="@drawable/swap_btn_right" />
-
+
+
                     <LinearLayout
                         android:id="@+id/activity_history_time_daily_time_cost_linearLayout"
                         android:layout_width="wrap_content"
@@ -94,21 +97,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
 
-                    <ImageButton
+                    <Button
                         android:id="@+id/actitivity_history_time_daily_imageButton_back"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/back_btn"
-                        android:src="@drawable/back_btn" />
+                        android:layout_toLeftOf="@drawable/swap_btn_left"
+                        android:background="@drawable/little_btn_normal"
+                        android:text="@string/back_generic_en" />
 
-                    <ImageButton
+                    <Button
                         android:id="@+id/actitivity_history_time_daily_imageButton_suggestion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
-                        android:background="@drawable/acount_btn"
-                        android:src="@drawable/acount_btn" />
+                        android:background="@drawable/little_btn_normal"
+                        android:text="@string/suggestion_generic_en" />
 
                     <ImageButton
                         android:id="@+id/actitivity_history_time_daily_imageButton_swap_left"
@@ -127,7 +131,11 @@
                         android:layout_alignTop="@+id/actitivity_history_time_daily_imageButton_swap_left"
                         android:background="@drawable/swap_btn_right"
                         android:src="@drawable/swap_btn_right" />
-
+
+
+
+
+
                     <RelativeLayout
                         android:id="@+id/activity_history_time_daily_efficient_relativeLayout"
                         android:layout_width="wrap_content"
@@ -149,21 +157,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
 
-                    <ImageButton
+                    <Button
                         android:id="@+id/actitivity_history_time_daily_imageButton_back"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/back_btn"
-                        android:src="@drawable/back_btn" />
+                        android:layout_toLeftOf="@drawable/swap_btn_left"
+                        android:background="@drawable/little_btn_normal"
+                        android:text="@string/back_generic_en" />
 
-                    <ImageButton
+                    <Button
                         android:id="@+id/actitivity_history_time_daily_imageButton_suggestion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
-                        android:background="@drawable/acount_btn"
-                        android:src="@drawable/acount_btn" />
+                        android:background="@drawable/little_btn_normal"
+                        android:text="@string/suggestion_generic_en" />
 
                     <ImageButton
                         android:id="@+id/actitivity_history_time_daily_imageButton_swap_left"

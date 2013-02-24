@@ -3,7 +3,7 @@
     android:id="@+id/act_current_btn_back"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/current_bg"
+    android:background="@drawable/bg3"
     android:orientation="vertical" >
 
     <LinearLayout

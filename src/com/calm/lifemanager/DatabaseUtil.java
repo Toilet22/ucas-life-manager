@@ -1173,8 +1173,8 @@ public class DatabaseUtil{
 		createSubTypes("便捷网购", null, "购物");
 		createSubTypes("其他", null, "购物");
 		
-		createSubTypes("交通路途", null, "其他");
-		createSubTypes("其他", null, "其他");
+		createSubTypes("交通路途", null, "其它");
+		createSubTypes("其他", null, "其它");
 		
 		Log.i("DatabaseUtil","Creating Assigned Sub Types Done!");
 	}

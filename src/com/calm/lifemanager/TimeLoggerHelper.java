@@ -37,7 +37,7 @@ public class TimeLoggerHelper {
 				userDataSync.currentLogedInUser, Context.MODE_PRIVATE);
 		long intervalInMillis = sharedPref.getLong("IntervalInMillis", 30 * 60000);
 		//for test only
-		intervalInMillis /= 30;
+		//intervalInMillis /= 30;
 		Log.v("Toilet", "TimeLoggerHelper: test IntervalInMillis is "+ Long.toString(intervalInMillis)+".");
         Calendar c=Calendar.getInstance();
         currTimeInMillis = c.getTimeInMillis();

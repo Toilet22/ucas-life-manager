@@ -370,6 +370,19 @@ public class SettingsActivity extends Activity {
 							Toast.makeText(SettingsActivity.this,
 									getText(R.string.please_login_first),
 									Toast.LENGTH_LONG).show();
+						} else if(userDataSync.isWorkingOffline) {
+							Toast.makeText(SettingsActivity.this,
+									getText(R.string.success_log_out_with_offline),
+									Toast.LENGTH_LONG).show();
+							
+							// Cancel the state of working offline
+							userDataSync.isWorkingOffline = false;
+							
+							// Redirect User to Login Activity and Switch User
+							userDataSync.isSwithingUser = true;
+							Intent iLogin = new Intent(SettingsActivity.this, LoginActivity.class);
+							startActivity(iLogin);
+							
 						} else {
 							pd = ProgressDialog.show(SettingsActivity.this, "",
 									getString(R.string.is_logingout));

@@ -4,5 +4,8 @@
     <color name="green">#00FF00</color>  
     <color name="blue">#0000FF</color> 
     <color name="black">#000000</color> 
-    <color name="white">#FFFFFF</color>  
+    <color name="white">#FFFFFF</color> 
+    <color name="brown1">#663300</color>  
+    <color name="brown2">#993300</color>  
+    <color name="brown3">#330000</color>  
 </resources>

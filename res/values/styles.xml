@@ -1,5 +1,15 @@
 <resources>
 
     <style name="AppTheme" parent="android:Theme.Light" />
+    
+    <style name="toiletRatingBarStyle" parent="@android:style/Widget.RatingBar">  
+  
+       <item name="android:progressDrawable">@drawable/toilet_rating_bar</item>  
+  
+       <item name="android:minHeight">30dp</item>  
+  
+       <item name="android:maxHeight">60dp</item>  
+  
+    </style> 
 
 </resources>

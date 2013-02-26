@@ -12,11 +12,13 @@
     <string name="activity_history_monthly">按月查看</string>
     <string name="back">返回</string>
     <string name="suggestion">建议</string>
-    <string name="act_main_btn_settings">设置</string>
-    <string name="act_main_btn_login">登录</string>
-    <string name="act_main_btn_yesterday">昨天的我</string>
-    <string name="act_main_btn_today">今天的我</string>
-    <string name="act_main_btn_tomorrow">明天的我</string>
+    <string name="act_main_txtvw_logStarted">下次记录时间</string>
+    <string name="act_main_txtvw_logStopped">定时记录已关</string>
+    <string name="act_main_txtvw_nextLogTime">  00:00  </string>
+    <string name="act_main_btn_iWantToRcd">现在记一笔</string>
+    <string name="act_main_btn_history">历史记录</string>
+    <string name="act_main_btn_future">规划未来</string>
+    <string name="act_main_btn_settings">使用设置</string>
     <string name="act_settings_txtvw_regularRcd">定时记录功能</string>
     <string name="act_settings_txtvw_interval">时间间隔</string>
     <string name="act_settings_txtvw_time">分钟</string>
@@ -41,9 +43,12 @@
     <string name="act_settings_toast_intervalChanged">时间间隔已更改，重新开始计时</string>
     <string name="act_settings_toast_intervalFailed">定时记录功能关闭，时间间隔已更改</string>
     <string name="act_youRcrd_btn_save">保存</string>
-    <string name="act_youRcrd_txtvw_mood">心情指数</string>
-    <string name="act_youRcrd_txtvw_effc">效率指数</string>
+    <string name="act_youRcrd_txtvw_mood">心情</string>
+    <string name="act_youRcrd_txtvw_effc">效率</string>
     <string name="act_youRcrd_txtvw_type">类别选择</string>
+    <string name="act_youRcrd_txtvw_selfrating">自我评价</string>
+    <string name="act_youRcrd_txtvw_finish">就记这么多吧</string>
+    
     <string name="act_current_btn_adjustMood">让我开心一下</string>
     <string name="act_current_txtvw_logStarted">下次记录时间：</string>
     <string name="act_current_txtvw_logStopped">定时记录已关闭</string>
@@ -120,11 +125,11 @@
     <string name="is_logingout">正在登出</string>
     <string name="login_http_error">http通信错误</string>
     <string name="splash">Splash</string>
-    <string name="switch_user">切换用户</string>
+    <string name="switch_user">切换</string>
     <string name="user_data_sync">用户数据同步</string>
     <string name="current_loged_in_user">当前登录账户：</string>
     <string name="loged_in_user_indicator">没有用户</string>
-    <string name="sync_data">同步数据</string>
+    <string name="sync_data">同步用户数据</string>
     <string name="please_login_first">请先登录</string>
     <string name="subtype_others_cn">其他！</string>
     <string name="success_log_in_with_offline">登陆成功，您处于离线模式！</string>

@@ -14,9 +14,11 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -35,8 +37,6 @@ public class YouShouldRecordActivity extends Activity {
 	Button btn_sad;
 	Button btn_angry;
 	Button btn_save;
-	Button btn_setStart;
-	Button btn_setEnd;
 	TextView txt_startTime;
 	TextView txt_endTime;
 	WheelView whl_fatherType;
@@ -53,6 +53,8 @@ public class YouShouldRecordActivity extends Activity {
     String subType[];
 	//preferences¼ÇÂ¼
 	SharedPreferences sharedPref;
+	LinearLayout lnrLyt_startTime;
+	LinearLayout lnrLyt_endTime;
 	Boolean isRingOn;
 	Boolean isVibrationOn;
 	DatabaseUtil dbUtil;
@@ -207,21 +209,27 @@ public class YouShouldRecordActivity extends Activity {
 		endHour = currTime.get(Calendar.HOUR_OF_DAY);
 		endMin = currTime.get(Calendar.MINUTE);
 		// init the time;
+		Log.v("YouRcd","YouRecord: before set txtvw_start");
 		txt_startTime = (TextView)findViewById(R.id.act_youRcd_txt_startTime);
 		txt_startTime.setText(Integer.toString(startHour) + ":"+Integer.toString(startMin));
+		Log.v("YouRcd","YouRecord: before set txtvw_end");
 		txt_endTime = (TextView)findViewById(R.id.act_youRcd_txt_endTime);
 		txt_endTime.setText(Integer.toString(endHour) + ":"+Integer.toString(endMin));
 		
 		// set start time;
-		btn_setStart = (Button)findViewById(R.id.act_youRcd_btn_setStart);
-		btn_setStart.setOnClickListener(new Button.OnClickListener(){
+		Log.v("YouRcd","YouRecord: before set linearLayout_time_start");
+		lnrLyt_startTime = (LinearLayout)findViewById(R.id.act_youRcd_lnrLyt_startTime);
+		Log.v("YouRcd","YouRecord: set linearLayout_time_start success");
+		//lnrLyt_startTime.setFocusableInTouchMode(true);
+		Log.v("YouRcd","YouRecord: before set onClickListener");		
+		lnrLyt_startTime.setOnClickListener(new OnClickListener(){
 			public void onClick(View view){
 				new TimePickerDialog(YouShouldRecordActivity.this,new OnTimeSetListener(){
 					public void onTimeSet(TimePicker view,int hour,int minute)
 					{
 						//set the startTime
-						//startHour = hour;
-						//startMin = minute;
+						startHour = hour;
+						startMin = minute;
 						txt_startTime.setText(Integer.toString(startHour) + ":"+Integer.toString(startMin));
 					}
 				}, startHour, startMin, true).show();
@@ -229,8 +237,11 @@ public class YouShouldRecordActivity extends Activity {
 		});
 		
 		//set end time
-		btn_setEnd = (Button)findViewById(R.id.act_youRcd_btn_setEnd);
-		btn_setEnd.setOnClickListener(new Button.OnClickListener(){
+		Log.v("YouRcd","YouRecord: before set linearLayout_time_end");
+		lnrLyt_endTime = (LinearLayout)findViewById(R.id.act_youRcd_lnrLyt_endTime);
+		
+		Log.v("YouRcd","YouRecord: before set onClickListener");		
+		lnrLyt_endTime.setOnClickListener(new OnClickListener(){
 			public void onClick(View view){
 				new TimePickerDialog(YouShouldRecordActivity.this,new OnTimeSetListener(){
 					public void onTimeSet(TimePicker view,int hour,int minute)
@@ -327,7 +338,7 @@ public class YouShouldRecordActivity extends Activity {
 				setAllBtnUnpushedByPic();
 				//btn_angry.setWidth(width_btnMood + 10);
 				//btn_angry.setHeight(height_btnMood + 10);
-				//btn_angry.setBackgroundResource(R.drawable.angry_pushed);			
+				btn_angry.setBackgroundResource(R.drawable.angry_pushed);			
 				rt_mood = "angry";		
 			}			
 		});

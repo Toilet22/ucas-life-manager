@@ -313,7 +313,7 @@
              android:layout_height="wrap_content"
              android:layout_marginTop="10dp"
              android:background="@drawable/selector_main_btn_nowrcd"
-             android:text="设置类别列表"
+             android:text="@string/act_settings_set_type_items"
              android:textColor="@color/brown1"
              android:textSize="18sp" />
 

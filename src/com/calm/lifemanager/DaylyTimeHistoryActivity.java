@@ -109,8 +109,8 @@ public class DaylyTimeHistoryActivity extends TabActivity {
 	        detailsListDailyView.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,EVENTS));
 	        detailsListContainer.addView(detailsListDailyView, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 	        
-	        ImageButton imgButtonBack = (ImageButton)findViewById(R.id.actitivity_history_time_daily_imageButton_back);
-	        ImageButton imgButtonSuggestion = (ImageButton)findViewById(R.id.actitivity_history_time_daily_imageButton_suggestion);
+	        Button imgButtonBack = (Button)findViewById(R.id.actitivity_history_time_daily_imageButton_back);
+	        Button imgButtonSuggestion = (Button)findViewById(R.id.actitivity_history_time_daily_imageButton_suggestion);
 	        ImageButton imgButtonSwapLeft = (ImageButton)findViewById(R.id.actitivity_history_time_daily_imageButton_swap_left);
 	        ImageButton imgButtonSwapRight = (ImageButton)findViewById(R.id.actitivity_history_time_daily_imageButton_swap_right);
 	        

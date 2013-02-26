@@ -297,31 +297,36 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/linearLayout1"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:layout_marginTop="4dp"
         android:orientation="vertical" >
 		
          <Button
              android:id="@+id/act_settings_btn_setTypes"
              style="?android:attr/buttonStyleSmall"
-             android:layout_width="wrap_content"
+             android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:layout_marginTop="10dp"
              android:background="@drawable/selector_main_btn_nowrcd"
-             android:text="设置类别列表" />
+             android:text="设置类别列表"
+             android:textColor="@color/brown1"
+             android:textSize="18sp" />
 
          <Button
              android:id="@+id/act_settings_btn_sync_data"
              style="?android:attr/buttonStyleSmall"
-             android:layout_width="wrap_content"
+             android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:layout_marginTop="10dp"
              android:background="@drawable/selector_main_btn_nowrcd"
-             android:text="@string/sync_data" />
+             android:text="@string/sync_data"
+             android:textColor="@color/brown1"
+             android:textSize="18sp" />
 
     </LinearLayout>
 

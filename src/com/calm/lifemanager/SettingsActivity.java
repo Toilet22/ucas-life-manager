@@ -1,15 +1,11 @@
 package com.calm.lifemanager;
 
 
-import java.util.Calendar;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,6 +20,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +53,7 @@ public class SettingsActivity extends Activity {
 	Button btn_switch_user;
 	Button btn_sync_data;
 	TextView txtvw_current_loged_in_user;
+	LinearLayout lnrlyt_interval;
 	
 	//选择时间间隔
 	TextView txtvw_interval;
@@ -252,7 +250,8 @@ public class SettingsActivity extends Activity {
 		
 		
 		//添加对显示时间间隔的TextView的点击监听
-		txtvw_interval.setOnClickListener(new OnClickListener() { 
+		lnrlyt_interval = (LinearLayout)findViewById(R.id.act_settings_lnrlyt_interval);
+		lnrlyt_interval.setOnClickListener(new OnClickListener() { 
 			public void onClick(View v) {
 				dlg_interval.show();		
 			} 
@@ -347,8 +346,6 @@ public class SettingsActivity extends Activity {
 		btn_back = (Button)findViewById(R.id.act_settings_btn_back);
 		btn_back.setOnClickListener(new Button.OnClickListener(){
 			public void onClick(View v){
-				Intent iSettings = new Intent(SettingsActivity.this, MainActivity.class);
-				startActivity(iSettings);
 				finish();
 			}
 		});

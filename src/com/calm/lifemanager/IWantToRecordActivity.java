@@ -14,7 +14,9 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -39,7 +41,8 @@ public class IWantToRecordActivity extends Activity {
 	Button btn_setEnd;
 	TextView txt_startTime;
 	TextView txt_endTime;
-	
+	LinearLayout lnrLyt_startTime;
+	LinearLayout lnrLyt_endTime;
 	float rt_effc;
 	float rt_mood;
 	String type;
@@ -112,7 +115,7 @@ public class IWantToRecordActivity extends Activity {
 		setContentView(R.layout.activity_iwanttorecord);
 
 		Log.v("iRcd","iRecord: before find RatingBar.");
-		rtBar_effc = (RatingBar)findViewById(R.id.act_iRcrd_rtBar_effc);
+		rtBar_effc = (RatingBar)findViewById(R.id.act_iRcd_rtBar_effc);
 		btn_save = (Button)findViewById(R.id.act_iRcd_btn_save);
 		
 		/***************************************
@@ -138,8 +141,12 @@ public class IWantToRecordActivity extends Activity {
 		txt_endTime.setText(Integer.toString(endHour) + ":"+Integer.toString(endMin));
 		
 		// set start time;
-		btn_setStart = (Button)findViewById(R.id.act_iRcd_btn_setStart);
-		btn_setStart.setOnClickListener(new Button.OnClickListener(){
+		Log.v("iRcd","iRecord: before set linearLait_time_start");
+		lnrLyt_startTime = (LinearLayout)findViewById(R.id.act_iRcd_lnrLyt_startTime);
+		Log.v("iRcd","iRecord: set linearLayout_time_start success");
+		//lnrLyt_startTime.setFocusableInTouchMode(true);
+		Log.v("iRcd","iRecord: before set onClickListener");		
+		lnrLyt_startTime.setOnClickListener(new OnClickListener(){
 			public void onClick(View view){
 				new TimePickerDialog(IWantToRecordActivity.this,new OnTimeSetListener(){
 					public void onTimeSet(TimePicker view,int hour,int minute)
@@ -154,8 +161,11 @@ public class IWantToRecordActivity extends Activity {
 		});
 		
 		//set end time
-		btn_setEnd = (Button)findViewById(R.id.act_iRcd_btn_setEnd);
-		btn_setEnd.setOnClickListener(new Button.OnClickListener(){
+		Log.v("iRcd","iRecord: before set linearLayout_time_end");
+		lnrLyt_endTime = (LinearLayout)findViewById(R.id.act_iRcd_lnrLyt_endTime);
+		
+		Log.v("YouRcd","YouRecord: before set onClickListener");		
+		lnrLyt_endTime.setOnClickListener(new OnClickListener(){
 			public void onClick(View view){
 				new TimePickerDialog(IWantToRecordActivity.this,new OnTimeSetListener(){
 					public void onTimeSet(TimePicker view,int hour,int minute)

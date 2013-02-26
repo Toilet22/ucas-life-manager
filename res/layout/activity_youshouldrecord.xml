@@ -35,10 +35,18 @@
             android:orientation="vertical" >
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/green_bar_top"
+                android:orientation="vertical" >
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/linearLayout10"
                 android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:background="@drawable/rcd_green_bar"
+                android:layout_height="20dp"
+                android:background="@drawable/green_bar"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="20dp" >
@@ -62,10 +70,9 @@
                     android:id="@+id/act_youRcd_lnrLyt_startTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rcd_middle"
+                    android:background="@drawable/white_bar"
                     android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    android:paddingTop="3dp" >
+                    android:orientation="vertical" >
 
                     <TableLayout
                         android:layout_width="match_parent"
@@ -100,7 +107,7 @@
                     android:id="@+id/act_youRcd_lnrLyt_endTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rcd_bottom"
+                    android:background="@drawable/white_bar"
                     android:orientation="vertical" >
 
                     <TableLayout
@@ -135,6 +142,15 @@
                         </TableRow>
                     </TableLayout>
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/white_bar_bottom"
+                    android:orientation="vertical" >
+
+                </LinearLayout>
+
             </LinearLayout>
         </LinearLayout>
 
@@ -146,8 +162,16 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/green_bar_top"
+                android:orientation="vertical" >
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="25dp"
-                android:background="@drawable/rcd_green_bar"
+                android:background="@drawable/green_bar"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:paddingLeft="20dp" >
@@ -170,7 +194,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/rcd_middle"
+                    android:background="@drawable/white_bar"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
                     android:paddingTop="2dp" >
@@ -203,7 +227,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/rcd_bottom"
+                    android:background="@drawable/white_bar"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
                     android:paddingTop="2dp" >
@@ -268,18 +292,34 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/white_bar_bottom"
+                android:orientation="vertical" >
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/act_yourcd_type_bg"
             android:orientation="vertical" >
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/green_bar_top"
+                android:orientation="vertical" >
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="25dp"
-                android:background="@drawable/rcd_green_bar"
+                android:background="@drawable/green_bar"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:paddingLeft="20dp" >
@@ -296,6 +336,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/white_bar"
                 android:orientation="vertical"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp" >
@@ -324,6 +365,15 @@
                         android:layout_weight="1" />
                 </LinearLayout>
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/white_bar_bottom"
+                android:orientation="vertical" >
+
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 

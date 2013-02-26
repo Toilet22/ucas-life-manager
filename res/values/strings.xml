@@ -13,12 +13,18 @@
     <string name="back">返回</string>
     <string name="suggestion">建议</string>
     <string name="act_main_txtvw_logStarted">下次记录时间</string>
+    <string name="act_main_txtvw_logStarted_en">Next Record Time</string>
     <string name="act_main_txtvw_logStopped">定时记录已关</string>
+     <string name="act_main_txtvw_logStopped_en">Timely Record Off</string>
     <string name="act_main_txtvw_nextLogTime">  00:00  </string>
     <string name="act_main_btn_iWantToRcd">现在记一笔</string>
+    <string name="act_main_btn_iWantToRcd_en">Make a record Now</string>
     <string name="act_main_btn_history">历史记录</string>
+     <string name="act_main_btn_history_en">History Data</string>
     <string name="act_main_btn_future">规划未来</string>
+    <string name="act_main_btn_future_en">Future Plan</string>
     <string name="act_main_btn_settings">使用设置</string>
+    <string name="act_main_btn_settings_en">User Settings</string>
     <string name="act_settings_txtvw_regularRcd">定时记录功能</string>
     <string name="act_settings_txtvw_interval">时间间隔</string>
     <string name="act_settings_txtvw_time">分钟</string>
@@ -29,6 +35,7 @@
     <string name="act_settings_txtvw_started">是否开启</string>
     <string name="act_settings_btn_closeLog">关闭定时记录</string>
     <string name="act_settings_txtvw_closed">定时记录已关闭</string>
+    <string name="act_settings_txtvw_closed_en">Timely record is off now</string>
     <string name="act_settings_btn_startLog">开启定时记录</string>
     <string name="act_settings_txtvw_rcdAlarm">事件提醒方式</string>
     <string name="act_settings_txtvw_ringtone">手机铃声</string>
@@ -40,6 +47,7 @@
     <string name="act_settings_toast_vibrationOff">震动提醒已关闭</string>
     <string name="act_settings_toast_rglRcdOn">定时提醒已开启</string>
     <string name="act_settings_toast_rglRcdOff">定时提醒已关闭</string>
+    <string name="act_settings_toast_rglRcdOff_en">Timely reminder is off now</string>
     <string name="act_settings_toast_intervalChanged">时间间隔已更改，重新开始计时</string>
     <string name="act_settings_toast_intervalFailed">定时记录功能关闭，时间间隔已更改</string>
     <string name="act_youRcrd_btn_save">保存</string>
@@ -138,4 +146,19 @@
     <string name="back_generic_en">Back</string>
     <string name="suggestion_generic_en">Suggestion</string>
     <string name="syncing_data_in_background_en">Now Starting Sync Data In Background</string>
+    <string name="already_login_en">You have already loged in!</string>
+     <string name="is_logining_in_en">Loging In</string>
+    <string name="is_registering_en">Registering</string>
+    <string name="is_logingout_en">Loging Out</string>
+    <string name="login_http_error_en">Http Error, please retry!</string>
+     <string name="switch_user_en">Switch User</string>
+    <string name="user_data_sync_en">Sync Data</string>
+    <string name="current_loged_in_user_en">Current Loged In User: </string>
+    <string name="loged_in_user_indicator_en">No User!</string>
+    <string name="sync_data_en">Sync User Data</string>
+    <string name="please_login_first_en">Please Log In First!</string>
+    <string name="subtype_others_en">Others</string>
+    <string name="success_log_in_with_offline_en">Log in successfully, you are in off-line mode now!</string>
+    <string name="success_log_out_with_offline_en">Successfully log out from off-line mode!</string>
+    <string name="login_http_error_and_no_user_found_en">Http error, no user record found, please register and login first!</string>
 </resources>

@@ -54,6 +54,7 @@ public class LoginActivity extends Activity {
 	private static final int LOGIN_SUCCESS = 0;
 	private static final int LOGIN_ERROR = 1;
 	private static final int HTTP_ERROR = -1;
+	private static final int ALREADY_LOGIN = 4;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -64,6 +65,7 @@ public class LoginActivity extends Activity {
 		mHandler = new Handler() {
 			public void handleMessage(Message msg) {
 				super.handleMessage(msg);
+				
 				switch (msg.what) {
 				case LOGIN_SUCCESS:
 					Intent iMain = new Intent(LoginActivity.this,
@@ -117,9 +119,22 @@ public class LoginActivity extends Activity {
 					Bundle errorBundle = (Bundle) msg.obj;
 					int error = errorBundle.getInt("error");
 					String errorMsg = errorBundle.getString("errorMsg");
-					Toast.makeText(LoginActivity.this,
-							"¥ÌŒÛ±‡∫≈£∫" + error + "\n¥ÌŒÛ–≈œ¢£∫" + errorMsg,
-							Toast.LENGTH_LONG).show();
+					if(error == ALREADY_LOGIN) {
+						Toast.makeText(LoginActivity.this,
+								getText(R.string.already_login_en),
+								Toast.LENGTH_LONG).show();
+						
+						Intent Main = new Intent(LoginActivity.this,
+								MainActivity.class);
+						startActivity(Main);
+						LoginActivity.this.finish();
+						
+					} else {
+						Toast.makeText(LoginActivity.this,
+								"Error Code" + error + "\nError Message£∫" + errorMsg,
+								Toast.LENGTH_LONG).show();
+					}
+					
 					break;
 
 				case HTTP_ERROR:
@@ -130,7 +145,7 @@ public class LoginActivity extends Activity {
 					if(validateUserCursor != null && validateUserCursor.getCount() > 0) {
 						// Success log in and will work in offline mode
 						Toast.makeText(LoginActivity.this,
-								getText(R.string.success_log_in_with_offline),
+								getText(R.string.success_log_in_with_offline_en),
 								Toast.LENGTH_LONG).show();
 						
 						Intent iOfflineMain = new Intent(LoginActivity.this,
@@ -147,7 +162,7 @@ public class LoginActivity extends Activity {
 						userDataSync.isWorkingOffline = true;
 					} else {
 						Toast.makeText(LoginActivity.this,
-								getText(R.string.login_http_error_and_no_user_found),
+								getText(R.string.login_http_error_and_no_user_found_en),
 								Toast.LENGTH_LONG).show();
 					}
 					
@@ -263,10 +278,6 @@ public class LoginActivity extends Activity {
 		btn_login.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				// mDialog = new ProgressDialog(LoginActivity.this);
-				// mDialog.setTitle("µ«¬Ω");
-				// mDialog.setMessage("’˝‘⁄µ«¬Ω∑˛ŒÒ∆˜£¨«Î…‘∫Û...");
-				// mDialog.show();
 				validateUserLogin();
 			}
 		});
@@ -303,14 +314,14 @@ public class LoginActivity extends Activity {
 		passwordValue = edt_password.getText().toString();
 
 		if (userNameValue == null || "".equals(userNameValue)) {
-			Toast.makeText(LoginActivity.this, "«Îœ» ‰»Î’ ∫≈£°", Toast.LENGTH_LONG)
+			Toast.makeText(LoginActivity.this, "Please Input Account!", Toast.LENGTH_LONG)
 					.show();
 		} else if (passwordValue == null || "".equals(passwordValue)) {
-			Toast.makeText(LoginActivity.this, "«Îœ» ‰»Î√‹¬Î£°", Toast.LENGTH_LONG)
+			Toast.makeText(LoginActivity.this, "Please Input Password!", Toast.LENGTH_LONG)
 					.show();
 		} else {
 			pd = ProgressDialog.show(LoginActivity.this, "",
-					getString(R.string.is_logining_in));
+					getString(R.string.is_logining_in_en));
 
 			new Thread() {
 				public void run() {

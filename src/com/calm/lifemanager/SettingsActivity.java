@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -79,6 +80,8 @@ public class SettingsActivity extends Activity {
 		// Handler Implementation
 		mHandler = new Handler() {
 			public void handleMessage(Message msg) {
+				super.handleMessage(msg);
+				
 				switch (msg.what) {
 				case LOGOUT_SUCCESS:
 					// Redirect User to Login Activity and Switch User
@@ -87,7 +90,7 @@ public class SettingsActivity extends Activity {
 					startActivity(iLogin);
 					
 					Toast.makeText(SettingsActivity.this,
-							getText(R.string.switch_user),
+							getText(R.string.switch_user_en),
 							Toast.LENGTH_LONG).show();
 					break;
 				case LOGOUT_ERROR:
@@ -95,19 +98,26 @@ public class SettingsActivity extends Activity {
 					int error = errorBundle.getInt("error");
 					String errorMsg = errorBundle.getString("errorMsg");
 					Toast.makeText(SettingsActivity.this,
-							"¥ÌŒÛ±‡∫≈£∫" + error + "\n¥ÌŒÛ–≈œ¢£∫" + errorMsg,
+							"Error Code£∫" + error + "\nError Message£∫" + errorMsg,
 							Toast.LENGTH_LONG).show();
 					break;
 				case HTTP_ERROR:
 					Toast.makeText(SettingsActivity.this,
-							getText(R.string.login_http_error),
+							getText(R.string.login_http_error_en),
 							Toast.LENGTH_LONG).show();
 					break;
 				default:
 					break;
 				}
-				super.handleMessage(msg);
 			};
+		};
+		
+		mRunnableShowToast = new Runnable() {
+			public void run() {
+				// TODO Auto-generated method stub
+				Toast.makeText(SettingsActivity.this, "Sync Data Done!",
+						Toast.LENGTH_LONG).show();
+			}
 		};
 		
 		/******************************************
@@ -363,10 +373,15 @@ public class SettingsActivity extends Activity {
 		btn_switch_user.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v){
 						
-						if(null == userDataSync.currentLogedInUser || "".equals(userDataSync.currentLogedInUser)) {
+						if(null == userDataSync.currentLogedInUser || "".equals(userDataSync.currentLogedInUser) || userDataSync.anonymousUser.equals(userDataSync.currentLogedInUser)) {
 							Toast.makeText(SettingsActivity.this,
 									getText(R.string.please_login_first),
 									Toast.LENGTH_LONG).show();
+							
+							// Redirect User to Login Activity and Switch User
+							userDataSync.isSwithingUser = true;
+							Intent iLogin = new Intent(SettingsActivity.this, LoginActivity.class);
+							startActivity(iLogin);
 						} else if(userDataSync.isWorkingOffline) {
 							Toast.makeText(SettingsActivity.this,
 									getText(R.string.success_log_out_with_offline),
@@ -382,7 +397,7 @@ public class SettingsActivity extends Activity {
 							
 						} else {
 							pd = ProgressDialog.show(SettingsActivity.this, "",
-									getString(R.string.is_logingout));
+									getString(R.string.is_logingout_en));
 							
 							new Thread() {
 								public void run() {
@@ -445,7 +460,7 @@ public class SettingsActivity extends Activity {
 							Toast.makeText(SettingsActivity.this,
 									getText(R.string.login_http_error),
 									Toast.LENGTH_LONG).show();
-						} else if(null == userDataSync.currentLogedInUser || "".equals(userDataSync.currentLogedInUser)) {
+						} else if(null == userDataSync.currentLogedInUser || "".equals(userDataSync.currentLogedInUser) || userDataSync.anonymousUser.equals(userDataSync.currentLogedInUser)) {
 							Toast.makeText(SettingsActivity.this,
 									getText(R.string.please_login_first),
 									Toast.LENGTH_LONG).show();
@@ -517,13 +532,13 @@ public class SettingsActivity extends Activity {
 										Log.i("CloudSync","User Data Syncing Done!");
 										Log.i("CloudSync","Last Sync Time is: " + userDataSync.lastSyncTime);
 										
-									} catch (JSONException e) {
+									} catch (Exception e) {
 										// TODO Auto-generated catch block
 										msg.what = HTTP_ERROR;
 										mHandler.sendMessage(msg);
 										e.printStackTrace();
 									} finally {
-										
+										mHandler.post(mRunnableShowToast);
 									}
 								}
 							}.start();

@@ -453,6 +453,10 @@ public class SettingsActivity extends Activity {
 									getText(R.string.please_login_first),
 									Toast.LENGTH_LONG).show();
 						} else {
+							Toast.makeText(SettingsActivity.this,
+									getText(R.string.syncing_data_in_background_en),
+									Toast.LENGTH_LONG).show();
+							
 							// Sync User Data as a background service
 							new Thread() {
 								public void run() {

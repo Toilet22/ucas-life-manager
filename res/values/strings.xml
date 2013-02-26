@@ -132,4 +132,5 @@
     <string name="login_http_error_and_no_user_found">http通信错误，且在本地未发现用户记录，请先联网登录！</string>
     <string name="back_generic_en">Back</string>
     <string name="suggestion_generic_en">Suggestion</string>
+    <string name="syncing_data_in_background_en">Now Starting Sync Data In Background</string>
 </resources>

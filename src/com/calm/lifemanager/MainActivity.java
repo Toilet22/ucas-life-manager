@@ -16,23 +16,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
-	//按钮
+	//Buttons
 	Button btn_doRcd;
 	Button btn_history;
 	Button btn_future;
 	Button btn_settings;
 	Button btn_login;
-	//TextView
+	
+	// TextView
 	TextView txtvw_logState;
 	TextView txtvw_logNextTime;
-	//开启和关闭定时记录
+	
+	// Switch on or off timely record
 	Button btn_logSwitch;
 	Boolean isLogStarted;
 	long nextTimeInMillis;
 	int nextTime_Hour, nextTime_Min;
 	Calendar nextLogTime;
 	
-	//时间间隔
+	// Time Interval
 	final long defaultIntervalInMillis = 30*60000;
 	long intervalInMillis = defaultIntervalInMillis;
 	
@@ -42,10 +44,11 @@ public class MainActivity extends Activity {
 		nextLogTime = Calendar.getInstance();
 		
 		/******************************************
-		 * 读取现有preferences。用以完成界面初始化
+		 * Load preferences to initial UI
 		 *****************************************/
 		Log.v("Toilet", "NewCurrAct: before sharedPref.");
-		//preferences记录
+		
+		// preferences
 		SharedPreferences sharedPref;
 		if(null == userDataSync.currentLogedInUser || "".equals(userDataSync.currentLogedInUser)) {
 			userDataSync.currentLogedInUser = userDataSync.anonymousUser;
@@ -65,6 +68,7 @@ public class MainActivity extends Activity {
 			editor.putLong("IntervalInMillis", intervalInMillis);
 			editor.commit();
 		}
+		
 		//根据是否开启定时记录初始化页面
 		Log.v("Toilet", "NewCurrAct: before get txtvw & btn.");
 		txtvw_logState = (TextView)findViewById(R.id.act_main_txtvw_logState);
@@ -111,11 +115,13 @@ public class MainActivity extends Activity {
 					 * 如果已关闭，则开启
 					 ***********************/
 					timgLoggerHelper.launchTimeLogger();
+					
 					//改变UI
 					isLogStarted = true;
 					txtvw_logState.setText(R.string.act_main_txtvw_logStarted);
 					btn_logSwitch.setBackgroundResource(R.drawable.switch_on);
 					txtvw_logNextTime.setText(Integer.toString(nextTime_Hour)+":"+Integer.toString(nextTime_Min));
+					
 					//preferences记录
 					SharedPreferences sharedPref;
 					sharedPref = getSharedPreferences(

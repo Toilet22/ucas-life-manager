@@ -367,8 +367,8 @@ public class SettingsActivity extends Activity {
 		// User Name Indicator
 		Log.v("SettingsActivity", "before get btn_log.");
 		txtvw_current_loged_in_user = (TextView)findViewById(R.id.act_settings_txtvw_current_loged_user);
-		//txtvw_current_loged_in_user.setText("DayDayUp");
 		Log.v("SettingsActivity", "before btn_log_in_usr.setText");
+		//txtvw_current_loged_in_user.setText("DayDayUp");
 		txtvw_current_loged_in_user.setText(userDataSync.currentLogedInUser);
 		
 

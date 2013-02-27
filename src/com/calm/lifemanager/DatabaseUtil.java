@@ -958,15 +958,15 @@ public class DatabaseUtil{
 	public void initPrimeTypes() {
 		Log.i("DatabaseUtil","Creating Assigned Prime Types...");
 
-		createPrimeTypes("未记录", null);
-		createPrimeTypes("学习", null);
-		createPrimeTypes("工作", null);
-		createPrimeTypes("社交", null);
-		createPrimeTypes("运动", null);
-		createPrimeTypes("思考", null);
-		createPrimeTypes("娱乐", null);
-		createPrimeTypes("购物", null);
-		createPrimeTypes("其它", null);
+		createPrimeTypes("No Record", null);
+		createPrimeTypes("Study", null);
+		createPrimeTypes("Work", null);
+		createPrimeTypes("Social Life", null);
+		createPrimeTypes("Sports", null);
+		createPrimeTypes("Thinking", null);
+		createPrimeTypes("Entertainment", null);
+		createPrimeTypes("Shopping", null);
+		createPrimeTypes("Others", null);
 		
 		Log.i("DatabaseUtil","Creating Assigned Prime Types Done!");
 	}
@@ -1125,56 +1125,52 @@ public class DatabaseUtil{
 	public void initSubTypes() {
 		Log.i("DatabaseUtil","Creating Assigned Sub Types...");
 
-		createSubTypes("未记录", null, "未记录");
+		createSubTypes("No Record", null, "No Record");
 		
-		createSubTypes("专业知识", null, "学习");
-		createSubTypes("人文知识", null, "学习");
-		createSubTypes("艺术修养", null, "学习");
-		createSubTypes("其他", null, "学习");
-		
-		
-		createSubTypes("规划工作", null, "工作");
-		createSubTypes("处理文档", null, "工作");
-		createSubTypes("联系客户", null, "工作");
-		createSubTypes("编写代码", null, "工作");
-		createSubTypes("其他", null, "工作");
+		createSubTypes("Professional", null, "Study");
+		createSubTypes("Humanistics", null, "Study");
+		createSubTypes("Arts", null, "Study");
+		createSubTypes("Others", null, "Study");
 		
 		
-		createSubTypes("电话联系", null, "社交");
-		createSubTypes("网络交流", null, "社交");
-		createSubTypes("外出聚会", null, "社交");
-		createSubTypes("登门造访", null, "社交");
-		createSubTypes("其他", null, "社交");
+		createSubTypes("Planning", null, "Working");
+		createSubTypes("Contacting", null, "Working");
+		createSubTypes("Coding", null, "Working");
+		createSubTypes("Others", null, "Working");
 		
 		
-		createSubTypes("散步慢跑", null, "运动");
-		createSubTypes("大球运动", null, "运动");
-		createSubTypes("小球运动", null, "运动");
-		createSubTypes("健身健美", null, "运动");
-		createSubTypes("其他", null, "运动");
+		createSubTypes("Phone Call", null, "Social Life");
+		createSubTypes("Network", null, "Social Life");
+		createSubTypes("Party", null, "Social Life");
+		createSubTypes("Visiting", null, "Social Life");
+		createSubTypes("Others", null, "Social Life");
 		
 		
-		createSubTypes("人生愿景", null, "思考");
-		createSubTypes("长期规划", null, "思考");
-		createSubTypes("短期规划", null, "思考");
-		createSubTypes("人情世故", null, "思考");
-		createSubTypes("其他", null, "思考");
+		createSubTypes("Jogging", null, "Sports");
+		createSubTypes("Ball movement", null, "Sports");
+		createSubTypes("Bodybuilding", null, "Sports");
+		createSubTypes("Others", null, "Sports");
 		
 		
-		createSubTypes("户外旅途", null, "娱乐");
-		createSubTypes("电影音乐", null, "娱乐");
-		createSubTypes("棋牌游戏", null, "娱乐");
-		createSubTypes("上网冲浪", null, "娱乐");
-		createSubTypes("其他", null, "娱乐");
+		createSubTypes("Life Vision", null, "Thinking");
+		createSubTypes("Long-term Planning", null, "Thinking");
+		createSubTypes("Short-term Planning", null, "Thinking");
+		createSubTypes("Worldly Wisdom", null, "Thinking");
+		createSubTypes("Others", null, "Thinking");
 		
-		createSubTypes("日常用品", null, "购物");
-		createSubTypes("逛街血拼", null, "购物");
-		createSubTypes("大宗产品", null, "购物");
-		createSubTypes("便捷网购", null, "购物");
-		createSubTypes("其他", null, "购物");
 		
-		createSubTypes("交通路途", null, "其它");
-		createSubTypes("其他", null, "其它");
+		createSubTypes("Travlling", null, "Entertainment");
+		createSubTypes("Music or Movie", null, "Entertainment");
+		createSubTypes("Games", null, "Entertainment");
+		createSubTypes("Surfing the Internet", null, "Entertainment");
+		createSubTypes("Others", null, "Entertainment");
+		
+		createSubTypes("Window Shopping", null, "Shopping");
+		createSubTypes("Online Shopping", null, "Shopping");
+		createSubTypes("Others", null, "Shopping");
+		
+		createSubTypes("Traffic", null, "Others");
+		createSubTypes("Others", null, "Others");
 		
 		Log.i("DatabaseUtil","Creating Assigned Sub Types Done!");
 	}

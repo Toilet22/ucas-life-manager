@@ -46,6 +46,7 @@
     <string name="act_settings_toast_vibrationOn">震动提醒已开启</string>
     <string name="act_settings_toast_vibrationOff">震动提醒已关闭</string>
     <string name="act_settings_toast_rglRcdOn">定时提醒已开启</string>
+    <string name="act_settings_toast_rglRcdOn_en">Timely reminder is on now</string>
     <string name="act_settings_toast_rglRcdOff">定时提醒已关闭</string>
     <string name="act_settings_toast_rglRcdOff_en">Timely reminder is off now</string>
     <string name="act_settings_toast_intervalChanged">时间间隔已更改，重新开始计时</string>

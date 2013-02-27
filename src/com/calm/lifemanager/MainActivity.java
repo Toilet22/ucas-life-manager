@@ -108,7 +108,7 @@ public class MainActivity extends Activity {
 					txtvw_logNextTime.setText(R.string.act_main_txtvw_nextLogTime);
 					
 					//µ¯³öToast
-					Toast.makeText(getApplicationContext(), R.string.act_settings_toast_rglRcdOff_en, 
+					Toast.makeText(getApplicationContext(), R.string.act_settings_toast_rglRcdOff, 
 							Toast.LENGTH_SHORT).show();
 				}else{
 					/************************

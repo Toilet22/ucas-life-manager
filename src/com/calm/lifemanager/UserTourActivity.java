@@ -25,15 +25,14 @@ public class UserTourActivity extends Activity implements OnClickListener,
 
 	private List<View> views;
 
-	private ImageView[] dots;
-
 	private int currentIndex;
 
 	private int lastX = 0;
 
-	private static final int[] pics = { R.drawable.user_tour_demo_g2, R.drawable.user_tour_demo_g3,
-			R.drawable.user_tour_demo_g4 };
+	private static final int[] pics = { R.drawable.video_demo_today_plan, R.drawable.video_demo_history_record, R.drawable.video_demo_today_summary,
+		R.drawable.video_demo_tomorrow_plan, R.drawable.video_demo_good_night };
 
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,21 +56,6 @@ public class UserTourActivity extends Activity implements OnClickListener,
 		viewPager.setAdapter(viewPagerAdapter);
 		viewPager.setOnPageChangeListener(this);
 
-		initBottomDots();
-
-	}
-
-	private void initBottomDots() {
-		LinearLayout ll = (LinearLayout) findViewById(R.id.ll);
-		dots = new ImageView[pics.length];
-		for (int i = 0; i < pics.length; i++) {
-			dots[i] = (ImageView) ll.getChildAt(i);
-			dots[i].setEnabled(true);
-			dots[i].setOnClickListener(this);
-			dots[i].setTag(i);
-		}
-		currentIndex = 0;
-		dots[currentIndex].setEnabled(false);
 	}
 
 	public void onClick(View v) {
@@ -84,19 +68,6 @@ public class UserTourActivity extends Activity implements OnClickListener,
 	}
 
 	public void onPageScrolled(int index, float arg1, int dis) {
-	}
-
-	public void onPageSelected(int index) {
-		setCurDot(index);
-	}
-
-	private void setCurDot(int positon) {
-		if (positon < 0 || positon > pics.length - 1 || currentIndex == positon) {
-			return;
-		}
-		dots[positon].setEnabled(false);
-		dots[currentIndex].setEnabled(true);
-		currentIndex = positon;
 	}
 
 	private void setCurView(int position) {
@@ -127,4 +98,15 @@ public class UserTourActivity extends Activity implements OnClickListener,
 		return false;
 	}
 
+	public void onPageSelected(int index) {
+		// TODO Auto-generated method stub
+		setCurDot(index);
+	}
+	
+	private void setCurDot(int positon) {
+		if (positon < 0 || positon > pics.length - 1 || currentIndex == positon) {
+			return;
+		}
+		currentIndex = positon;
+	}
 }

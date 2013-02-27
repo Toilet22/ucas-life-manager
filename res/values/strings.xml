@@ -32,7 +32,7 @@
     <string name="act_settings_dlg_interval_title">Please input an integer between 1~300</string>
     <string name="act_settings_dlg_posBtn">OK</string>
     <string name="act_settings_dlg_negBtn">CANCLE</string>
-    <string name="act_settings_txtvw_started">Whether Turn On</string>
+    <string name="act_settings_txtvw_started">Turn On/off</string>
     <string name="act_settings_btn_closeLog">Turn Off Timely Record</string>
     <string name="act_settings_txtvw_closed">Timely record is off now</string>
     <string name="act_settings_txtvw_closed_en">Timely record is off now</string>

@@ -960,7 +960,7 @@ public class DatabaseUtil{
 
 		createPrimeTypes("No Record", null);
 		createPrimeTypes("Study", null);
-		createPrimeTypes("Work", null);
+		createPrimeTypes("Working", null);
 		createPrimeTypes("Social Life", null);
 		createPrimeTypes("Sports", null);
 		createPrimeTypes("Thinking", null);

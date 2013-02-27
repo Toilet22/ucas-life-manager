@@ -354,6 +354,7 @@ public class SettingsActivity extends Activity {
          ********************************************/
 		Log.v("Toilet", "before get btn_back.");
 		btn_back = (Button)findViewById(R.id.act_settings_btn_back);
+		Log.v("SettingsActivity", "after get btn_back.");
 		btn_back.setOnClickListener(new Button.OnClickListener(){
 			public void onClick(View v){
 				finish();
@@ -364,10 +365,14 @@ public class SettingsActivity extends Activity {
 		 * User Data Sync Section
 		 */
 		// User Name Indicator
+		Log.v("SettingsActivity", "before get btn_log.");
 		txtvw_current_loged_in_user = (TextView)findViewById(R.id.act_settings_txtvw_current_loged_user);
 		//txtvw_current_loged_in_user.setText("DayDayUp");
+		Log.v("SettingsActivity", "before btn_log_in_usr.setText");
 		txtvw_current_loged_in_user.setText(userDataSync.currentLogedInUser);
 		
+
+		Log.v("SettingsActivity", "before get btn_switchUsr.");
 		// Switch User
 		btn_switch_user = (Button)findViewById(R.id.act_settings_btn_switch_user);
 		btn_switch_user.setOnClickListener(new Button.OnClickListener() {
@@ -451,6 +456,7 @@ public class SettingsActivity extends Activity {
 		});
 		
 		// Sync User Data
+		Log.v("SettingsActivity", "before get btn_sync.");
 		btn_sync_data = (Button)findViewById(R.id.act_settings_btn_sync_data);
 		btn_sync_data.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v){

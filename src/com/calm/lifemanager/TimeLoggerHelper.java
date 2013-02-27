@@ -54,7 +54,8 @@ public class TimeLoggerHelper {
 		 * 给新开启的Activity传递起始时间
 		 *******************************/
 		//制定要开启的Activity
-		Intent new_intent = new Intent(thisActivity, TimeToRecordBroadcastReceiver.class);				
+		Intent new_intent = new Intent(thisActivity, TimeToRecordBroadcastReceiver.class);		
+		//Intent new_intent = new Intent(thisActivity, SplashActivity.class);			
 		Bundle mBundle = new Bundle();
         mBundle.putLong("StartTimeInMillis", currTimeInMillis);
         new_intent.putExtras(mBundle);
@@ -78,7 +79,8 @@ public class TimeLoggerHelper {
 		/********************************
 		 * 关闭对应的alarmManager
 		 *******************************/
-		Intent new_intent = new Intent(thisActivity, TimeToRecordBroadcastReceiver.class);				
+		Intent new_intent = new Intent(thisActivity, TimeToRecordBroadcastReceiver.class);	
+		//Intent new_intent = new Intent(thisActivity, SplashActivity.class);				
 		PendingIntent sender = PendingIntent.getBroadcast(thisActivity, 0, new_intent, 0);					
 		AlarmManager am = (AlarmManager)thisActivity.getSystemService("alarm");
 		am.cancel(sender);

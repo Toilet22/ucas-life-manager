@@ -13,6 +13,8 @@ public class TimeToRecordBroadcastReceiver extends BroadcastReceiver {
 		// TODO Auto-generated method stub
 		Log.v("Toilet","TTRCRD receiver: before intent.");
 		Intent intnt_doRecord = new Intent(context, YouShouldRecordActivity.class);
+		//Intent intnt_doRecord = new Intent(context, SplashActivity.class);
+		
 		Bundle bundle = intent.getExtras();
         Log.v("Toilet", "TimeToRcd: test Bundle: the currTimeInMillis is "+ Long.toString(bundle.getLong("StartTimeInMillis"))+".");
         Log.v("Toilet", "TimeToRecordBroadCastReceiver: test Bundle: the Hour is "+ Integer.toString(bundle.getInt("Hour"))+".");

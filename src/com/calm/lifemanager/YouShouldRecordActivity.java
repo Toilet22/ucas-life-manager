@@ -157,6 +157,7 @@ public class YouShouldRecordActivity extends Activity {
 		Log.v("YouRcd","YouRecord: before get preferences.");
 		if(null == userDataSync.currentLogedInUser || "".equals(userDataSync.currentLogedInUser)) {
 			userDataSync.currentLogedInUser = userDataSync.anonymousUser;
+		
 		} else {
 			;
 		}
@@ -327,8 +328,10 @@ public class YouShouldRecordActivity extends Activity {
 				//btn_sad.setWidth(width_btnMood + 10);
 				//btn_sad.setHeight(height_btnMood + 10);
 				btn_sad.setBackgroundResource(R.drawable.sad_pushed);		
-				rt_mood = "sad";			
-			}			
+				rt_mood = "sad";		
+				//why there always so many
+				
+			}
 		});
 		//angry
 		btn_angry.setOnClickListener(new Button.OnClickListener(){

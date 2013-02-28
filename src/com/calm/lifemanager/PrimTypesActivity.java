@@ -165,7 +165,7 @@ public class PrimTypesActivity extends Activity {
 				dbUtil.deletePrimeType(selectedTypeName);
 				cursor.requery();
 				if(!cursor.moveToFirst()){
-					dbUtil.newPrimeType("ÆäËû", null);
+					dbUtil.newPrimeType("Others", null);
 					Toast.makeText(getApplicationContext(), R.string.act_prim_types_tableEmpty, 
 							Toast.LENGTH_SHORT).show();
 				}

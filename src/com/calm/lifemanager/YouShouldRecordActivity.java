@@ -43,8 +43,15 @@ public class YouShouldRecordActivity extends Activity {
 	WheelView whl_subType;
 	float rt_effc;
 	String rt_mood;
+	int mood_int;
+	Calendar currTime;
+	long startTimeInMillis;
+	long endTimeInMillis;
+	long currTimeInMillis;
 	int startHour;
 	int startMin;
+	int currHour;
+	int currMin;
 	int endHour;
 	int endMin;
 	int width_btnMood, height_btnMood;
@@ -189,7 +196,7 @@ public class YouShouldRecordActivity extends Activity {
 		 **************************************/
 		Log.v("YouRcd","YouRecord: before get Bundle.");
 		Bundle mBundle = YouShouldRecordActivity.this.getIntent().getExtras();
-		long startTimeInMillis = mBundle.getLong("StartTimeInMillis");
+		startTimeInMillis = mBundle.getLong("StartTimeInMillis");
 		//long startTimeInMillis = YouShouldRecordActivity.this.getIntent().getLongExtra("StartTimeInMillis", 0);
         Log.v("Toilet", "YouRcd_getStartTimeInMillis: test Bundle: the currTimeInMillis is " + Long.toString(startTimeInMillis)+".");
 		Calendar startTime = Calendar.getInstance();
@@ -205,7 +212,7 @@ public class YouShouldRecordActivity extends Activity {
 		 **************************************/
 		//get current time
 		Log.v("YouRcd","YouRecord: before use timePicker.");
-		Calendar currTime = Calendar.getInstance();
+		currTime = Calendar.getInstance();
 		endHour = currTime.get(Calendar.HOUR_OF_DAY);
 		endMin = currTime.get(Calendar.MINUTE);
 		// init the time;
@@ -292,6 +299,7 @@ public class YouShouldRecordActivity extends Activity {
 				//btn_excited.setHeight(height_btnMood + 10);
 				btn_excited.setBackgroundResource(R.drawable.excited_pushed);	
 				rt_mood = "excited";
+				mood_int = 5;
 			}			
 		});
 		//happy
@@ -304,6 +312,7 @@ public class YouShouldRecordActivity extends Activity {
 				//btn_happy.setHeight(height_btnMood + 10);
 				btn_happy.setBackgroundResource(R.drawable.happy_pushed);				
 				rt_mood = "happy";	
+				mood_int = 4;
 			}			
 		});
 		//ok
@@ -315,7 +324,8 @@ public class YouShouldRecordActivity extends Activity {
 				//btn_ok.setWidth(width_btnMood + 10);
 				//btn_ok.setHeight(height_btnMood + 10);
 				btn_ok.setBackgroundResource(R.drawable.ok_pushed);		
-				rt_mood = "ok";			
+				rt_mood = "ok";	
+				mood_int = 3;		
 			}			
 		});
 		//sad
@@ -327,7 +337,8 @@ public class YouShouldRecordActivity extends Activity {
 				//btn_sad.setWidth(width_btnMood + 10);
 				//btn_sad.setHeight(height_btnMood + 10);
 				btn_sad.setBackgroundResource(R.drawable.sad_pushed);		
-				rt_mood = "sad";			
+				rt_mood = "sad";	
+				mood_int = 1;		
 			}			
 		});
 		//angry
@@ -340,6 +351,8 @@ public class YouShouldRecordActivity extends Activity {
 				//btn_angry.setHeight(height_btnMood + 10);
 				btn_angry.setBackgroundResource(R.drawable.angry_pushed);			
 				rt_mood = "angry";		
+
+				mood_int = 2;
 			}			
 		});
 		
@@ -375,6 +388,38 @@ public class YouShouldRecordActivity extends Activity {
 		 *******************************************************/
 		btn_save.setOnClickListener(new Button.OnClickListener(){
 			public void onClick(View arg0) {
+				// 获取记录数据
+				rt_effc = rtBar_effc.getRating();
+				//Log.i("YouRcd", "rating of effeciency: " + Float.toString(rt_effc));
+				//Log.i("YouRcd", "mood: " + rt_mood);
+				//rt_mood = rtBar_mood.getRating();
+				type = fatherType[whl_fatherType.getCurrentItem()] + "_"
+						+ subType[whl_subType.getCurrentItem()];
+				Toast.makeText(getApplicationContext(), Float.toString(rt_effc) + " " + type + " " +rt_mood, 
+						Toast.LENGTH_SHORT).show();	
+				
+				/************************************
+				 * ?????????????????????????????????
+				 * 存入数据库： 效率，心情，类别
+				 *??????????????????????????????????
+				 ***********************************/
+				//计算时间：将hour和min换算成timeInMillis
+				//计算起始时间
+				currTime = Calendar.getInstance();
+				currTimeInMillis = currTime.getTimeInMillis();
+				currHour = currTime.get(Calendar.HOUR_OF_DAY);
+				currMin = currTime.get(Calendar.MINUTE);
+				startTimeInMillis = currTimeInMillis - (currHour*60000*60 + currMin*60000 
+						- startHour*60000*60 - startMin*60000);
+				//计算结束时间
+				endTimeInMillis = currTimeInMillis - (currHour*60000*60 + currMin*60000 
+						- endHour*60000*60 - endMin*60000);
+				
+				dbUtil.createRecordEvent(type, startTimeInMillis, endTimeInMillis, 
+						(endTimeInMillis - startTimeInMillis)>0 ? (endTimeInMillis - startTimeInMillis) : 0, 
+								(int)(rt_effc-0.1), mood_int, 0);
+					
+				
 				// 退出
 				YouShouldRecordActivity.this.finish();
 			}
@@ -389,23 +434,6 @@ public class YouShouldRecordActivity extends Activity {
 	 */
 	public void onPause(){
 		super.onPause();
-		// 获取记录数据
-		rt_effc = rtBar_effc.getRating();
-		//Log.i("YouRcd", "rating of effeciency: " + Float.toString(rt_effc));
-		//Log.i("YouRcd", "mood: " + rt_mood);
-		//rt_mood = rtBar_mood.getRating();
-		type = fatherType[whl_fatherType.getCurrentItem()] + "_"
-				+ subType[whl_subType.getCurrentItem()];
-		Toast.makeText(getApplicationContext(), Float.toString(rt_effc) + " " + type + " " +rt_mood, 
-				Toast.LENGTH_SHORT).show();	
-		
-		/************************************
-		 * ?????????????????????????????????
-		 * 存入数据库： 效率，心情，类别
-		 *??????????????????????????????????
-		 ***********************************/
-		
-		
 		/********************************************
 		//开启下一次计数
 		 ********************************************/

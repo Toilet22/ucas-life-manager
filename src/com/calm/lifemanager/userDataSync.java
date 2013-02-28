@@ -228,9 +228,12 @@ public class userDataSync {
 			} else if (columnNames[columnIndex].equals(DatabaseUtil.KEY_MTIME)) {
 				dataJson.put(DatabaseUtil.KEY_MTIME,
 						retCursor.getLong(columnIndex));
+//			} else if (columnNames[columnIndex].equals(DatabaseUtil.KEY_STIME)) {
+//				dataJson.put(DatabaseUtil.KEY_STIME,
+//						retCursor.getLong(columnIndex));
 			} else if (columnNames[columnIndex].equals(DatabaseUtil.KEY_STIME)) {
 				dataJson.put(DatabaseUtil.KEY_STIME,
-						retCursor.getLong(columnIndex));
+						System.currentTimeMillis());
 			} else if (columnNames[columnIndex].equals(DatabaseUtil.KEY_MODE)) {
 				dataJson.put(DatabaseUtil.KEY_MODE,
 						retCursor.getInt(columnIndex));

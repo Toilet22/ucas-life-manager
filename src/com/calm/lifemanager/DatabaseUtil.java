@@ -210,7 +210,7 @@ public class DatabaseUtil{
 	public static final String KEY_COST = "cost_time";
 	public static final String KEY_RATING = "rating";
 	public static final String KEY_MOOD = "mood";
-	public static final String KEY_TYPE = "type";
+	public static final String KEY_TYPE = "kind";
 	
 	// Database creation SQL statement
 	private static final String CREATE_RECORD_TABLE =
@@ -899,7 +899,7 @@ public class DatabaseUtil{
 	 * @param stime
 	 * @return long
 	 */
-	public long createRecordEvent(int event_type, long start_time, long end_time, long cost_time, int rating, int mood, int status) {
+	public long createRecordEvent(String event_type, long start_time, long end_time, long cost_time, int rating, int mood, int status) {
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(KEY_TYPE, event_type);
 		initialValues.put(KEY_START, start_time);

@@ -45,13 +45,20 @@ public class IWantToRecordActivity extends Activity {
 	LinearLayout lnrLyt_endTime;
 	float rt_effc;
 	float rt_mood;
+	int mood_int;
+	Calendar currTime;
+	long startTimeInMillis;
+	long endTimeInMillis;
+	long currTimeInMillis;
+	int startHour;
+	int startMin;
+	int currHour;
+	int currMin;
+	int endHour;
+	int endMin;
 	String type;
     String fatherType[];
     String subType[]; 
-	int startHour;
-	int startMin;
-	int endHour;
-	int endMin;
 	DatabaseUtil dbUtil;
 
 	/*************************************** 
@@ -129,9 +136,9 @@ public class IWantToRecordActivity extends Activity {
 		 * timePicker起止时间设置
 		 **************************************/
 		//get current time
-		final Calendar c = Calendar.getInstance();
-		startHour = c.get(Calendar.HOUR_OF_DAY);
-		startMin = c.get(Calendar.MINUTE);
+		currTime = Calendar.getInstance();
+		startHour = currTime.get(Calendar.HOUR_OF_DAY);
+		startMin = currTime.get(Calendar.MINUTE);
 		endHour = startHour;
 		endMin = startMin;
 		// init the time;
@@ -272,7 +279,39 @@ public class IWantToRecordActivity extends Activity {
 		 * 实际不执行保存，保存功能在onPause()方法中完成
 		 *******************************************************/
 		btn_save.setOnClickListener(new Button.OnClickListener(){
-			public void onClick(View arg0) {		
+			public void onClick(View arg0) {	
+				// 获取记录数据
+				rt_effc = rtBar_effc.getRating();
+				//Log.i("YouRcd", "rating of effeciency: " + Float.toString(rt_effc));
+				//Log.i("YouRcd", "mood: " + rt_mood);
+				//rt_mood = rtBar_mood.getRating();
+				type = fatherType[whl_fatherType.getCurrentItem()] + "_"
+						+ subType[whl_subType.getCurrentItem()];
+				Toast.makeText(getApplicationContext(), Float.toString(rt_effc) + " " + type + " " +rt_mood, 
+						Toast.LENGTH_SHORT).show();	
+				
+				/************************************
+				 * ?????????????????????????????????
+				 * 存入数据库： 效率，心情，类别
+				 *??????????????????????????????????
+				 ***********************************/
+				//计算时间：将hour和min换算成timeInMillis
+				//计算起始时间
+				currTime = Calendar.getInstance();
+				currTimeInMillis = currTime.getTimeInMillis();
+				currHour = currTime.get(Calendar.HOUR_OF_DAY);
+				currMin = currTime.get(Calendar.MINUTE);
+				startTimeInMillis = currTimeInMillis - (currHour*60000*60 + currMin*60000 
+						- startHour*60000*60 - startMin*60000);
+				//计算结束时间
+				endTimeInMillis = currTimeInMillis - (currHour*60000*60 + currMin*60000 
+						- endHour*60000*60 - endMin*60000);
+				
+				dbUtil.createRecordEvent(type, startTimeInMillis, endTimeInMillis, 
+						(endTimeInMillis - startTimeInMillis)>0 ? (endTimeInMillis - startTimeInMillis) : 0, 
+								(int)(rt_effc-0.1), mood_int, 0);
+					
+					
 				// 退出
 				IWantToRecordActivity.this.finish();
 			}

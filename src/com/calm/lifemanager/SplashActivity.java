@@ -23,7 +23,8 @@ public class SplashActivity extends Activity {
 			public void run() {
 				Intent nextIntent = new Intent();
 				if(isFirstUse) {
-					nextIntent.setClass(SplashActivity.this, UserTourActivity.class);
+					//nextIntent.setClass(SplashActivity.this, UserTourActivity.class);
+					nextIntent.setClass(SplashActivity.this, MainActivity.class);
 					
 					// First Use, Create anonymous_user.db
 					DatabaseUtil dbUtil = new DatabaseUtil(SplashActivity.this);
@@ -39,6 +40,9 @@ public class SplashActivity extends Activity {
         	    	dbUtil = new DatabaseUtil(SplashActivity.this,userDataSync.usersInfoDbName);
         	    	dbUtil.open();
         	    	dbUtil.close();
+        	    	
+        	    	// Bundle User To Database
+        	    	DatabaseUtil.dbName = DatabaseUtil.defaultDbName;
 				}
 				else {
 					nextIntent.setClass(SplashActivity.this, MainActivity.class);

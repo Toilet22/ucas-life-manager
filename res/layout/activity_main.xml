@@ -132,11 +132,6 @@
             	
             </LinearLayout>
             
-        </LinearLayout>   
-
-        <LinearLayout android:id="@+id/linearLayout1" android:layout_width="match_parent" android:layout_height="match_parent"
-            android:layout_centerHorizontal="true" android:layout_above="@id/act_main_linearLayout_time"  android:background="@drawable/main_name"
-            android:orientation="vertical">
         </LinearLayout>
 
         <LinearLayout
@@ -151,6 +146,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/snail" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/act_main_linearLayout_time"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="15dp"
+            android:background="@drawable/daydayup"
+            android:orientation="vertical" >
 
         </LinearLayout>
 
